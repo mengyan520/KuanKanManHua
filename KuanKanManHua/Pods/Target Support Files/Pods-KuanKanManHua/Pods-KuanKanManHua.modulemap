@@ -1,0 +1,6 @@
+framework module Pods_KuanKanManHua {
+  umbrella header "Pods-KuanKanManHua-umbrella.h"
+
+  export *
+  module * { export * }
+}

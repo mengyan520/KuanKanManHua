@@ -1,0 +1,6 @@
+framework module Pods_KuanKanManHuaTests {
+  umbrella header "Pods-KuanKanManHuaTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
