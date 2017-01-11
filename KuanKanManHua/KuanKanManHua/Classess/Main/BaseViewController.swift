@@ -15,7 +15,7 @@ class BaseViewController: UIViewController {
         view.backgroundColor = WHITE_COLOR
         automaticallyAdjustsScrollViewInsets = false
         
-        setTopView()
+        
         
         navigationItem.rightBarButtonItem = UIBarButtonItem.init(image: UIImage.init(named: "ic_discover_nav_search_normal"), style: .plain, target: self, action: nil)
        

@@ -22,13 +22,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.rootViewController = tabbarController
         changeToMainPage()
         window?.makeKeyAndVisible()
+        NotificationCenter.default.addObserver(self, selector: #selector(self.login), name: NSNotification.Name.init(rawValue: "login"), object: nil)
+        SQLiteManager.sharedManager.createTable(name: "history")
         return true
     }
     //MARK:- 控制器
     func changeToMainPage () {
         
        let backgroundImage = UIImage.init(named: "Tabbar-Bg_2x45_")
-        tabbarController?.addChildVc(arrVC: [HomeViewController(),BaseViewController(),BaseViewController(), BaseViewController()])
+        tabbarController?.addChildVc(arrVC: [HomeViewController(),DiscoverViewController(),CommunityViewController(), MeTableViewController()])
         tabbarController?.BaseTabBarItem(titles: ["首页","发现","v社区","我的"], Font: Font(fontSize: 14), titleColor:BLACK_COLOR, selectedTitleColor: BLACK_COLOR, images:["ic_tabbar_home_normal_30x30_","ic_tabbar_discover_normal_30x30_","ic_tabbar_media_normal_30x30_","ic_tabbar_me_normal_30x30_"], selectedImages:["ic_tabbar_home_pressed_30x30_","ic_tabbar_discover_pressed_30x30_","ic_tabbar_media_pressed_30x30_","ic_tabbar_me_pressed_30x30_"], barBackgroundImage: backgroundImage)
         
     }
@@ -53,7 +55,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
-
-
+   //通知方法
+    func login() {
+        if !MMUtils.userHasLogin() {
+        let controller =    tabbarController?.selectedViewController
+       
+        controller?.present(UINavigationController.init(rootViewController: LoginViewController()), animated: true, completion: nil)
+                
+            
+        }
+    }
 }
 

@@ -11,8 +11,8 @@ import UIKit
 extension Date {
     func timeStringWithInterval(time:TimeInterval) -> String {
         
-        let distance = Int(Date.init().timeIntervalSince1970 - time)
-        
+        let distance = Int(Date.init().timeIntervalSince1970 - time/1000)
+       
         if distance < 1 {
             return "刚刚"
         } else if distance < 60 {

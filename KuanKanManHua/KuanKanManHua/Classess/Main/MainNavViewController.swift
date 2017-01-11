@@ -28,15 +28,15 @@ class MainNavViewController: UINavigationController,UIGestureRecognizerDelegate 
     override func pushViewController(_ viewController: UIViewController, animated: Bool) {
         if self.viewControllers.count > 0 {
             
-            let leftBtn = UIButton.init(type: .custom)
-            leftBtn.frame = CGRect.init(x: 0, y: 0, width: 60, height: 60)
-            leftBtn.setImage( UIImage.init(named: "ic_nav_back_normal_11x19_"), for: .normal)
-            leftBtn.addTarget(self, action: #selector(MainNavViewController.pop), for: .touchUpInside)
-            let leftBarBtn = UIBarButtonItem.init(customView: leftBtn)
-            let spaceItem = UIBarButtonItem.init(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
-            spaceItem.width = -25
-            viewController.navigationItem.leftBarButtonItems = [spaceItem,leftBarBtn]
-            // viewController.navigationItem.leftBarButtonItem =  UIBarButtonItem.init(image: UIImage.init(named: "icon_back"), style: .plain, target: self, action: #selector(MainNavViewController.pop))
+//            let leftBtn = UIButton.init(type: .custom)
+//            leftBtn.frame = CGRect.init(x: 0, y: 0, width: 60, height: 60)
+//            leftBtn.setImage( UIImage.init(named: "ic_nav_back_normal_11x19_"), for: .normal)
+//            leftBtn.addTarget(self, action: #selector(MainNavViewController.pop), for: .touchUpInside)
+//            let leftBarBtn = UIBarButtonItem.init(customView: leftBtn)
+//            let spaceItem = UIBarButtonItem.init(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
+//            spaceItem.width = -25
+//            viewController.navigationItem.leftBarButtonItems = [spaceItem,leftBarBtn]
+             viewController.navigationItem.leftBarButtonItem =  UIBarButtonItem.init(image: UIImage.init(named: "ic_nav_back_normal_11x19_"), style: .plain, target: self, action: #selector(MainNavViewController.pop))
         }
         super.pushViewController(viewController, animated: animated)
     }

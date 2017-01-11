@@ -6,7 +6,7 @@ target 'KuanKanManHua' do
   use_frameworks!
 pod 'SDWebImage'
     
-    
+   pod 'MJPhotoBrowser'
     pod 'Alamofire'
     pod 'SnapKit'
    

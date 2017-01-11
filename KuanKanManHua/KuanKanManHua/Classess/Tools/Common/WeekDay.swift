@@ -4,9 +4,6 @@
 //
 //  Created by Youcai on 16/5/19.
 //  Copyright © 2016年 mm. All rights reserved.
-/*
- /Users/yc/Documents/shequcun/未命名文件夹/快看漫画/快看漫画/Classess/Tools/WeekDay.swift:36:56: 'NSGregorianCalendar' was deprecated in iOS 8.0: Use NSCalendarIdentifierGregorian instead
- */
 
 import UIKit
 

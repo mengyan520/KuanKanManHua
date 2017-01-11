@@ -30,7 +30,7 @@ extension NetworkTools {
         // 显示网络指示菊花
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         Alamofire.request(URL.init(string: URLString)!, method: method, parameters: parameters, encoding: JSONEncoding.default, headers: nil).responseJSON { (response) in
-            UIApplication.shared.isNetworkActivityIndicatorVisible = true
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
             //            // 判断是否失败
             if response.result.isFailure {
                 // 在开发网络应用的时候，错误不要提示给用户，但是错误一定要输出！

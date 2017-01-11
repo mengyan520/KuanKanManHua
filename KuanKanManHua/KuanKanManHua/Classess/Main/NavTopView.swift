@@ -39,18 +39,18 @@ class NavTopView: UISegmentedControl {
     
     
     private func setUI() {
-        let att = [NSFontAttributeName:Font(fontSize: 16),NSForegroundColorAttributeName:WHITE_COLOR,NSBackgroundColorAttributeName:RGB(r: 255, g: 209, b: 10, a: 1.0)]
+        let att = [NSFontAttributeName:Font(fontSize: 16),NSForegroundColorAttributeName:WHITE_COLOR,NSBackgroundColorAttributeName:mainColor]
         setTitleTextAttributes(att, for: .selected)
-        let attt = [NSFontAttributeName:Font(fontSize: 16),NSForegroundColorAttributeName:RGB(r: 255, g: 209, b: 10, a: 1.0)]
+        let attt = [NSFontAttributeName:Font(fontSize: 16),NSForegroundColorAttributeName:mainColor]
         
         setTitleTextAttributes(attt, for: .normal)
-        tintColor = RGB(r: 255, g: 209, b: 10, a: 1.0)
+        tintColor = mainColor
         addTarget(self, action: #selector(self.segmentedSelected(sender:)), for: .valueChanged)
         
         layer.cornerRadius = 15
         clipsToBounds = true
         layer.borderWidth = 1.5
-        layer.borderColor = RGB(r: 255, g: 209, b: 10, a: 1.0).cgColor
+        layer.borderColor = mainColor.cgColor
     
     }
     // MARK: - 事件

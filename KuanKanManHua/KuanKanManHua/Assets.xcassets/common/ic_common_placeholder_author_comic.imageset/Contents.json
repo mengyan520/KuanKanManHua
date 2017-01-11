@@ -2,11 +2,11 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "ic_common_placeholder_author_comic.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
+      "filename" : "ic_common_placeholder_author_comic.png",
       "scale" : "2x"
     },
     {

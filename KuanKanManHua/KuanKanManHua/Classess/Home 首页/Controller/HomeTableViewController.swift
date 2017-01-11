@@ -10,7 +10,7 @@ import UIKit
 import MJRefresh
 import Alamofire
 let cellID = "Homecell"
-class HomeTableViewController: UITableViewController {
+class HomeTableViewController: UITableViewController,HomeTableViewCellDel {
     var time:String = "0"
     private var dataArray:[Comics] = [Comics].init()
     
@@ -44,7 +44,7 @@ class HomeTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath) as! HomeTableViewCell
         
         cell.data = dataArray[indexPath.row]
-       
+        cell.del = self
         cell.selectionStyle = .none
         return cell
     }
@@ -52,8 +52,40 @@ class HomeTableViewController: UITableViewController {
         return dataArray[indexPath.row].rowHeight
     }
     
-    
-    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        let data = Info.init(dict: nil)
+//        data.title = dataArray[indexPath.row].topic!.title
+//        data.topic_id = dataArray[indexPath.row].topic!.id
+//        data.latest_comic_title = dataArray[indexPath.row].title
+//        data.id = dataArray[indexPath.row].id
+//        data.cover_image_url = dataArray[indexPath.row].topic!.cover_image_url
+//        data.old_comic_title = dataArray[indexPath.row].title
+//        SQLiteManager.sharedManager.saveData(data: data, name: "history")
+        let controller = CartoonDetailViewController.init(ID: dataArray[indexPath.row].id, name: dataArray[indexPath.row].title!)
+        
+        controller.topicID = "\(dataArray[indexPath.row].topic!.id)"
+        controller.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(controller, animated: true)
+    }
+    func didClickTopView(id: Int) {
+        let controller = WordDetailViewController.init(ID:"\(id)")
+        controller.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(controller, animated: true)
+    }
+    func didBtnClick(sender: UIButton, data: Comics) {
+        if sender.tag == 2 {
+            let controller = AllCommentTableViewController.init(feed_id: data.id,type:0)
+            
+            controller.nickname = (data.topic?.user?.nickname)!
+            controller.hidesBottomBarWhenPushed = true
+            let nav = UINavigationController.init(rootViewController:controller)
+            self.present(nav, animated: true, completion: nil)
+        } else {
+            
+            sender.isSelected = !sender.isSelected
+            
+        }
+    }
     //MARK: - 网络请求
     func loadData()  {
         
@@ -64,7 +96,7 @@ class HomeTableViewController: UITableViewController {
                     print("格式错误")
                     return
                 }
-                let model = HomeModel.init(dict: object)
+                let model = Model.init(dict: object)
                 self.dataArray = model.data!.comics!
                 self.tableView.reloadData()
             }

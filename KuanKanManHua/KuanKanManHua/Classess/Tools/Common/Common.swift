@@ -16,6 +16,7 @@ let WHITE_COLOR      = UIColor.white
 let CLEAR_COLOR      = UIColor.clear
 let RED_COLOR        = UIColor.red
 let GRAY_COLOR       = UIColor.gray
+let YELLOW_COLOR       = UIColor.yellow
 let HEADER_HEIGHT =  440/2.0+10
 let HEADERHEIGHT:CGFloat = 335
 let ITEMWIDTH:CGFloat = 290/2.0
@@ -24,7 +25,7 @@ let WHcolor = UIColor(white: 0.95, alpha: 1.0)
 
 let LINECOLOR = UIColor(red: 240/255.0, green: 240/255.0, blue: 240/255.0, alpha: 1.0)
 //主题色
-let mainColor = RGB(r: 253, g: 142, b: 20, a: 1.0) 
+let mainColor = RGB(r: 253, g: 173, b: 20, a: 1.0)
 
 func RGB(r:CGFloat,g:CGFloat,b:CGFloat,a:CGFloat) ->UIColor{
     if #available(iOS 10.0, *) {
@@ -88,9 +89,9 @@ func MMPlayerFrameworkSrcName(file:String)->String {
 let USERLOGIN       = "login"
 let Key_Window = UIApplication.shared.keyWindow
 // MARK: - 通知
-func POSTNOTIFICATION(name:String,data:AnyObject?) {
-    NotificationCenter.default.post(name: NSNotification.Name(rawValue: name), object: data)
-
+func POSTNOTIFICATION(name:String,data:[AnyHashable : Any]?) {
+  
+NotificationCenter.default.post(name: NSNotification.Name(rawValue: name), object: nil, userInfo: data )
 }
 func REMOVENOTIFICATION(sender:AnyObject) {
     NotificationCenter.default.removeObserver(sender)
