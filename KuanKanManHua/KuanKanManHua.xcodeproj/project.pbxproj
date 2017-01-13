@@ -91,6 +91,7 @@
 		586BBF111DF7FBB2001BA334 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 586BBF101DF7FBB2001BA334 /* UIColor+Extension.swift */; };
 		586BFC681E0BCB4900947427 /* CommunityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 586BFC671E0BCB4900947427 /* CommunityViewController.swift */; };
 		58FB5F501E248382002029D0 /* HistoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FB5F4F1E248382002029D0 /* HistoryTableViewCell.swift */; };
+		58FB600B1E289038002029D0 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FB600A1E289038002029D0 /* SettingViewController.swift */; };
 		DBC56E06B6727681BF29D681 /* Pods_KuanKanManHuaUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6442B73732EF224F44D07359 /* Pods_KuanKanManHuaUITests.framework */; };
 		E42112FD1E1D2ED300F11426 /* CommentSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E42112FC1E1D2ED300F11426 /* CommentSectionHeaderView.swift */; };
 		E4E81B421E0425DD007AA043 /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4E81B411E0425DD007AA043 /* CategoryCell.swift */; };
@@ -227,6 +228,7 @@
 		586BBF101DF7FBB2001BA334 /* UIColor+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		586BFC671E0BCB4900947427 /* CommunityViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommunityViewController.swift; sourceTree = "<group>"; };
 		58FB5F4F1E248382002029D0 /* HistoryTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryTableViewCell.swift; sourceTree = "<group>"; };
+		58FB600A1E289038002029D0 /* SettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		5BA3641C0ADEC1A97569B1D8 /* Pods-KuanKanManHuaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KuanKanManHuaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-KuanKanManHuaTests/Pods-KuanKanManHuaTests.release.xcconfig"; sourceTree = "<group>"; };
 		6442B73732EF224F44D07359 /* Pods_KuanKanManHuaUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KuanKanManHuaUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		87170C2F5ED0B29981FC7592 /* Pods_KuanKanManHuaTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KuanKanManHuaTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -353,6 +355,7 @@
 			children = (
 				581640801E1216AB003B531B /* MeTableViewController.swift */,
 				58134D101E1F428300326F6E /* HistoryTableViewController.swift */,
+				58FB600A1E289038002029D0 /* SettingViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1073,6 +1076,7 @@
 				582D2C181E03DB7D001A2AAF /* CategoryTableView.swift in Sources */,
 				58134D291E1F45DC00326F6E /* SQLiteManager.swift in Sources */,
 				581640671E10F4F7003B531B /* SquareViewController.swift in Sources */,
+				58FB600B1E289038002029D0 /* SettingViewController.swift in Sources */,
 				586BBF091DF7E493001BA334 /* HomeTableViewController.swift in Sources */,
 				581640BC1E14EFE0003B531B /* CartoonTableView.swift in Sources */,
 				586BBED31DF7B159001BA334 /* UIColor+cor.m in Sources */,

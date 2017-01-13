@@ -14,11 +14,13 @@ class MMUtils: NSObject {
         if (self.getObjectForKey(key: "Cookies") == nil) {
             return false
         }
+   
         let cookies = NSKeyedUnarchiver.unarchiveObject(with: self.getObjectForKey(key: "Cookies") as! Data) as! [HTTPCookie]
         for cookie in cookies {
-            if cookie.name == "uid" {
-                if NSString.init(string: cookie.value).intValue > 0 {
-                    return true
+            if cookie.name == "JSESSIONID"  {
+                
+                if cookie.value == ( MMUtils.getObjectForKey(key: "JSESSIONID") as! String ){
+                   return true
                 }
             }
         }
@@ -64,7 +66,12 @@ class MMUtils: NSObject {
     }
      // MARK: - cookies
     class func saveCookies() {
+       
         let cookiesData = NSKeyedArchiver.archivedData(withRootObject: HTTPCookieStorage.shared.cookies as Any)
+        for cookie in HTTPCookieStorage.shared.cookies! {
+            self.setObject(data: cookie.value, key: cookie.name)
+            print(cookie.value)
+        }
         self.setObject(data: cookiesData, key: "Cookies")
     }
     class func loadCookies() {
@@ -73,5 +80,12 @@ class MMUtils: NSObject {
             HTTPCookieStorage.shared.setCookie(cookie)
         }
        
+    }
+    class func deleteCookies() {
+        let cookies = NSKeyedUnarchiver.unarchiveObject(with: self.getObjectForKey(key: "Cookies") as! Data) as! [HTTPCookie]
+        for cookie in cookies {
+             HTTPCookieStorage.shared.deleteCookie(cookie)
+        }
+        
     }
 }

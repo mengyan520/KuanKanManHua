@@ -254,6 +254,7 @@ open class SessionManager {
 
         do {
             originalRequest = try urlRequest.asURLRequest()
+           
             let originalTask = DataRequest.Requestable(urlRequest: originalRequest!)
 
             let task = try originalTask.task(session: session, adapter: adapter, queue: queue)

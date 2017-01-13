@@ -22,53 +22,50 @@ class HomeViewController: BaseViewController {
         topView.items = ["关注","热门"];
         topView.selectedSegmentIndex = 1
         view.addSubview(backscrollView)
-        for i in 0..<2 {
-            let view = UIView.init(frame: CGRect.init(x: SCREEN_WIDTH * CGFloat(i), y: 0, width: SCREEN_WIDTH, height:SCREEN_HEIGHT-64-49))
-            backscrollView.addSubview(view)
-            
-            view.addSubview(yellowView)
-            if i == 1 {
-                view.addSubview(Titlescrollview)
-                Titlescrollview.addSubview(yellowView)
-                let bottomView = UIView.init(frame: CGRect.init(x: 0, y:39, width: SCREEN_WIDTH, height: 1))
-                view.addSubview(bottomView)
-                bottomView.backgroundColor = RGB(r: 245, g: 245, b: 245, a: 1.0)
-                view.addSubview(scrollView)
-                for i in 0..<7 {
-                    let vc = HomeTableViewController()
-                    addChildViewController(vc)
-                    
-                    vc.time = times[i]
-                    if i == 6 {
-                        let btn = (Titlescrollview.subviews[NSInteger(i)] as! UIButton)
-                        
-                        let vcW = scrollView.frame.size.width
-                        let vcH = scrollView.frame.size.height
-                        
-                        vc.view.frame =  CGRect.init(x: 6 * scrollView.frame.size.width , y: 0, width: vcW, height: vcH)
-                        
-                        scrollView.addSubview(vc.view)
-                        scrollView.setContentOffset(CGPoint.init(x: 6 * scrollView.frame.size.width, y: 0), animated: false)
-                        
-                        btn.isSelected = true
-                        currentBtn = btn
-                        yellowView.frame = CGRect.init(x: btn.x+5, y: 37, width: 50, height: 2)
-                        Titlescrollview.setContentOffset(CGPoint.init(x: 45 , y: 0), animated: false)
-                        
-                    }
-                    
-                }
-                backscrollView.setContentOffset(CGPoint.init(x: SCREEN_WIDTH, y: 0), animated: false)
-            }else {
-                let vc = HomeTableViewController()
-                addChildViewController(vc)
-                vc.view.frame = view.bounds
-                view.addSubview(vc.view)
+        // for i in 0..<2 {
+        
+        //  if i == 1 {
+         let vc = HomeTableViewController()
+        addChildViewController(vc)
+         vc.isLeft = true
+        vc.view.frame = CGRect.init(x: 0, y: 0, width: SCREEN_WIDTH, height:SCREEN_HEIGHT-64-49)
+        backscrollView.addSubview(vc.view)
+        let rightView = UIView.init(frame: CGRect.init(x: SCREEN_WIDTH * 1, y: 0, width: SCREEN_WIDTH, height:SCREEN_HEIGHT-64-49))
+        backscrollView.addSubview(rightView)
+        
+        rightView.addSubview(yellowView)
+        rightView.addSubview(Titlescrollview)
+        Titlescrollview.addSubview(yellowView)
+        let bottomView = UIView.init(frame: CGRect.init(x: 0, y:39, width: SCREEN_WIDTH, height: 1))
+        rightView.addSubview(bottomView)
+        bottomView.backgroundColor = RGB(r: 245, g: 245, b: 245, a: 1.0)
+        rightView.addSubview(scrollView)
+        for i in 0..<7 {
+            let vc = HomeTableViewController()
+            addChildViewController(vc)
+                        vc.time = times[i]
+            if i == 6 {
+                let btn = (Titlescrollview.subviews[NSInteger(i)] as! UIButton)
+                
+                let vcW = scrollView.frame.size.width
+                let vcH = scrollView.frame.size.height
+                
+                vc.view.frame =  CGRect.init(x: 6 * SCREEN_WIDTH , y: 0, width: vcW, height: vcH)
+                
+                scrollView.addSubview(vc.view)
+                scrollView.setContentOffset(CGPoint.init(x: 6 * SCREEN_WIDTH, y: 0), animated: false)
+                
+                btn.isSelected = true
+                currentBtn = btn
+                yellowView.frame = CGRect.init(x: btn.x+5, y: 37, width: 50, height: 2)
+                Titlescrollview.setContentOffset(CGPoint.init(x: 45 , y: 0), animated: false)
+                
             }
+            
         }
+        backscrollView.setContentOffset(CGPoint.init(x: SCREEN_WIDTH, y: 0), animated: false)
         
-        
-        
+               
     }
     
     override func didReceiveMemoryWarning() {
@@ -137,16 +134,7 @@ extension HomeViewController:UIScrollViewDelegate,NavTopDel{
         backscrollView.setContentOffset(CGPoint.init(x: SCREEN_WIDTH * CGFloat(sender.selectedSegmentIndex), y: 0), animated: true)
         
     }
-    //    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-    //
-    //        let  offsetX = (Titlescrollview.contentSize.width-55)/(SCREEN_WIDTH*6.00)
-    //        if scrollView.contentOffset.x * offsetX <= 5 {
-    //            yellowView.x = 5
-    //            return
-    //        }
-    //        //
-    //        yellowView.x = (change?[NSKeyValueChangeKey.newKey] as! CGPoint).x * offsetX
-    //    }
+    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView == self.scrollView {
             let  offsetX = (Titlescrollview.contentSize.width-55)/(SCREEN_WIDTH*6.00)
@@ -188,7 +176,7 @@ extension HomeViewController:UIScrollViewDelegate,NavTopDel{
     
     func addChildView(index:CGFloat)  {
         
-        let vc = self.childViewControllers[NSInteger(index)]
+        let vc = self.childViewControllers[NSInteger(index + 1)]
         
         if (vc.view.superview != nil) {
             return

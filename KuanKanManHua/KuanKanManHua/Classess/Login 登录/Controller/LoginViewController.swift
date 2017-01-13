@@ -4,11 +4,13 @@
 //
 //  Created by Youcai on 16/12/27.
 //  Copyright © 2016年 mm. All rights reserved.
-//
-
+//https://api.kkmh.com/v1/phone/signin
+//https://api.kkmh.com/v1/users/me?user_id=4693850
+//https://api.kkmh.com/v1/device/push_info
 import UIKit
+import SVProgressHUD
 
-class LoginViewController: BaseViewController {
+class LoginViewController: BaseViewController,BackViewDel {
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,20 +41,90 @@ class LoginViewController: BaseViewController {
     fileprivate lazy var backView:BackView = {
         let view = BackView.init(frame: CGRect.init(x: 0, y: 64, width: SCREEN_WIDTH, height: SCREEN_HEIGHT-64))
         view.backgroundColor = RGB(r: 255, g: 209, b: 10, a: 1.0)
+        view.del = self
         return view
     }()
+    // MARK: - 登录请求
+    func login()  {
+        
+        if NSString.init(string: backView.codeTextField.text!).length < 8 {
+            
+            SVProgressHUD.showError(withStatus: "密码长度至少8位")
+            return
+        }
+       
+        let parameters = [
+            "password":  backView.codeTextField.text!,
+            "phone": backView.phoneTextField.text!
+        ]
+        NetworkTools.shardTools.requestL(method: .post, URLString: "https://api.kkmh.com/v1/phone/signin", parameters: parameters) { (response, error) in
+         //   print(response)
+            if error == nil {
+                guard let object = response as? [String: AnyObject] else {
+                    print("格式错误")
+                    return
+                }
+                
+                let model = Model.init(dict: object)
+                if model.code != 200 {
+                
+                SVProgressHUD.showError(withStatus: model.message)
+                return
+                }
+                MMUtils.setObject(data: model.data?.avatar_url, key: "avatar_url")
+                MMUtils.setObject(data: model.data?.nickname, key: "nickname")
+                
+                POSTNOTIFICATION(name: "UserLogin", data: nil)
+                SVProgressHUD.showSuccess(withStatus: "登录成功")
+                
+                let delay = DispatchTime.now() + DispatchTimeInterval.seconds(1)
+                DispatchQueue.main.asyncAfter(deadline: delay) {
+                    
+                    self.clickLeftButton(sender: nil)
+                }
+            }
+            
+            
+        }
+        
+    }
+    // MARK: - 代理
+    func didClickBtn(sender: UIButton) {
+        switch sender.tag {
+        case 1:
+            if NSString.init(string: backView.phoneTextField.text!).length > 0 &&  NSString.init(string: backView.codeTextField.text!).length > 0 {
+                
+                login()
+            }
+            break
+        default: break
+            
+        }
+    }
     // MARK: - 事件
-    func clickLeftButton(sender:UIBarButtonItem) {
+    func clickLeftButton(sender:UIBarButtonItem?) {
         dismiss(animated: true, completion: nil)
     }
     func clickRightButton(sender:UIBarButtonItem) {
         
     }
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        backView.phoneBtn.isSelected = false
+        backView.codeBtn.isSelected = false
         view.endEditing(false)
     }
 }
-fileprivate class BackView:UIView {
+protocol BackViewDel:NSObjectProtocol {
+    
+    func didClickBtn(sender:UIButton)
+    
+}
+
+fileprivate class BackView:UIView,UITextFieldDelegate {
+    var phone = false
+    var code = false
+    weak var del:BackViewDel?
     override init(frame: CGRect) {
         super.init(frame: frame)
         setUI()
@@ -62,8 +134,9 @@ fileprivate class BackView:UIView {
         addSubview(iconView)
         addSubview(editView)
         editView.addSubview(centerLine)
-        editView.addSubview(phoneView)
-        editView.addSubview(codeView)
+        editView.addSubview(phoneBtn)
+        editView.addSubview(codeBtn)
+        
         editView.addSubview(phoneTextField)
         editView.addSubview(codeTextField)
         addSubview(loginBtn)
@@ -88,26 +161,26 @@ fileprivate class BackView:UIView {
             make.height.equalTo(1)
             make.width.equalTo(editView.snp.width)
         }
-        phoneView.snp.makeConstraints { (make) in
+        phoneBtn.snp.makeConstraints { (make) in
             make.top.equalTo(editView.snp.top).offset(10)
             make.left.equalTo(editView.snp.left).offset(20)
         }
-        codeView.snp.makeConstraints { (make) in
+        codeBtn.snp.makeConstraints { (make) in
             make.top.equalTo(centerLine.snp.bottom).offset(10)
             make.left.equalTo(editView.snp.left).offset(20)
         }
         phoneTextField.snp.makeConstraints { (make) in
             
-            make.top.equalTo(phoneView.snp.top)
+            make.top.equalTo(phoneBtn.snp.top)
             make.left.equalTo(editView.snp.left).offset(46)
             make.right.equalTo(editView.snp.right).offset(-10)
-            make.height.equalTo(phoneView.snp.height)
+            make.height.equalTo(phoneBtn.snp.height)
         }
         codeTextField.snp.makeConstraints { (make) in
-            make.top.equalTo(codeView.snp.top)
-            make.left.equalTo(codeView.snp.right).offset(5)
+            make.top.equalTo(codeBtn.snp.top)
+            make.left.equalTo(codeBtn.snp.right).offset(5)
             make.right.equalTo(editView.snp.right).offset(-10)
-            make.height.equalTo(codeView.snp.height)
+            make.height.equalTo(codeBtn.snp.height)
         }
         loginBtn.snp.makeConstraints { (make) in
             make.top.equalTo(editView.snp.bottom).offset(10)
@@ -125,10 +198,10 @@ fileprivate class BackView:UIView {
             make.top.equalTo(registerBtn.snp.bottom).offset(30)
             make.left.right.equalTo(editView)
             
-           make.height.equalTo(1)
+            make.height.equalTo(1)
         }
         centerlbl.snp.makeConstraints { (make) in
-             make.centerX.centerY.equalTo(bottomLine)
+            make.centerX.centerY.equalTo(bottomLine)
         }
         qqBtn.snp.makeConstraints { (make) in
             make.top.equalTo(centerlbl.snp.bottom).offset(20)
@@ -142,7 +215,25 @@ fileprivate class BackView:UIView {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+    func btnClick(sender:UIButton)  {
+        del?.didClickBtn(sender: sender)
+    }
+    fileprivate func textFieldDidBeginEditing(_ textField: UITextField) {
+        if textField == phoneTextField {
+            codeBtn.isSelected = false
+            phoneBtn.isSelected = true
+            iconView.image = UIImage.init(named: "ic_login_visible")
+            
+        }else {
+            codeBtn.isSelected = true
+            phoneBtn.isSelected = false
+            iconView.image = UIImage.init(named: "ic_login_invisible")
+            
+        }
+    }
+    func textFieldDidChange(textField:UITextField)   {
+        
+    }
     fileprivate lazy var iconView:UIImageView = {
         let view = UIImageView()
         view.image = UIImage.init(named: "ic_login_visible")
@@ -160,35 +251,42 @@ fileprivate class BackView:UIView {
         
         return view
     }()
-    fileprivate lazy var phoneView:UIImageView = {
-        let view = UIImageView()
-        view.image = UIImage.init(named: "ic_login_user_normal")
+    fileprivate lazy var phoneBtn:UIButton = {
+        let btn = UIButton.init(imageName: "ic_login_user_normal", backImageName: nil, SelectedImageName: "ic_login_user_highlighted", target: nil, actionName: nil)
         
-        return view
-    }()
-    fileprivate lazy var codeView:UIImageView = {
-        let view = UIImageView()
-        view.image = UIImage.init(named: "ic_login_password_normal")
         
-        return view
+        return btn
     }()
-    fileprivate lazy var phoneTextField:UITextField = {
+    fileprivate lazy var codeBtn:UIButton = {
+        let btn = UIButton.init(imageName: "ic_login_password_normal", backImageName: nil, SelectedImageName: "ic_login_password_highlighted", target: nil, actionName: nil)
+        
+        
+        return btn
+    }()
+    
+    lazy var phoneTextField:UITextField = {
         let view = UITextField()
         view.keyboardType = .phonePad
         view.placeholder = "您的手机号"
         view.font = Font(fontSize: 15)
-        
+        view.addTarget(self, action: #selector(self.textFieldDidChange(textField:)), for: UIControlEvents.editingChanged)
+        view.delegate = self
         return view
     }()
-    fileprivate lazy var codeTextField:UITextField = {
+    lazy var codeTextField:UITextField = {
         let view = UITextField()
         view.placeholder = "请输入密码"
         view.font = Font(fontSize: 15)
+        view.keyboardType = .default
+        view.isSecureTextEntry = true
+        view.delegate = self
+        view.addTarget(self, action: #selector(self.textFieldDidChange(textField:)), for: UIControlEvents.editingChanged)
         return view
     }()
     fileprivate lazy var loginBtn:UIButton = {
-        let btn = UIButton.init(title: "登录", color: WHITE_COLOR, fontSize: 15, target: self, actionName: nil)
+        let btn = UIButton.init(title: "登录", color: WHITE_COLOR, fontSize: 15, target: self, actionName: #selector(self.btnClick(sender:)))
         btn.setBackgroundImage(UIImage(named: "ic_login_submit_bg_normal"), for: .normal)
+        btn.tag = 1
         
         return btn
     }()

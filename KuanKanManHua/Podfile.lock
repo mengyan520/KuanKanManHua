@@ -1,5 +1,6 @@
 PODS:
   - Alamofire (4.2.0)
+  - JGProgressHUD (1.4)
   - MJPhotoBrowser (1.0.2):
     - SDWebImage
     - SVProgressHUD
@@ -14,6 +15,7 @@ PODS:
 
 DEPENDENCIES:
   - Alamofire
+  - JGProgressHUD
   - MJPhotoBrowser
   - MJRefresh
   - SDWebImage
@@ -21,6 +23,7 @@ DEPENDENCIES:
 
 SPEC CHECKSUMS:
   Alamofire: aa2e09d871c9160ac53c90e83c68064a94e3dfbe
+  JGProgressHUD: 1617b0940cf80bb53e8f7d6f0fd69252ea45d6d4
   MJPhotoBrowser: b98b04d0e3b6a999feb44df68adec413af446809
   MJRefresh: b96cdb21c4aa75a7b07654311ab2f315c497e806
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
@@ -28,6 +31,6 @@ SPEC CHECKSUMS:
   SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
   YLGIFImage: c0ae132fe80e5282b2762a97d14e23ba71a748ae
 
-PODFILE CHECKSUM: 04eec0618141652622938c0cf724aa850d92d563
+PODFILE CHECKSUM: ac4b04f76c2a49cb5a0e67e833261e1793223738
 
 COCOAPODS: 1.2.0.beta.1

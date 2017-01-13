@@ -4,7 +4,7 @@
 //
 //  Created by Youcai on 16/12/27.
 //  Copyright © 2016年 mm. All rights reserved.
-//
+//https://api.kkmh.com/v1/daily/comic_lists/0?gender=1&since=0
 
 import UIKit
 private let ID = "cell"
@@ -29,6 +29,7 @@ class MeTableViewController: UITableViewController {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: ID)
         titleArray = [["我的消息"],["我的关注","我的收藏"],["快看商城","我的订单"],["浏览历史","智能缓存"],["设置"]];
         imageArray = [["ic_me_item_message"],["ic_me_item_collection_topic","ic_me_item_collection_comic"],["ic_me_item_mall","ic_me_item_order"],["ic_me_item_history","ic_me_item_download_comic"],["ic_me_item_setting"]];
+        NotificationCenter.default.addObserver(self, selector: #selector(self.reloadUser), name: NSNotification.Name.init(rawValue: "UserLogin"), object: nil)
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -76,7 +77,13 @@ class MeTableViewController: UITableViewController {
                 navigationController?.pushViewController(controller, animated: true)
                 return
             }
-            
+            if indexPath.section > 3 {
+                let controller = SettingViewController()
+                
+                controller.hidesBottomBarWhenPushed = true
+                navigationController?.pushViewController(controller, animated: true)
+                return
+            }
         }
         if MMUtils.userHasLogin() {
             
@@ -96,6 +103,9 @@ class MeTableViewController: UITableViewController {
     // MARK: - 方法
     func tapIconView()  {
         POSTNOTIFICATION(name: "login", data: nil)
+    }
+    func reloadUser() {
+        self.headerView.reloadUser()
     }
     // MARK: - 懒加载
     private lazy var headerView:HeaderView = {
@@ -137,6 +147,20 @@ fileprivate class HeaderView: UIView {
         loginlbl.snp.makeConstraints { (make) in
             make.top.equalTo(iconView.snp.bottom).offset(10)
             make.centerX.equalTo(iconView.snp.centerX)
+        }
+        reloadUser()
+    }
+    func reloadUser()  {
+        if MMUtils.userHasLogin() {
+            
+            iconView.sd_setImage(with: URL.init(string: MMUtils.getObjectForKey(key: "avatar_url") as! String), placeholderImage: UIImage.init(named: "ic_login_visible"), options: [.retryFailed,.refreshCached]) { (image, error, type, url) in
+                
+                
+            }
+            loginlbl.text = MMUtils.getObjectForKey(key: "nickname") as! String?
+        }else {
+            iconView.image = UIImage.init(named: "ic_personal_avatar")
+            loginlbl.text = "登录"
         }
     }
     // 懒加载

@@ -4,14 +4,15 @@
 //
 //  Created by 马鸣 on 2016/12/4.
 //  Copyright © 2016年 马鸣. All rights reserved.
-
-
+//https://api.kkmh.com/v1/daily/comic_lists/0?gender=1&sa_event=eyJldmVudCI6IlJlYWRIb21lUGFnZSIsInByb3BlcnRpZXMiOnsiVHJpZ2dlclBhZ2UiOiJIb21lUGFnZSIsIiRvc192ZXJzaW9uIjoiMTAuMiIsIkZyb21Ib21lcGFnZVVwZGF0ZURhdGUiOjAsIiRjYXJyaWVyIjoi5Lit5Zu956e75YqoIiwiJG9zIjoiaU9TIiwiJHNjcmVlbl9oZWlnaHQiOjEzMzQsIiRsaWIiOiJpT1MtbmV0IiwiJG1vZGVsIjoiaVBob25lIiwiJHNjcmVlbl93aWR0aCI6NzUwLCIkd2lmaSI6dHJ1ZSwiR2VuZGVyVHlwZSI6IueUt-eJiCIsIiRhcHBfdmVyc2lvbiI6IjMuNi4zIiwiJG1hbnVmYWN0dXJlciI6IkFwcGxlIiwiJG5ldHdvcmtfdHlwZSI6IldJRkkiLCJhYnRlc3RfZ3JvdXAiOjcwLCJIb21lcGFnZVRhYk5hbWUiOiLng63pl6giLCJIb21lcGFnZVVwZGF0ZURhdGUiOjB9LCJwcm9qZWN0Ijoia3VhaWthbl9hcHAiLCJkaXN0aW5jdF9pZCI6Imk6M0Y0NDlEQjYtNTNGNS00OTNDLTlERTUtN0U3MUNGRDkzNkQ4IiwidGltZSI6MTQ4NDIwNDMyNjE5OCwidHlwZSI6InRyYWNrIn0%3D&since=0
+//https://api.kkmh.com/v1/fav/timeline?sa_event=eyJldmVudCI6IlJlYWRIb21lUGFnZSIsInByb3BlcnRpZXMiOnsiVHJpZ2dlclBhZ2UiOiJIb21lUGFnZSIsIiRvc192ZXJzaW9uIjoiMTAuMiIsIkZyb21Ib21lcGFnZVVwZGF0ZURhdGUiOjAsIiRjYXJyaWVyIjoi5Lit5Zu956e75YqoIiwiJG9zIjoiaU9TIiwiJHNjcmVlbl9oZWlnaHQiOjEzMzQsIiRsaWIiOiJpT1MtbmV0IiwiJG1vZGVsIjoiaVBob25lIiwiJHNjcmVlbl93aWR0aCI6NzUwLCIkd2lmaSI6dHJ1ZSwiR2VuZGVyVHlwZSI6IueUt-eJiCIsIiRhcHBfdmVyc2lvbiI6IjMuNi4zIiwiJG1hbnVmYWN0dXJlciI6IkFwcGxlIiwiJG5ldHdvcmtfdHlwZSI6IldJRkkiLCJhYnRlc3RfZ3JvdXAiOjcwLCJIb21lcGFnZVRhYk5hbWUiOiLlhbPms6gifSwicHJvamVjdCI6Imt1YWlrYW5fYXBwIiwiZGlzdGluY3RfaWQiOiI0NjkzODUwIiwidGltZSI6MTQ4NDI4OTQzOTIzNywidHlwZSI6InRyYWNrIn0%3D&since=0 关注
 import UIKit
 import MJRefresh
 import Alamofire
 let cellID = "Homecell"
 class HomeTableViewController: UITableViewController,HomeTableViewCellDel {
     var time:String = "0"
+    var isLeft = false
     private var dataArray:[Comics] = [Comics].init()
     
     override func viewDidLoad() {
@@ -24,6 +25,9 @@ class HomeTableViewController: UITableViewController,HomeTableViewCellDel {
         tableView.estimatedRowHeight = 200
         loadData()
         tableView.backgroundColor = WHITE_COLOR
+        if isLeft {
+            NotificationCenter.default.addObserver(self, selector: #selector(self.reloadUser), name: NSNotification.Name.init(rawValue: "UserLogin"), object: nil)
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -88,8 +92,12 @@ class HomeTableViewController: UITableViewController,HomeTableViewCellDel {
     }
     //MARK: - 网络请求
     func loadData()  {
-        
-        NetworkTools.shardTools.requestL(method: .get, URLString: "https://api.kkmh.com/v1/daily/comic_lists/\(time)", parameters: nil) { (response, error) in
+        var url = "https://api.kkmh.com/v1/daily/comic_lists/\(time)?gender=1&sa_event=eyJldmVudCI6IlJlYWRIb21lUGFnZSIsInByb3BlcnRpZXMiOnsiVHJpZ2dlclBhZ2UiOiJIb21lUGFnZSIsIiRvc192ZXJzaW9uIjoiMTAuMiIsIkZyb21Ib21lcGFnZVVwZGF0ZURhdGUiOjAsIiRjYXJyaWVyIjoi5Lit5Zu956e75YqoIiwiJG9zIjoiaU9TIiwiJHNjcmVlbl9oZWlnaHQiOjEzMzQsIiRsaWIiOiJpT1MtbmV0IiwiJG1vZGVsIjoiaVBob25lIiwiJHNjcmVlbl93aWR0aCI6NzUwLCIkd2lmaSI6dHJ1ZSwiR2VuZGVyVHlwZSI6IueUt-eJiCIsIiRhcHBfdmVyc2lvbiI6IjMuNi4zIiwiJG1hbnVmYWN0dXJlciI6IkFwcGxlIiwiJG5ldHdvcmtfdHlwZSI6IldJRkkiLCJhYnRlc3RfZ3JvdXAiOjcwLCJIb21lcGFnZVRhYk5hbWUiOiLng63pl6giLCJIb21lcGFnZVVwZGF0ZURhdGUiOjB9LCJwcm9qZWN0Ijoia3VhaWthbl9hcHAiLCJkaXN0aW5jdF9pZCI6Imk6M0Y0NDlEQjYtNTNGNS00OTNDLTlERTUtN0U3MUNGRDkzNkQ4IiwidGltZSI6MTQ4NDIwNDMyNjE5OCwidHlwZSI6InRyYWNrIn0%3D&since=0"
+        if isLeft {
+            url = "https://api.kkmh.com/v1/fav/timeline?sa_event=eyJldmVudCI6IlJlYWRIb21lUGFnZSIsInByb3BlcnRpZXMiOnsiVHJpZ2dlclBhZ2UiOiJIb21lUGFnZSIsIiRvc192ZXJzaW9uIjoiMTAuMiIsIkZyb21Ib21lcGFnZVVwZGF0ZURhdGUiOjAsIiRjYXJyaWVyIjoi5Lit5Zu956e75YqoIiwiJG9zIjoiaU9TIiwiJHNjcmVlbl9oZWlnaHQiOjEzMzQsIiRsaWIiOiJpT1MtbmV0IiwiJG1vZGVsIjoiaVBob25lIiwiJHNjcmVlbl93aWR0aCI6NzUwLCIkd2lmaSI6dHJ1ZSwiR2VuZGVyVHlwZSI6IueUt-eJiCIsIiRhcHBfdmVyc2lvbiI6IjMuNi4zIiwiJG1hbnVmYWN0dXJlciI6IkFwcGxlIiwiJG5ldHdvcmtfdHlwZSI6IldJRkkiLCJhYnRlc3RfZ3JvdXAiOjcwLCJIb21lcGFnZVRhYk5hbWUiOiLlhbPms6gifSwicHJvamVjdCI6Imt1YWlrYW5fYXBwIiwiZGlzdGluY3RfaWQiOiI0NjkzODUwIiwidGltZSI6MTQ4NDI4OTQzOTIzNywidHlwZSI6InRyYWNrIn0%3D&since=0"
+        }
+      
+        NetworkTools.shardTools.requestL(method: .get, URLString:url , parameters: nil) { (response, error) in
             self.tableView?.mj_header.endRefreshing()
             if error == nil {
                 guard let object = response as? [String: AnyObject] else {
@@ -101,5 +109,9 @@ class HomeTableViewController: UITableViewController,HomeTableViewCellDel {
                 self.tableView.reloadData()
             }
         }
+    }
+    func reloadUser() {
+        dataArray.removeAll()
+        tableView.reloadData()
     }
 }

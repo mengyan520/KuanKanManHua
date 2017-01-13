@@ -46,6 +46,21 @@ class Model: NSObject {
     }
 }
 class ModelData: NSObject {
+    //登录
+    
+    var alter_nickname: Int = 0
+    var avatar_url: String?
+    var youzan_user_id: String?
+    var follower_cnt: Int = 0
+  
+    var reply_remind_flag: Int = 0
+    var update_remind_flag: Int = 0
+    var reg_type: String?
+    var raw_nickname: String?
+    var nickname: String?
+    var grade: Int = 0
+    var msg_nickname: String?
+    var u_intro: String?
     //历史
     var info:     [Info]?
     //漫画详情
