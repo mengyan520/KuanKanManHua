@@ -23,10 +23,17 @@ class HomeTableViewController: UITableViewController,HomeTableViewCellDel {
         tableView.register(HomeTableViewCell.self, forCellReuseIdentifier: cellID)
         tableView.separatorStyle = .none
         tableView.estimatedRowHeight = 200
-        loadData()
+        
         tableView.backgroundColor = WHITE_COLOR
         if isLeft {
+            if MMUtils.userHasLogin() {
+                loadData() 
+            }else {
+             tableView.insertSubview(backLoginView, at: 0)
+            }
             NotificationCenter.default.addObserver(self, selector: #selector(self.reloadUser), name: NSNotification.Name.init(rawValue: "UserLogin"), object: nil)
+        }else {
+          loadData()
         }
     }
     
@@ -34,7 +41,11 @@ class HomeTableViewController: UITableViewController,HomeTableViewCellDel {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+    fileprivate lazy var backLoginView:BackLoginView = {
+        let view = BackLoginView.init(frame: CGRect.init(x: 0, y:0, width: SCREEN_WIDTH, height: SCREEN_HEIGHT-49-64))
+        view.imgString = "empty_comic_text"
+        return view
+    }()
     // MARK: - Table view data source
     
     
@@ -99,19 +110,29 @@ class HomeTableViewController: UITableViewController,HomeTableViewCellDel {
       
         NetworkTools.shardTools.requestL(method: .get, URLString:url , parameters: nil) { (response, error) in
             self.tableView?.mj_header.endRefreshing()
+           
             if error == nil {
                 guard let object = response as? [String: AnyObject] else {
                     print("格式错误")
                     return
                 }
                 let model = Model.init(dict: object)
-                self.dataArray = model.data!.comics!
-                self.tableView.reloadData()
+                if model.code == 200 {
+                    self.dataArray = model.data!.comics!
+                    self.tableView.reloadData()
+                }
+                
             }
         }
     }
     func reloadUser() {
-        dataArray.removeAll()
-        tableView.reloadData()
+        if dataArray.count == 0 {
+            backLoginView.removeFromSuperview()
+            loadData()
+        }else {
+            dataArray.removeAll()
+            tableView.reloadData()
+         tableView.insertSubview(backLoginView, at: 0)
+        }
     }
 }

@@ -38,6 +38,11 @@ class CommunityTableViewCell: UITableViewCell {
                 // 直接设置宽度数值
                 make.width.equalTo(pictureView.bounds.width)
             }
+            if (data?.following)! {
+                followBtn.isHidden = true
+            }else {
+              followBtn.isHidden = false
+            }
             
         }
         
@@ -139,12 +144,18 @@ class CommunityTableViewCell: UITableViewCell {
     // MARK: - 点击事件
     
     func  btnClick(sender:UIButton)  {
-        if sender.tag == 1 {
-             POSTNOTIFICATION(name: "login", data: nil)
-        } else {
-            
-            POSTNOTIFICATION(name: "comment", data: ["data":data!])
-        }
+        POSTNOTIFICATION(name: "Community", data: ["data":data!,"sender":sender])
+//        if sender.tag == 1 {
+//            if MMUtils.userHasLogin() {
+//                POSTNOTIFICATION(name: "login", data: nil)
+//            } else {
+//                
+//            }
+//            
+//        } else {
+//            
+//            POSTNOTIFICATION(name: "comment", data: ["data":data!])
+//        }
     }
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -159,20 +170,20 @@ class CommunityTableViewCell: UITableViewCell {
     // MARK: - 懒加载
     //头像
     private lazy var iconView:UIImageView = {
-        let view = UIImageView.init()
+        let view = UIImageView()
         view.layer.cornerRadius = 20
         view.clipsToBounds = true
         return view
     }()
     //标识
     private lazy var idView:UIImageView = {
-        let view = UIImageView.init()
+        let view = UIImageView()
         view.image = UIImage.init(named: "ic_details_top_auther_headportrait_v")
         return view
     }()
     //关注
     private lazy var followBtn:UIButton = {
-        let btn = UIButton.init(imageName: "ic_feed_cell_follow_normal", backImageName: nil, SelectedImageName: nil, target: self, actionName: #selector(btnClick(sender:)))
+        let btn = UIButton.init(imageName: "ic_feed_cell_follow_normal", backImageName: nil, highlightedImageName: nil, target: self, actionName: #selector(btnClick(sender:)))
         
         
         
@@ -225,7 +236,7 @@ class CommunityTableViewCell: UITableViewCell {
     }()
     //分割线
     private lazy var grayView:UIView = {
-        let view = UIView.init()
+        let view = UIView()
         view.backgroundColor = WHcolor
         return view
     }()

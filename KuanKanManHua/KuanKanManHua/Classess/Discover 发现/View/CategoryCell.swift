@@ -135,7 +135,7 @@ class CategoryCell: UITableViewCell {
         return lbl
     }()
     private lazy var followBtn:UIButton = {
-        let btn = UIButton.init(imageName: "ic_feed_cell_follow_normal", backImageName: nil, SelectedImageName: nil, target: self, actionName: #selector(self.btnClick(sender:)))
+        let btn = UIButton.init(imageName: "ic_feed_cell_follow_normal", backImageName: nil, highlightedImageName: nil, target: self, actionName: #selector(self.btnClick(sender:)))
         
         
         return btn

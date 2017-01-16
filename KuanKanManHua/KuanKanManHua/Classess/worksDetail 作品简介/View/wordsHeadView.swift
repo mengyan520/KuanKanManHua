@@ -195,7 +195,7 @@ class wordsHeadView: UIView {
     }()
     //返回
     lazy var backBtn:UIButton = {
-        let btn = UIButton.init(imageName: "ic_album_nav_back_normal", backImageName: nil, SelectedImageName: "ic_album_nav_back_normal", target: self, actionName: #selector(self.btnClick(sender:)))
+        let btn = UIButton.init(imageName: "ic_album_nav_back_normal", backImageName: nil, highlightedImageName: "ic_album_nav_back_normal", target: self, actionName: #selector(self.btnClick(sender:)))
         // btn.backgroundColor = BLACK_COLOR.withAlphaComponent(0)
         
         btn.tag = 1
@@ -203,7 +203,7 @@ class wordsHeadView: UIView {
     }()
     //关注
     private lazy var followBtn:UIButton = {
-        let btn = UIButton.init(imageName: "ic_album_cover_follow", backImageName: nil, SelectedImageName: "ic_album_cover_follow_highlighted", target: self, actionName: #selector(btnClick(sender:)))
+        let btn = UIButton.init(imageName: "ic_album_cover_follow", backImageName: nil,highlightedImageName: "ic_album_cover_follow_highlighted", target: self, actionName: #selector(btnClick(sender:)))
         
         
         

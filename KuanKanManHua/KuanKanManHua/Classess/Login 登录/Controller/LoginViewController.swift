@@ -58,7 +58,7 @@ class LoginViewController: BaseViewController,BackViewDel {
             "phone": backView.phoneTextField.text!
         ]
         NetworkTools.shardTools.requestL(method: .post, URLString: "https://api.kkmh.com/v1/phone/signin", parameters: parameters) { (response, error) in
-         //   print(response)
+           // print(response)
             if error == nil {
                 guard let object = response as? [String: AnyObject] else {
                     print("格式错误")
@@ -73,7 +73,7 @@ class LoginViewController: BaseViewController,BackViewDel {
                 }
                 MMUtils.setObject(data: model.data?.avatar_url, key: "avatar_url")
                 MMUtils.setObject(data: model.data?.nickname, key: "nickname")
-                
+                MMUtils.setObject(data: model.data?.id, key: "uid")
                 POSTNOTIFICATION(name: "UserLogin", data: nil)
                 SVProgressHUD.showSuccess(withStatus: "登录成功")
                 
@@ -252,13 +252,13 @@ fileprivate class BackView:UIView,UITextFieldDelegate {
         return view
     }()
     fileprivate lazy var phoneBtn:UIButton = {
-        let btn = UIButton.init(imageName: "ic_login_user_normal", backImageName: nil, SelectedImageName: "ic_login_user_highlighted", target: nil, actionName: nil)
+        let btn = UIButton.init(imageName: "ic_login_user_normal", backImageName: nil, highlightedImageName: "ic_login_user_highlighted", target: nil, actionName: nil)
         
         
         return btn
     }()
     fileprivate lazy var codeBtn:UIButton = {
-        let btn = UIButton.init(imageName: "ic_login_password_normal", backImageName: nil, SelectedImageName: "ic_login_password_highlighted", target: nil, actionName: nil)
+        let btn = UIButton.init(imageName: "ic_login_password_normal", backImageName: nil, highlightedImageName: "ic_login_password_highlighted", target: nil, actionName: nil)
         
         
         return btn
@@ -309,13 +309,13 @@ fileprivate class BackView:UIView,UITextFieldDelegate {
         return lbl
     }()
     fileprivate lazy var qqBtn:UIButton = {
-        let btn = UIButton.init(imageName: "ic_login_QQ", backImageName: nil, SelectedImageName: "ic_login_QQ_pressed", target: self, actionName: nil)
+        let btn = UIButton.init(imageName: "ic_login_QQ", backImageName: nil, highlightedImageName: "ic_login_QQ_pressed", target: self, actionName: nil)
         
         
         return btn
     }()
     fileprivate lazy var weixinBtn:UIButton = {
-        let btn = UIButton.init(imageName: "ic_login_weixin", backImageName: nil, SelectedImageName: "ic_login_weixin_pressed", target: self, actionName: nil)
+        let btn = UIButton.init(imageName: "ic_login_weixin", backImageName: nil, highlightedImageName: "ic_login_weixin_pressed", target: self, actionName: nil)
         
         
         return btn

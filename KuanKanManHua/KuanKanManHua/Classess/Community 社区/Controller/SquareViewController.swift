@@ -7,7 +7,10 @@
 //https://api.kkmh.com/v1/feeds/feed_lists?catalog_type=2&page_num=1 热门
 //https://api.kkmh.com/v1/feeds/feed_lists?catalog_type=1&page_num=1 最新
 //https://api.kkmh.com/v1/feeds/feed_lists?catalog_type=1&page_num=3
+
+//https://api.kkmh.com/v1/feeds/update_following_author
 import MJRefresh
+import SVProgressHUD
 class SquareViewController: BaseViewController {
     var since = 0
     var page_num = 1
@@ -30,7 +33,8 @@ class SquareViewController: BaseViewController {
         
         scrollView.addSubview(Tableview)
         loadData()
-        NotificationCenter.default.addObserver(self, selector: #selector(self.comment(noti:)), name: NSNotification.Name(rawValue: "comment"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.Community(noti:)), name: NSNotification.Name(rawValue: "Community"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.reloadUser), name: NSNotification.Name.init(rawValue: "UserLogin"), object: nil)
     }
     
     override func didReceiveMemoryWarning() {
@@ -52,8 +56,10 @@ class SquareViewController: BaseViewController {
         if self.currentTableView?.tag != 100 {
             type = 1
         }
+        
         NetworkTools.shardTools.requestL(method: .get, URLString: "https://api.kkmh.com/v1/feeds/feed_lists?catalog_type=\(type)&page_num=1", parameters: nil) { (response, error) in
             self.currentTableView?.mj_header.endRefreshing()
+            // print(response)
             if error == nil {
                 guard let object = response as? [String: AnyObject] else {
                     print("格式错误")
@@ -88,6 +94,34 @@ class SquareViewController: BaseViewController {
                 
                 self.since = (model.data?.since)!
                 self.currentTableView?.reloadData()
+                
+            }
+        }
+        
+    }
+    func addfollow(author_id:String,sender:UIButton,data:Feeds)  {
+        /*
+         author_id=2967943&relation=1&sa_event=eyJldmVudCI6IkZhdkF1dGhvciIsInByb3BlcnRpZXMiOnsiRmVlZExpa2VOdW1iZXIiOjExODM2LCIkc2NyZWVuX3dpZHRoIjo3NTAsIiRhcHBfdmVyc2lvbiI6IjMuNy4wIiwiVHJpZ2dlck9yZGVyTnVtYmVyIjoxLCJUcmlnZ2VyUGFnZSI6IlZDb21tdW5pdHlQYWdlIiwiQXV0aG9yRmFuc051bWJlciI6MCwiJG1vZGVsIjoiaVBob25lIiwiJG5ldHdvcmtfdHlwZSI6IldJRkkiLCIkY2FycmllciI6IuS4reWbveenu-WKqCIsIkZlZWRDb21tZW50TnVtYmVyIjoxMzU5LCJWQ29tbXVuaXR5VGFiTmFtZSI6IueDremXqCIsIiR3aWZpIjp0cnVlLCJOaWNrTmFtZSI6IumHkeS4mCIsIiRzY3JlZW5faGVpZ2h0IjoxMzM0LCJBdXRob3JJRCI6Mjk2Nzk0MywiYWJ0ZXN0X2dyb3VwIjo3MCwiJG9zX3ZlcnNpb24iOiIxMC4yIiwiJGxpYiI6ImlPUy1uZXQiLCIkbWFudWZhY3R1cmVyIjoiQXBwbGUiLCIkb3MiOiJpT1MifSwicHJvamVjdCI6Imt1YWlrYW5fYXBwIiwiZGlzdGluY3RfaWQiOiI0NjkzODUwIiwidGltZSI6MTQ4NDU1MDI4NjAxMywidHlwZSI6InRyYWNrIn0%3D&uid=4693850
+         */
+        let parameters = ["author_id":author_id,"relation":"1","sa_event":"eyJldmVudCI6IkZhdkF1dGhvciIsInByb3BlcnRpZXMiOnsiRmVlZExpa2VOdW1iZXIiOjExODM2LCIkc2NyZWVuX3dpZHRoIjo3NTAsIiRhcHBfdmVyc2lvbiI6IjMuNy4wIiwiVHJpZ2dlck9yZGVyTnVtYmVyIjoxLCJUcmlnZ2VyUGFnZSI6IlZDb21tdW5pdHlQYWdlIiwiQXV0aG9yRmFuc051bWJlciI6MCwiJG1vZGVsIjoiaVBob25lIiwiJG5ldHdvcmtfdHlwZSI6IldJRkkiLCIkY2FycmllciI6IuS4reWbveenu-WKqCIsIkZlZWRDb21tZW50TnVtYmVyIjoxMzU5LCJWQ29tbXVuaXR5VGFiTmFtZSI6IueDremXqCIsIiR3aWZpIjp0cnVlLCJOaWNrTmFtZSI6IumHkeS4mCIsIiRzY3JlZW5faGVpZ2h0IjoxMzM0LCJBdXRob3JJRCI6Mjk2Nzk0MywiYWJ0ZXN0X2dyb3VwIjo3MCwiJG9zX3ZlcnNpb24iOiIxMC4yIiwiJGxpYiI6ImlPUy1uZXQiLCIkbWFudWZhY3R1cmVyIjoiQXBwbGUiLCIkb3MiOiJpT1MifSwicHJvamVjdCI6Imt1YWlrYW5fYXBwIiwiZGlzdGluY3RfaWQiOiI0NjkzODUwIiwidGltZSI6MTQ4NDU1MDI4NjAxMywidHlwZSI6InRyYWNrIn0%3D","uid":MMUtils.getObjectForKey(key: "uid") ?? ""] as [String : Any];
+        
+        NetworkTools.shardTools.requestL(method: .post, URLString: "https://api.kkmh.com/v1/feeds/update_following_author", parameters: parameters) { (response, error) in
+            // print(response)
+            if error == nil {
+                guard let object = response as? [String: AnyObject] else {
+                    print("格式错误")
+                    return
+                }
+                let model = Model.init(dict: object)
+                if model.code == 200 {
+                    SVProgressHUD.showSuccess(withStatus: "关注成功")
+                    data.following = true
+                    
+                    let cell = sender.superview?.superview as! CommunityTableViewCell
+                    let index = self.currentTableView?.indexPath(for: cell)
+                    self.currentTableView?.reloadRows(at: [index!], with: .none)
+                }
+                
                 
             }
         }
@@ -209,25 +243,42 @@ extension SquareViewController : UIScrollViewDelegate,CommunityTableViewDel {
     func didSelectRowAtIndex(data: Feeds) {
         let controller = CommunityDetailController()
         
-       
+        
         controller.height = data.rowHeight
         
         controller.dataArray.append([data])
         controller.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(controller, animated: true)
-
+        
     }
     // MARK: - 通知方法
-    
-    func comment(noti:NSNotification) {
+    func reloadUser() {
         
+        loadData()
+        
+    }
+    func Community(noti:NSNotification) {
+        
+        let sender = noti.userInfo!["sender"] as! UIButton
         let data = noti.userInfo!["data"] as! Feeds
-        let controller = AllCommentTableViewController.init(feed_id: data.feed_id,type:1)
-        controller.nickname = (data.user?.nickname)!
-        controller.hidesBottomBarWhenPushed = true
-        let nav = UINavigationController.init(rootViewController:controller)
-        self.present(nav, animated: true, completion: nil)
-        
+        if sender.tag == 1 {
+            if !MMUtils.userHasLogin() {
+                POSTNOTIFICATION(name: "login", data: nil)
+            }else {
+                if !data.following {
+                    addfollow(author_id: "\(data.user!.id)",sender: sender,data: data)
+                }
+                
+            }
+        }else {
+            
+            
+            let controller = AllCommentTableViewController.init(feed_id: data.feed_id,type:1)
+            controller.nickname = (data.user?.nickname)!
+            controller.hidesBottomBarWhenPushed = true
+            let nav = UINavigationController.init(rootViewController:controller)
+            self.present(nav, animated: true, completion: nil)
+        }
     }
     
     

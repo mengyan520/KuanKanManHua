@@ -11,12 +11,15 @@ class MMUtils: NSObject {
     
     //判断是否登录
     class func userHasLogin() -> Bool {
-        if (self.getObjectForKey(key: "Cookies") == nil) {
+       
+        if (getObjectForKey(key: "Cookies") == nil) {
             return false
         }
    
-        let cookies = NSKeyedUnarchiver.unarchiveObject(with: self.getObjectForKey(key: "Cookies") as! Data) as! [HTTPCookie]
+         
+        let cookies = NSKeyedUnarchiver.unarchiveObject(with: getObjectForKey(key: "Cookies") as! Data) as! [HTTPCookie]
         for cookie in cookies {
+           
             if cookie.name == "JSESSIONID"  {
                 
                 if cookie.value == ( MMUtils.getObjectForKey(key: "JSESSIONID") as! String ){
@@ -70,7 +73,7 @@ class MMUtils: NSObject {
         let cookiesData = NSKeyedArchiver.archivedData(withRootObject: HTTPCookieStorage.shared.cookies as Any)
         for cookie in HTTPCookieStorage.shared.cookies! {
             self.setObject(data: cookie.value, key: cookie.name)
-            print(cookie.value)
+            
         }
         self.setObject(data: cookiesData, key: "Cookies")
     }
@@ -82,10 +85,12 @@ class MMUtils: NSObject {
        
     }
     class func deleteCookies() {
-        let cookies = NSKeyedUnarchiver.unarchiveObject(with: self.getObjectForKey(key: "Cookies") as! Data) as! [HTTPCookie]
-        for cookie in cookies {
-             HTTPCookieStorage.shared.deleteCookie(cookie)
+        
+        for cookie in  HTTPCookieStorage.shared.cookies! {
+            HTTPCookieStorage.shared.deleteCookie(cookie)
         }
         
     }
+        
+    
 }

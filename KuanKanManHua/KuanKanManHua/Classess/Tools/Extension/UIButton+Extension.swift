@@ -10,7 +10,7 @@ import UIKit
 
 extension UIButton {
     
-    convenience init(imageName: String, backImageName: String?,SelectedImageName: String?,target: AnyObject?, actionName: Selector?) {
+    convenience init(imageName: String, backImageName: String?,highlightedImageName: String?,target: AnyObject?, actionName: Selector?) {
         self.init()
         
         setImage(UIImage(named: imageName), for: .normal)
@@ -20,9 +20,9 @@ extension UIButton {
             setBackgroundImage(UIImage(named: backImageName), for: .normal)
             // setBackgroundImage(UIImage(named: backImageName), for: .highlighted)
         }
-        if let SelectedImageName = SelectedImageName  {
+        if let highlightedImageName = highlightedImageName  {
             //setBackgroundImage(UIImage(named: backImageName), for: .normal)
-            setImage(UIImage(named: SelectedImageName), for: .selected)
+            setImage(UIImage(named: highlightedImageName), for: .highlighted)
         }
         if let actionName = actionName {
             self.addTarget(target, action: actionName, for: .touchUpInside)

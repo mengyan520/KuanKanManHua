@@ -48,6 +48,8 @@
 		583870301E0120AD004E024B /* DiscoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5838702F1E0120AD004E024B /* DiscoverViewController.swift */; };
 		583870351E01288F004E024B /* RecommendCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 583870341E01288F004E024B /* RecommendCollectionView.swift */; };
 		583870391E0151C0004E024B /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 583870381E0151C0004E024B /* Model.swift */; };
+		5847113C1E2CB2DC0098B108 /* FollowingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5847113B1E2CB2DC0098B108 /* FollowingViewController.swift */; };
+		5847113E1E2CC4B70098B108 /* BackLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5847113D1E2CC4B70098B108 /* BackLoginView.swift */; };
 		585F7F301E0276720045B1C6 /* RecommendTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 585F7F2E1E0276720045B1C6 /* RecommendTableView.swift */; };
 		586BBE2F1DF7AAC5001BA334 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 586BBE2E1DF7AAC5001BA334 /* AppDelegate.swift */; };
 		586BBE361DF7AAC5001BA334 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 586BBE351DF7AAC5001BA334 /* Assets.xcassets */; };
@@ -165,6 +167,8 @@
 		5838702F1E0120AD004E024B /* DiscoverViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoverViewController.swift; sourceTree = "<group>"; };
 		583870341E01288F004E024B /* RecommendCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecommendCollectionView.swift; sourceTree = "<group>"; };
 		583870381E0151C0004E024B /* Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
+		5847113B1E2CB2DC0098B108 /* FollowingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowingViewController.swift; sourceTree = "<group>"; };
+		5847113D1E2CC4B70098B108 /* BackLoginView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackLoginView.swift; sourceTree = "<group>"; };
 		585F7F2E1E0276720045B1C6 /* RecommendTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecommendTableView.swift; sourceTree = "<group>"; };
 		586BBE2B1DF7AAC5001BA334 /* KuanKanManHua.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KuanKanManHua.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		586BBE2E1DF7AAC5001BA334 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -356,6 +360,7 @@
 				581640801E1216AB003B531B /* MeTableViewController.swift */,
 				58134D101E1F428300326F6E /* HistoryTableViewController.swift */,
 				58FB600A1E289038002029D0 /* SettingViewController.swift */,
+				5847113B1E2CB2DC0098B108 /* FollowingViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -388,6 +393,7 @@
 		581640871E1243FB003B531B /* View */ = {
 			isa = PBXGroup;
 			children = (
+				5847113D1E2CC4B70098B108 /* BackLoginView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1078,6 +1084,7 @@
 				581640671E10F4F7003B531B /* SquareViewController.swift in Sources */,
 				58FB600B1E289038002029D0 /* SettingViewController.swift in Sources */,
 				586BBF091DF7E493001BA334 /* HomeTableViewController.swift in Sources */,
+				5847113E1E2CC4B70098B108 /* BackLoginView.swift in Sources */,
 				581640BC1E14EFE0003B531B /* CartoonTableView.swift in Sources */,
 				586BBED31DF7B159001BA334 /* UIColor+cor.m in Sources */,
 				583870351E01288F004E024B /* RecommendCollectionView.swift in Sources */,
@@ -1120,6 +1127,7 @@
 				586BBF0C1DF7EB33001BA334 /* HomeTableViewCell.swift in Sources */,
 				58134CFD1E1CDBD900326F6E /* AllCommentTableViewController.swift in Sources */,
 				586BBECA1DF7B159001BA334 /* Date+Extension.swift in Sources */,
+				5847113C1E2CB2DC0098B108 /* FollowingViewController.swift in Sources */,
 				581640811E1216AB003B531B /* MeTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

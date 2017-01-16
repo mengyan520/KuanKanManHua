@@ -86,7 +86,12 @@ class MeTableViewController: UITableViewController {
             }
         }
         if MMUtils.userHasLogin() {
-            
+            if indexPath.section == 1 && indexPath.row == 0 {
+                let controller = FollowingViewController()
+                
+                controller.hidesBottomBarWhenPushed = true
+                navigationController?.pushViewController(controller, animated: true)
+            }
         } else {
             
             self.present(UINavigationController.init(rootViewController: LoginViewController()), animated: true, completion: nil)

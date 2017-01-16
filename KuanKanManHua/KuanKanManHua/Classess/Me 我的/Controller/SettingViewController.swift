@@ -18,8 +18,7 @@ class SettingViewController: UITableViewController {
         
         title = "设置"
         arrayM = [["赏个好评","意见反馈","推荐给朋友"],["清理缓存","帮助中心","关于快看","用户协议"]]
-        tableView.bounces = false
-        cache = FileTool .folderSize(path: PATH!)
+            cache = FileTool .folderSize(path: PATH!)
         
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -78,28 +77,34 @@ class SettingViewController: UITableViewController {
     }
     // MARK: - 退出登录
     func loginOut()  {
+        let parameters = ["alias_id" : "0","muid": "c1a27d6050e13d62f507191b81e76a5a","partner_id":"1","platform":"2","register_id":"171976fa8a8f5582962","tags":"not_login"
+        ];
         
-        // NetworkTools.shardTools.requestL(method: .post, URLString: "https://api.kkmh.com/v1/device/push_info", parameters: nil) { (response, error) in
-        //   print(response)
-        //   if error == nil {
-        //    guard let object = response as? [String: AnyObject] else {
-        //     print("格式错误")
-        //   return
-        //  }
-        
-        // let model = Model.init(dict: object)
-        MMUtils.deleteObject(key: "Cookies")
-        MMUtils.deleteObject(key: "avatar_url")
-        MMUtils.deleteObject(key: "nickname")
-        MMUtils.deleteObject(key: "JSESSIONID")
-        MMUtils.deleteObject(key: "session")
-        POSTNOTIFICATION(name: "UserLogin", data: nil)
-        SVProgressHUD.showSuccess(withStatus: "退出成功")
-       // MMUtils.deleteCookies()
-        // }
-        
-        
-        //  }
+        NetworkTools.shardTools.requestL(method: .post, URLString: "https://api.kkmh.com/v1/device/push_info", parameters: parameters) { (response, error) in
+          //  print(response)
+            if error == nil {
+                guard let object = response as? [String: AnyObject] else {
+                    print("格式错误")
+                    return
+                }
+                let model = Model.init(dict: object)
+                if model.code == 200 {
+                    
+                    MMUtils.deleteObject(key: "Cookies")
+                    MMUtils.deleteObject(key: "avatar_url")
+                    MMUtils.deleteObject(key: "nickname")
+                    MMUtils.deleteObject(key: "JSESSIONID")
+                    MMUtils.deleteObject(key: "session")
+                    POSTNOTIFICATION(name: "UserLogin", data: nil)
+                    MMUtils.deleteCookies()
+                    SVProgressHUD.showSuccess(withStatus: "退出成功")
+                }
+                
+            }
+            
+            
+            
+        }
         
     }
 }
