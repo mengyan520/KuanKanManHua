@@ -12,70 +12,63 @@ import UIKit
 import MJRefresh
 class FollowingViewController: BaseViewController {
     var since = 0
-    
-    var currentTableView:CommunityTableView?
+    var leftArray = [Topics]()
+    var rightArray = [Author_list]()
     override func viewDidLoad() {
         
         super.viewDidLoad()
         title = "我的关注"
         view.addSubview(scrollView)
         view.addSubview(Titleview)
-        let Tableview = CommunityTableView()
-        Tableview.tag = 100
-        refresh(tableView: Tableview)
         
-        
-        let vcW = scrollView.frame.size.width
-        let vcH = scrollView.frame.size.height
-        
-        Tableview.frame =  CGRect.init(x: 0 , y: 0, width: vcW, height: vcH)
-        
-        scrollView.addSubview(Tableview)
-        loadData()
+        scrollView.addSubview(leftTableView)
+        scrollView.addSubview(rightTableView)
+        loadData(isleft:true)
+        loadData(isleft:false)
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(false, animated: false)
-         navigationItem.rightBarButtonItem = UIBarButtonItem()
+        navigationController?.setNavigationBarHidden(false, animated: true)
+        navigationItem.rightBarButtonItem = UIBarButtonItem()
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    func refresh(tableView:CommunityTableView) {
-        let header = MJRefreshNormalHeader.init(refreshingTarget: self, refreshingAction: #selector(self.loadData))
-        
-        tableView.mj_header = header
-        let footer = MJRefreshAutoNormalFooter.init(refreshingTarget: self, refreshingAction: #selector(self.loadMoreData))
-        tableView.mj_footer = footer
-        tableView.mj_footer.isHidden = true
-        tableView.del = self
-        currentTableView = tableView
-    }
+    
     //MARK: - 网络请求
-    func loadData()  {
-        var url = "https://api.kkmh.com/v1/fav/topics?limit=20&offset=0&sa_event=eyJldmVudCI6IlJlYWRNeUZhdlRvcGljIiwicHJvcGVydGllcyI6eyJUcmlnZ2VyUGFnZSI6Ik15SG9tZVBhZ2UiLCIkb3NfdmVyc2lvbiI6IjEwLjIiLCIkY2FycmllciI6IuS4reWbveenu-WKqCIsIiRvcyI6ImlPUyIsIiRzY3JlZW5faGVpZ2h0IjoxMzM0LCIkc2NyZWVuX3dpZHRoIjo3NTAsIiRtb2RlbCI6ImlQaG9uZSIsIkZhdlRhYk5hbWUiOiLkvZzlk4EiLCIkd2lmaSI6dHJ1ZSwiJGFwcF92ZXJzaW9uIjoiMy43LjAiLCIkbWFudWZhY3R1cmVyIjoiQXBwbGUiLCIkbGliIjoiaU9TLW5ldCIsIiRuZXR3b3JrX3R5cGUiOiJXSUZJIiwiYWJ0ZXN0X2dyb3VwIjo3MH0sInByb2plY3QiOiJrdWFpa2FuX2FwcCIsImRpc3RpbmN0X2lkIjoiNDY5Mzg1MCIsInRpbWUiOjE0ODQ1NTE3ODY2MzAsInR5cGUiOiJ0cmFjayJ9"
-        if self.currentTableView?.tag != 100 {
+    func loadData(isleft:Bool)  {
+        var  url = "https://api.kkmh.com/v1/fav/topics?limit=20&offset=0&sa_event=eyJldmVudCI6IlJlYWRNeUZhdlRvcGljIiwicHJvcGVydGllcyI6eyJUcmlnZ2VyUGFnZSI6Ik15SG9tZVBhZ2UiLCIkb3NfdmVyc2lvbiI6IjEwLjIiLCIkY2FycmllciI6IuS4reWbveenu-WKqCIsIiRvcyI6ImlPUyIsIiRzY3JlZW5faGVpZ2h0IjoxMzM0LCIkc2NyZWVuX3dpZHRoIjo3NTAsIiRtb2RlbCI6ImlQaG9uZSIsIkZhdlRhYk5hbWUiOiLkvZzlk4EiLCIkd2lmaSI6dHJ1ZSwiJGFwcF92ZXJzaW9uIjoiMy43LjAiLCIkbWFudWZhY3R1cmVyIjoiQXBwbGUiLCIkbGliIjoiaU9TLW5ldCIsIiRuZXR3b3JrX3R5cGUiOiJXSUZJIiwiYWJ0ZXN0X2dyb3VwIjo3MH0sInByb2plY3QiOiJrdWFpa2FuX2FwcCIsImRpc3RpbmN0X2lkIjoiNDY5Mzg1MCIsInRpbWUiOjE0ODQ1NTE3ODY2MzAsInR5cGUiOiJ0cmFjayJ9"
+        if !isleft {
             url = "https://api.kkmh.com/v1/feeds/following_author_list?sa_event=eyJldmVudCI6IlJlYWRNeUZhdlRvcGljIiwicHJvcGVydGllcyI6eyJUcmlnZ2VyUGFnZSI6Ik15SG9tZVBhZ2UiLCIkb3NfdmVyc2lvbiI6IjEwLjIiLCIkY2FycmllciI6IuS4reWbveenu-WKqCIsIiRvcyI6ImlPUyIsIiRzY3JlZW5faGVpZ2h0IjoxMzM0LCIkc2NyZWVuX3dpZHRoIjo3NTAsIiRtb2RlbCI6ImlQaG9uZSIsIkZhdlRhYk5hbWUiOiLkvZzlk4EiLCIkd2lmaSI6dHJ1ZSwiJGFwcF92ZXJzaW9uIjoiMy43LjAiLCIkbWFudWZhY3R1cmVyIjoiQXBwbGUiLCIkbGliIjoiaU9TLW5ldCIsIiRuZXR3b3JrX3R5cGUiOiJXSUZJIiwiYWJ0ZXN0X2dyb3VwIjo3MH0sInByb2plY3QiOiJrdWFpa2FuX2FwcCIsImRpc3RpbmN0X2lkIjoiNDY5Mzg1MCIsInRpbWUiOjE0ODQ1NTE3ODY2NTcsInR5cGUiOiJ0cmFjayJ9&since=0&uid=\(MMUtils.getObjectForKey(key: "uid")!)"
         }
-       
+        
         NetworkTools.shardTools.requestL(method: .get, URLString: url, parameters: nil) { (response, error) in
-            self.currentTableView?.mj_header.endRefreshing()
-        print(response)
+            self.leftTableView.mj_header.endRefreshing()
+            // print(response)
             if error == nil {
                 guard let object = response as? [String: AnyObject] else {
                     print("格式错误")
                     return
                 }
+                let model = Model.init(dict: object)
+                if model.code == 200 {
+                    if isleft {
+                        self.leftArray = (model.data?.topics)!
+                        
+                        self.leftTableView.reloadData()
+                    }else {
+                        self.rightArray = (model.data?.author_list)!
+                        
+                        self.rightTableView.reloadData()
+                    }
+                }
                 
-//                let model = Model.init(dict: object)
-//                self.currentTableView?.dataArray = (model.data?.feeds)!
-//                self.since = (model.data?.since)!
-//                self.currentTableView?.mj_footer.isHidden = false
-//                self.currentTableView?.reloadData()
+                
+                
             }
         }
-
+        
     }
     func loadMoreData()  {
         
@@ -83,7 +76,7 @@ class FollowingViewController: BaseViewController {
     // MARK: - 懒加载
     
     fileprivate lazy var scrollView:UIScrollView = {
-        let view = UIScrollView.init(frame: CGRect.init(x: 0, y:40+64, width: SCREEN_WIDTH, height: SCREEN_HEIGHT-64-49-40))
+        let view = UIScrollView.init(frame: CGRect.init(x: 0, y:40+64, width: SCREEN_WIDTH, height: SCREEN_HEIGHT-64-40))
         view.delegate = self
         view.showsHorizontalScrollIndicator = false
         view.showsVerticalScrollIndicator = false
@@ -112,8 +105,9 @@ class FollowingViewController: BaseViewController {
             
         }
         self.yellowView.frame = CGRect.init(x: SCREEN_WIDTH/8.0, y: 38, width: SCREEN_WIDTH/4.0, height: 2)
+         self.bottomView.frame = CGRect.init(x: 0, y: 39.5, width: SCREEN_WIDTH, height: 0.5)
         view.addSubview(self.yellowView)
-        
+          view.addSubview(self.bottomView)
         return view
     }()
     fileprivate lazy var yellowView:UIView = {
@@ -121,15 +115,85 @@ class FollowingViewController: BaseViewController {
         view.backgroundColor = mainColor
         return view
     }()
+    fileprivate lazy var bottomView:UIView = {
+        let view = UIView()
+        view.backgroundColor = WHcolor
+        return view
+    }()
     fileprivate lazy var currentBtn:UIButton = {
         let btn = UIButton()
         
         return btn
     }()
-    
+    fileprivate lazy var leftTableView:UITableView = {
+        let tableView = UITableView.init(frame: CGRect.init(x: 0, y: 0, width: SCREEN_WIDTH, height: SCREEN_HEIGHT-64-40), style: .plain)
+        tableView.delegate = self
+        
+        tableView.dataSource = self
+        tableView.register(LeftTableViewCell.self, forCellReuseIdentifier: "left")
+        let header = MJRefreshNormalHeader.init(refreshingTarget: self, refreshingAction: #selector(self.loadData))
+        
+        tableView.mj_header = header
+        let footer = MJRefreshAutoNormalFooter.init(refreshingTarget: self, refreshingAction: #selector(self.loadMoreData))
+        tableView.mj_footer = footer
+        tableView.mj_footer.isHidden = true
+        
+        tableView.estimatedRowHeight = 200
+        
+        tableView.separatorStyle = .none
+        return tableView
+    }()
+    fileprivate lazy var rightTableView:UITableView = {
+        let tableView = UITableView.init(frame: CGRect.init(x: SCREEN_WIDTH, y: 0, width: SCREEN_WIDTH, height: SCREEN_HEIGHT-64-49-40), style: .plain)
+        tableView.register(RightTableViewCell.self, forCellReuseIdentifier: "right")
+        let header = MJRefreshNormalHeader.init(refreshingTarget: self, refreshingAction: #selector(self.loadData))
+        
+        tableView.mj_header = header
+        let footer = MJRefreshAutoNormalFooter.init(refreshingTarget: self, refreshingAction: #selector(self.loadMoreData))
+        tableView.mj_footer = footer
+        tableView.mj_footer.isHidden = true
+        tableView.delegate = self
+        
+        tableView.dataSource = self
+        tableView.estimatedRowHeight = 200
+        
+        tableView.separatorStyle = .none
+        return tableView
+    }()
 }
 // MARK: - 代理方法/自定义方法
-extension FollowingViewController : UIScrollViewDelegate,CommunityTableViewDel {
+extension FollowingViewController : UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if tableView == rightTableView {
+            return rightArray.count
+        }
+        return leftArray.count
+    }
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+       
+        if tableView == leftTableView {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "left", for: indexPath) as! LeftTableViewCell
+            cell.data = leftArray[indexPath.row];
+            return cell
+        }
+        let cell = tableView.dequeueReusableCell(withIdentifier: "right", for: indexPath) as! RightTableViewCell
+        cell.data = rightArray[indexPath.row];
+        return cell
+    }
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if tableView == rightTableView {
+            return 60.5
+        }
+        return 100.5
+    }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if tableView == leftTableView {
+            let controller = WordDetailViewController.init(ID:"\(leftArray[indexPath.row].id)")
+           
+            
+            navigationController?.pushViewController(controller, animated: true)
+        }
+    }
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         
         if scrollView == self.scrollView {
@@ -154,7 +218,7 @@ extension FollowingViewController : UIScrollViewDelegate,CommunityTableViewDel {
     func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
         let index = scrollView.contentOffset.x / scrollView.bounds.size.width
         let btn = (Titleview.subviews[NSInteger(index)] as! UIButton)
-        addChildView(index: index)
+        
         topViewOffset(sender: btn)
         
         
@@ -166,41 +230,13 @@ extension FollowingViewController : UIScrollViewDelegate,CommunityTableViewDel {
         scrollView.setContentOffset(CGPoint.init(x: offsetX, y: 0), animated: true)
         
     }
-    func addChildView(index:CGFloat)  {
-        var Tableview = view.viewWithTag(100 + Int(index))
-        
-        if (Tableview  != nil) {
-            currentTableView = Tableview as! CommunityTableView?
-            return
-        }
-        Tableview = CommunityTableView()
-        Tableview?.tag = 100 + Int(index)
-        refresh(tableView: Tableview as! CommunityTableView)
-        let vcW = scrollView.frame.size.width
-        let vcH = scrollView.frame.size.height
-        let vcY:CGFloat = 0
-        let vcX = index * vcW
-        Tableview?.frame = CGRect.init(x: vcX, y: vcY, width: vcW, height: vcH)
-        scrollView.addSubview(Tableview!)
-        currentTableView?.mj_header.beginRefreshing()
-    }
+    
     func topViewOffset(sender:UIButton) {
         currentBtn.isSelected = false
         currentBtn = sender
         sender.isSelected = true
         
         
-        
-    }
-    func didSelectRowAtIndex(data: Feeds) {
-        let controller = CommunityDetailController()
-        
-        
-        controller.height = data.rowHeight
-        
-        controller.dataArray.append([data])
-        controller.hidesBottomBarWhenPushed = true
-        navigationController?.pushViewController(controller, animated: true)
         
     }
     

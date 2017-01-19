@@ -46,13 +46,16 @@ class Model: NSObject {
     }
 }
 class ModelData: NSObject {
-    //登录
+    //关注作者
+    var author_list: [Author_list]?
     
+
+    //登录
     var alter_nickname: Int = 0
     var avatar_url: String?
     var youzan_user_id: String?
     var follower_cnt: Int = 0
-  
+    
     var reply_remind_flag: Int = 0
     var update_remind_flag: Int = 0
     var reg_type: String?
@@ -132,6 +135,15 @@ class ModelData: NSObject {
         
     }
     override func setValue(_ value: Any?, forKey key: String) {
+        if key == "author_list" {
+            var arr = [Author_list]()
+            for data in value as! [AnyObject] {
+                arr.append(Author_list.init(dict: (data as? [String : AnyObject])!))
+                
+            }
+            author_list = arr
+            return
+        }
         if key == "info" {
             var arr = [Info]()
             for data in value as! [AnyObject] {
@@ -414,10 +426,10 @@ class Topic: NSObject,NSCoding {
         aCoder.encode(title, forKey: "title")
         
     }
-//    lazy var rowHeight:CGFloat = {
-//        
-//        return HistoryTableViewCell.init(style: .default, reuseIdentifier: "cell").rowHeight(data: self)
-//    }()
+    //    lazy var rowHeight:CGFloat = {
+    //
+    //        return HistoryTableViewCell.init(style: .default, reuseIdentifier: "cell").rowHeight(data: self)
+    //    }()
     override func setValue(_ value: Any?, forKey key: String) {
         if key == "related_authors" {
             var arr = [Related_authors]()
@@ -587,6 +599,12 @@ class Banners: NSObject {
     }
 }
 class Topics: NSObject {
+    //关注作品
+    
+    var latest_comic_title: String?
+    
+    
+    //
     var des: String?
     var category: [String]?
     var label_color: String?
@@ -960,40 +978,40 @@ class Info: NSObject {
     var title: String?
     var old_comic_title: String?
     var id: Int = 0
-     init(dict:[String: AnyObject]?) {
+    init(dict:[String: AnyObject]?) {
         super.init()
         if dict != nil {
-             setValuesForKeys(dict!)
+            setValuesForKeys(dict!)
         }
         
-    
+        
     }
-//    required init?(coder aDecoder: NSCoder) {
-//        super.init()
-//        
-//        
-//        cover_image_url = aDecoder.decodeObject(forKey: "cover_image_url") as! String?
-//        id = Int(aDecoder.decodeCInt(forKey: "id"))
-//        
-//          topic_id = Int(aDecoder.decodeCInt(forKey: "topic_id"))
-//        old_comic_title = aDecoder.decodeObject(forKey: "old_comic_title") as! String?
-//        
-//        latest_comic_title = aDecoder.decodeObject(forKey: "latest_comic_title") as! String?
-//        title = aDecoder.decodeObject(forKey: "title") as! String?
-//        
-//    }
-//    func encode(with aCoder: NSCoder) {
-//        
-//        aCoder.encode(cover_image_url, forKey: "cover_image_url")
-//        aCoder.encode(id, forKey: "id")
-//        aCoder.encode(topic_id, forKey: "topic_id")
-//
-//        aCoder.encode(latest_comic_title, forKey: "latest_comic_title")
-//        
-//        aCoder.encode(old_comic_title, forKey: "old_comic_title")
-//        aCoder.encode(title, forKey: "title")
-//        
-//    }
+    //    required init?(coder aDecoder: NSCoder) {
+    //        super.init()
+    //
+    //
+    //        cover_image_url = aDecoder.decodeObject(forKey: "cover_image_url") as! String?
+    //        id = Int(aDecoder.decodeCInt(forKey: "id"))
+    //
+    //          topic_id = Int(aDecoder.decodeCInt(forKey: "topic_id"))
+    //        old_comic_title = aDecoder.decodeObject(forKey: "old_comic_title") as! String?
+    //
+    //        latest_comic_title = aDecoder.decodeObject(forKey: "latest_comic_title") as! String?
+    //        title = aDecoder.decodeObject(forKey: "title") as! String?
+    //
+    //    }
+    //    func encode(with aCoder: NSCoder) {
+    //
+    //        aCoder.encode(cover_image_url, forKey: "cover_image_url")
+    //        aCoder.encode(id, forKey: "id")
+    //        aCoder.encode(topic_id, forKey: "topic_id")
+    //
+    //        aCoder.encode(latest_comic_title, forKey: "latest_comic_title")
+    //
+    //        aCoder.encode(old_comic_title, forKey: "old_comic_title")
+    //        aCoder.encode(title, forKey: "title")
+    //
+    //    }
     override func setValue(_ value: Any?, forKey key: String) {
         
         
@@ -1006,6 +1024,43 @@ class Info: NSObject {
     }
     override var description: String {
         let keys = ["topic_id"]
+        
+        return dictionaryWithValues(forKeys: keys).description
+    }
+    
+    
+}
+ // MARK: - Author_list
+class Author_list: NSObject {
+    var pub_feed: Int = 0
+    var u_intro: String?
+    var nickname: String?
+    var grade: Int = 0
+    var reg_type: String?
+    var id: Int = 0
+    var updated_at: Int = 0
+    var avatar_url: String?
+    init(dict:[String: AnyObject]?) {
+        super.init()
+        if dict != nil {
+            setValuesForKeys(dict!)
+        }
+        
+        
+    }
+    
+    override func setValue(_ value: Any?, forKey key: String) {
+        
+        
+        super.setValue(value, forKey: key)
+    }
+    
+    
+    override func setValue(_ value: Any?, forUndefinedKey key: String) {
+        
+    }
+    override var description: String {
+        let keys = ["nickname"]
         
         return dictionaryWithValues(forKeys: keys).description
     }

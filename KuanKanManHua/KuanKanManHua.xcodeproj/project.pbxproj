@@ -50,6 +50,8 @@
 		583870391E0151C0004E024B /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 583870381E0151C0004E024B /* Model.swift */; };
 		5847113C1E2CB2DC0098B108 /* FollowingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5847113B1E2CB2DC0098B108 /* FollowingViewController.swift */; };
 		5847113E1E2CC4B70098B108 /* BackLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5847113D1E2CC4B70098B108 /* BackLoginView.swift */; };
+		584711401E2DB4CA0098B108 /* LeftTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5847113F1E2DB4CA0098B108 /* LeftTableViewCell.swift */; };
+		584711421E2DC5F00098B108 /* RightTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 584711411E2DC5F00098B108 /* RightTableViewCell.swift */; };
 		585F7F301E0276720045B1C6 /* RecommendTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 585F7F2E1E0276720045B1C6 /* RecommendTableView.swift */; };
 		586BBE2F1DF7AAC5001BA334 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 586BBE2E1DF7AAC5001BA334 /* AppDelegate.swift */; };
 		586BBE361DF7AAC5001BA334 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 586BBE351DF7AAC5001BA334 /* Assets.xcassets */; };
@@ -169,6 +171,8 @@
 		583870381E0151C0004E024B /* Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		5847113B1E2CB2DC0098B108 /* FollowingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowingViewController.swift; sourceTree = "<group>"; };
 		5847113D1E2CC4B70098B108 /* BackLoginView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackLoginView.swift; sourceTree = "<group>"; };
+		5847113F1E2DB4CA0098B108 /* LeftTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeftTableViewCell.swift; sourceTree = "<group>"; };
+		584711411E2DC5F00098B108 /* RightTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RightTableViewCell.swift; sourceTree = "<group>"; };
 		585F7F2E1E0276720045B1C6 /* RecommendTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecommendTableView.swift; sourceTree = "<group>"; };
 		586BBE2B1DF7AAC5001BA334 /* KuanKanManHua.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KuanKanManHua.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		586BBE2E1DF7AAC5001BA334 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -369,6 +373,8 @@
 			isa = PBXGroup;
 			children = (
 				58FB5F4F1E248382002029D0 /* HistoryTableViewCell.swift */,
+				5847113F1E2DB4CA0098B108 /* LeftTableViewCell.swift */,
+				584711411E2DC5F00098B108 /* RightTableViewCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1055,6 +1061,7 @@
 				58134D251E1F45DC00326F6E /* FMDatabasePool.m in Sources */,
 				581640BA1E14E09F003B531B /* CartoonDetailViewController.swift in Sources */,
 				586BBEF41DF7B896001BA334 /* WeekDay.swift in Sources */,
+				584711421E2DC5F00098B108 /* RightTableViewCell.swift in Sources */,
 				5816406B1E1113CE003B531B /* CommunityTableViewCell.swift in Sources */,
 				5816409C1E136900003B531B /* WordDetailViewController.swift in Sources */,
 				586BBF111DF7FBB2001BA334 /* UIColor+Extension.swift in Sources */,
@@ -1127,6 +1134,7 @@
 				586BBF0C1DF7EB33001BA334 /* HomeTableViewCell.swift in Sources */,
 				58134CFD1E1CDBD900326F6E /* AllCommentTableViewController.swift in Sources */,
 				586BBECA1DF7B159001BA334 /* Date+Extension.swift in Sources */,
+				584711401E2DB4CA0098B108 /* LeftTableViewCell.swift in Sources */,
 				5847113C1E2CB2DC0098B108 /* FollowingViewController.swift in Sources */,
 				581640811E1216AB003B531B /* MeTableViewController.swift in Sources */,
 			);

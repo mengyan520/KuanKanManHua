@@ -1,39 +1,49 @@
 //
-//  HistoryTableViewCell.swift
+//  LeftTableViewCell.swift
 //  KuanKanManHua
 //
-//  Created by Youcai on 17/1/10.
+//  Created by Youcai on 17/1/17.
 //  Copyright © 2017年 mm. All rights reserved.
 //
 
 import UIKit
 
-class HistoryTableViewCell: UITableViewCell {
-    
-    var data:Info? {
+class LeftTableViewCell: UITableViewCell {
+    var data:Topics? {
         didSet {
+            
             iconView.sd_setImage(with: URL.init(string: data!.cover_image_url!), placeholderImage: UIImage.init(named: "ic_common_placeholder_banner"), options: [.retryFailed,.refreshCached]) { (image, error, type, url) in
                 
                 
             }
             
             titlelbl.text = data?.title
-            namelbl.text  = "最新:" +  (data?.latest_comic_title)!
-            bomlbl.text   =  "看到:" +  (data?.old_comic_title)!
-            
+            namelbl.text = data?.user?.nickname
+            bomlbl.text = data?.latest_comic_title
         }
     }
     
+
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setUI()
+    }
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        // Initialization code
+    }
+    
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+        
+        // Configure the view for the selected state
     }
     func setUI() {
         contentView.addSubview(iconView)
         contentView.addSubview(titlelbl)
         contentView.addSubview(namelbl)
         contentView.addSubview(bomlbl)
-        // contentView.addSubview(continueBtn)
+        
         contentView.addSubview(bottomView)
         iconView.snp.makeConstraints { (make) in
             make.left.top.equalTo(contentView).offset(10)
@@ -69,16 +79,7 @@ class HistoryTableViewCell: UITableViewCell {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
     
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-        
-        // Configure the view for the selected state
-    }
     //MARK: - 懒加载
     private lazy var iconView:UIImageView = {
         let view = UIImageView()
@@ -106,16 +107,12 @@ class HistoryTableViewCell: UITableViewCell {
         lbl.text = "作者"
         return lbl
     }()
-    private lazy var continueBtn:UIButton = {
-        let btn = UIButton.init(title: "1", color: LIGHTGRAY_COLOR, SelectedColor: nil, imageName: "ic_common_praise_normal", fontSize: 12, target: self, actionName: nil)
-        
-        
-        return btn
-    }()
+    
     
     private lazy var bottomView:UIView = {
         let view = UIView.init()
         view.backgroundColor = WHcolor
         return view
     }()
+    
 }

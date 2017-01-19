@@ -73,7 +73,8 @@ class MMUtils: NSObject {
         let cookiesData = NSKeyedArchiver.archivedData(withRootObject: HTTPCookieStorage.shared.cookies as Any)
         for cookie in HTTPCookieStorage.shared.cookies! {
             self.setObject(data: cookie.value, key: cookie.name)
-            
+            print(cookie.value)
+            print(cookie.name)
         }
         self.setObject(data: cookiesData, key: "Cookies")
     }

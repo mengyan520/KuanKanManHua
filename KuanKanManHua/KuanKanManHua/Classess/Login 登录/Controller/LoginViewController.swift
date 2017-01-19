@@ -110,8 +110,8 @@ class LoginViewController: BaseViewController,BackViewDel {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        backView.phoneBtn.isSelected = false
-        backView.codeBtn.isSelected = false
+        backView.phoneBtn.isHighlighted = false
+        backView.codeBtn.isHighlighted = false
         view.endEditing(false)
     }
 }
@@ -220,13 +220,13 @@ fileprivate class BackView:UIView,UITextFieldDelegate {
     }
     fileprivate func textFieldDidBeginEditing(_ textField: UITextField) {
         if textField == phoneTextField {
-            codeBtn.isSelected = false
-            phoneBtn.isSelected = true
+            codeBtn.isHighlighted = false
+            phoneBtn.isHighlighted = true
             iconView.image = UIImage.init(named: "ic_login_visible")
             
         }else {
-            codeBtn.isSelected = true
-            phoneBtn.isSelected = false
+            codeBtn.isHighlighted = true
+            phoneBtn.isHighlighted = false
             iconView.image = UIImage.init(named: "ic_login_invisible")
             
         }

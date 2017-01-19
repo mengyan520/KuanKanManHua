@@ -13,6 +13,15 @@ class wordsHeadView: UIView {
     typealias btnBlcok = (_ sender: UIButton) -> Void
     var block:btnBlcok?
     var scrollView:UIScrollView?
+    var isfollow:Bool? {
+        didSet {
+            if isfollow! {
+                followBtn.setImage(UIImage.init(named: "ic_album_cover_followed"), for: .normal)
+                followBtn.setImage(UIImage.init(named: "ic_album_cover_followed_highlighted"), for: .highlighted)
+            }
+            
+        }
+    }
     var data:ModelData? {
         didSet {
             
@@ -25,7 +34,7 @@ class wordsHeadView: UIView {
                 var lbl = self.viewWithTag(100 + i)
                 if (lbl == nil) {
                     
-                     lbl = UILabel.init(title: data!.category![i], fontSize: 12, color: WHITE_COLOR, screenInset: 0)
+                    lbl = UILabel.init(title: data!.category![i], fontSize: 12, color: WHITE_COLOR, screenInset: 0)
                     lbl?.layer.cornerRadius = 8
                     lbl?.layer.masksToBounds = true
                     lbl?.layer.borderColor = WHITE_COLOR.cgColor
@@ -45,8 +54,11 @@ class wordsHeadView: UIView {
                     })
                 }
             }
-            
-            
+           
+            if (data?.is_favourite)! {
+                followBtn.setImage(UIImage.init(named: "ic_album_cover_followed"), for: .normal)
+                followBtn.setImage(UIImage.init(named: "ic_album_cover_followed_highlighted"), for: .highlighted)
+            }
             
         }
     }
@@ -56,7 +68,12 @@ class wordsHeadView: UIView {
     }
     func  btnClick(sender:UIButton)  {
         if sender.tag == 2 {
-            POSTNOTIFICATION(name: "login", data: nil)
+            if !MMUtils.userHasLogin() {
+                POSTNOTIFICATION(name: "login", data: nil)
+            }else{
+                block?(sender)
+            }
+            
         } else {
             block?(sender)
         }

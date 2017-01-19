@@ -103,7 +103,7 @@ class SquareViewController: BaseViewController {
         /*
          author_id=2967943&relation=1&sa_event=eyJldmVudCI6IkZhdkF1dGhvciIsInByb3BlcnRpZXMiOnsiRmVlZExpa2VOdW1iZXIiOjExODM2LCIkc2NyZWVuX3dpZHRoIjo3NTAsIiRhcHBfdmVyc2lvbiI6IjMuNy4wIiwiVHJpZ2dlck9yZGVyTnVtYmVyIjoxLCJUcmlnZ2VyUGFnZSI6IlZDb21tdW5pdHlQYWdlIiwiQXV0aG9yRmFuc051bWJlciI6MCwiJG1vZGVsIjoiaVBob25lIiwiJG5ldHdvcmtfdHlwZSI6IldJRkkiLCIkY2FycmllciI6IuS4reWbveenu-WKqCIsIkZlZWRDb21tZW50TnVtYmVyIjoxMzU5LCJWQ29tbXVuaXR5VGFiTmFtZSI6IueDremXqCIsIiR3aWZpIjp0cnVlLCJOaWNrTmFtZSI6IumHkeS4mCIsIiRzY3JlZW5faGVpZ2h0IjoxMzM0LCJBdXRob3JJRCI6Mjk2Nzk0MywiYWJ0ZXN0X2dyb3VwIjo3MCwiJG9zX3ZlcnNpb24iOiIxMC4yIiwiJGxpYiI6ImlPUy1uZXQiLCIkbWFudWZhY3R1cmVyIjoiQXBwbGUiLCIkb3MiOiJpT1MifSwicHJvamVjdCI6Imt1YWlrYW5fYXBwIiwiZGlzdGluY3RfaWQiOiI0NjkzODUwIiwidGltZSI6MTQ4NDU1MDI4NjAxMywidHlwZSI6InRyYWNrIn0%3D&uid=4693850
          */
-        let parameters = ["author_id":author_id,"relation":"1","sa_event":"eyJldmVudCI6IkZhdkF1dGhvciIsInByb3BlcnRpZXMiOnsiRmVlZExpa2VOdW1iZXIiOjExODM2LCIkc2NyZWVuX3dpZHRoIjo3NTAsIiRhcHBfdmVyc2lvbiI6IjMuNy4wIiwiVHJpZ2dlck9yZGVyTnVtYmVyIjoxLCJUcmlnZ2VyUGFnZSI6IlZDb21tdW5pdHlQYWdlIiwiQXV0aG9yRmFuc051bWJlciI6MCwiJG1vZGVsIjoiaVBob25lIiwiJG5ldHdvcmtfdHlwZSI6IldJRkkiLCIkY2FycmllciI6IuS4reWbveenu-WKqCIsIkZlZWRDb21tZW50TnVtYmVyIjoxMzU5LCJWQ29tbXVuaXR5VGFiTmFtZSI6IueDremXqCIsIiR3aWZpIjp0cnVlLCJOaWNrTmFtZSI6IumHkeS4mCIsIiRzY3JlZW5faGVpZ2h0IjoxMzM0LCJBdXRob3JJRCI6Mjk2Nzk0MywiYWJ0ZXN0X2dyb3VwIjo3MCwiJG9zX3ZlcnNpb24iOiIxMC4yIiwiJGxpYiI6ImlPUy1uZXQiLCIkbWFudWZhY3R1cmVyIjoiQXBwbGUiLCIkb3MiOiJpT1MifSwicHJvamVjdCI6Imt1YWlrYW5fYXBwIiwiZGlzdGluY3RfaWQiOiI0NjkzODUwIiwidGltZSI6MTQ4NDU1MDI4NjAxMywidHlwZSI6InRyYWNrIn0%3D","uid":MMUtils.getObjectForKey(key: "uid") ?? ""] as [String : Any];
+        let parameters = ["author_id":author_id,"relation":"1","sa_event":"eyJldmVudCI6IkZhdkF1dGhvciIsInByb3BlcnRpZXMiOnsiRmVlZExpa2VOdW1iZXIiOjExODM2LCIkc2NyZWVuX3dpZHRoIjo3NTAsIiRhcHBfdmVyc2lvbiI6IjMuNy4wIiwiVHJpZ2dlck9yZGVyTnVtYmVyIjoxLCJUcmlnZ2VyUGFnZSI6IlZDb21tdW5pdHlQYWdlIiwiQXV0aG9yRmFuc051bWJlciI6MCwiJG1vZGVsIjoiaVBob25lIiwiJG5ldHdvcmtfdHlwZSI6IldJRkkiLCIkY2FycmllciI6IuS4reWbveenu-WKqCIsIkZlZWRDb21tZW50TnVtYmVyIjoxMzU5LCJWQ29tbXVuaXR5VGFiTmFtZSI6IueDremXqCIsIiR3aWZpIjp0cnVlLCJOaWNrTmFtZSI6IumHkeS4mCIsIiRzY3JlZW5faGVpZ2h0IjoxMzM0LCJBdXRob3JJRCI6Mjk2Nzk0MywiYWJ0ZXN0X2dyb3VwIjo3MCwiJG9zX3ZlcnNpb24iOiIxMC4yIiwiJGxpYiI6ImlPUy1uZXQiLCIkbWFudWZhY3R1cmVyIjoiQXBwbGUiLCIkb3MiOiJpT1MifSwicHJvamVjdCI6Imt1YWlrYW5fYXBwIiwiZGlzdGluY3RfaWQiOiI0NjkzODUwIiwidGltZSI6MTQ4NDU1MDI4NjAxMywidHlwZSI6InRyYWNrIn0%3D","uid":MMUtils.getObjectForKey(key: "uid") ?? ""] as [String : Any]
         
         NetworkTools.shardTools.requestL(method: .post, URLString: "https://api.kkmh.com/v1/feeds/update_following_author", parameters: parameters) { (response, error) in
             // print(response)
@@ -160,13 +160,19 @@ class SquareViewController: BaseViewController {
             
         }
         self.yellowView.frame = CGRect.init(x: SCREEN_WIDTH/8.0, y: 38, width: SCREEN_WIDTH/4.0, height: 2)
+        self.bottomView.frame = CGRect.init(x: 0, y: 39.5, width: SCREEN_WIDTH, height: 0.5)
         view.addSubview(self.yellowView)
-        
+        view.addSubview(self.bottomView)
         return view
     }()
     fileprivate lazy var yellowView:UIView = {
-        let view = UIView.init()
+        let view = UIView()
         view.backgroundColor = mainColor
+        return view
+    }()
+    fileprivate lazy var bottomView:UIView = {
+        let view = UIView()
+        view.backgroundColor = WHcolor
         return view
     }()
     fileprivate lazy var currentBtn:UIButton = {
