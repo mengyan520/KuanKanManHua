@@ -27,14 +27,14 @@ class CommunityViewController: BaseViewController {
         backscrollView.setContentOffset(CGPoint.init(x: SCREEN_WIDTH, y: 0), animated: false)
         
         
-       
-           NotificationCenter.default.addObserver(self, selector: #selector(self.reloadUser), name: NSNotification.Name.init(rawValue: "UserLogin"), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.reloadUser), name: NSNotification.Name.init(rawValue: "UserLogin"), object: nil)
         if MMUtils.userHasLogin() {
             backscrollView.addSubview(tableView)
             loadData()
             
         }else {
-           backscrollView.addSubview(backLoginView)
+            backscrollView.addSubview(backLoginView)
         }
     }
     
@@ -46,10 +46,11 @@ class CommunityViewController: BaseViewController {
     //MARK: - 网络请求
     func loadData()  {
         
-        
+        MMUtils.showLoading()
         NetworkTools.shardTools.requestL(method: .get, URLString: "https://api.kkmh.com/v1/feeds/following/feed_lists?sa_event=eyJldmVudCI6IlJlYWRWQ29tbXVuaXR5IiwicHJvcGVydGllcyI6eyJUcmlnZ2VyUGFnZSI6IlZDb21tdW5pdHlQYWdlIiwiJG9zX3ZlcnNpb24iOiIxMC4yIiwiJG9zIjoiaU9TIiwiVkNvbW11bml0eVRhYk5hbWUiOiLlhbPms6giLCIkc2NyZWVuX2hlaWdodCI6MTMzNCwiJGNhcnJpZXIiOiLkuK3lm73np7vliqgiLCIkbGliIjoiaU9TLW5ldCIsIiRtb2RlbCI6ImlQaG9uZSIsIiRzY3JlZW5fd2lkdGgiOjc1MCwiJHdpZmkiOnRydWUsIiRhcHBfdmVyc2lvbiI6IjMuNy4wIiwiJG1hbnVmYWN0dXJlciI6IkFwcGxlIiwiJG5ldHdvcmtfdHlwZSI6IldJRkkiLCJhYnRlc3RfZ3JvdXAiOjcwLCJGcm9tVkNvbW11bml0eVRhYk5hbWUiOiLlhbPms6gifSwicHJvamVjdCI6Imt1YWlrYW5fYXBwIiwiZGlzdGluY3RfaWQiOiI0NjkzODUwIiwidGltZSI6MTQ4NDU1NjE0MzA1MSwidHlwZSI6InRyYWNrIn0%3D&since=0", parameters: nil) { (response, error) in
             self.tableView.mj_header.endRefreshing()
             // print(response)
+            MMUtils.hideLoading()
             if error == nil {
                 guard let object = response as? [String: AnyObject] else {
                     print("格式错误")
@@ -61,12 +62,17 @@ class CommunityViewController: BaseViewController {
                 self.since = (model.data?.since)!
                 self.tableView.mj_footer.isHidden = false
                 self.tableView.reloadData()
+            }else {
+                MMUtils.hideLoading()
+                MMUtils.showError()
             }
         }
     }
     func loadMoreData()  {
+       
         NetworkTools.shardTools.requestL(method: .get, URLString: "https://api.kkmh.com/v1/feeds/following/feed_lists?since=\(since)", parameters: nil) { (response, error) in
             self.tableView.mj_footer.endRefreshing()
+            
             if error == nil {
                 guard let object = response as? [String: AnyObject] else {
                     print("格式错误")
@@ -79,9 +85,12 @@ class CommunityViewController: BaseViewController {
                 self.since = (model.data?.since)!
                 self.tableView.reloadData()
                 
+            }else {
+               
+                MMUtils.showError()
             }
         }
-
+        
         
     }
     
@@ -144,7 +153,7 @@ extension CommunityViewController:UIScrollViewDelegate,NavTopDel,CommunityTableV
     }
     func reloadUser() {
         if tableView.dataArray.count == 0 {
-             backscrollView.addSubview(tableView)
+            backscrollView.addSubview(tableView)
             loadData()
         }else {
             tableView.removeFromSuperview()

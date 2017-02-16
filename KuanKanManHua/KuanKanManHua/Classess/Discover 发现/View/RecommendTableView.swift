@@ -9,6 +9,9 @@
 import UIKit
 private let ID = "tableCell"
 private let HeaderId = "HeaderId"
+protocol bannersViewDel:NSObjectProtocol {
+    func didSelectedbannersView(banners:Banners)
+}
 class RecommendTableView: UITableView {
     lazy var dataArray = [Infos]()
     var bannerArray:[Banners]? {
@@ -20,6 +23,7 @@ class RecommendTableView: UITableView {
             bannersView.startAutoRun()
         }
     }
+   weak var del:bannersViewDel?
     // MARK: - 构造方法
     override init(frame: CGRect, style: UITableViewStyle) {
         super.init(frame: frame, style: style)
@@ -112,7 +116,7 @@ extension RecommendTableView:UITableViewDataSource,UITableViewDelegate,CarouselD
         return imageView
     }
     func didSelectedcarouselView(carouselView: CarouselView, index: NSInteger) {
-        
+        del?.didSelectedbannersView(banners:bannerArray![index])
     }
 }
 // MARK: - 自定义cell

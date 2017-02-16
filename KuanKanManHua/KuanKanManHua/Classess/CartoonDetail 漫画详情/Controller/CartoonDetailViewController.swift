@@ -57,9 +57,10 @@ class CartoonDetailViewController: BaseViewController,CartoonTableViewDel {
     // MARK: - 网络请求
     func loadData() {
         print("https://api.kkmh.com/v2/comic/\(ID)?")
-        
+        MMUtils.showLoading()
         NetworkTools.shardTools.requestL(method: .get, URLString:"https://api.kkmh.com/v2/comic/\(ID)?", parameters: nil) {(result, error) in
-            
+             MMUtils.hideLoading()
+            if error == nil {
             guard let object = result! as? [String: AnyObject] else {
                 print("格式错误")
                 return
@@ -79,6 +80,10 @@ class CartoonDetailViewController: BaseViewController,CartoonTableViewDel {
             data.cover_image_url = model.data?.topic!.cover_image_url
             data.old_comic_title = model.data?.title
             SQLiteManager.sharedManager.saveData(data: data, name: "history")
+            }else {
+              MMUtils.hideLoading()
+                MMUtils.showError()
+            }
         }
         
     }

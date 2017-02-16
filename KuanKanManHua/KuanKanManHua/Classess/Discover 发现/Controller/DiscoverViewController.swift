@@ -25,13 +25,13 @@ class DiscoverViewController: BaseViewController {
         topView.del = self
         view.addSubview(backscrollView)
         backscrollView.addSubview(RecommendView)
-     //   backscrollView.addSubview(categoryView)
-       let vc = CategoryViewController()
+        //   backscrollView.addSubview(categoryView)
+        let vc = CategoryViewController()
         addChildViewController(vc)
         vc.view.frame = CGRect.init(x: SCREEN_WIDTH, y: 0, width: SCREEN_WIDTH, height: SCREEN_HEIGHT-64-49)
         backscrollView.addSubview(vc.view)
         loadData()
-         NotificationCenter.default.addObserver(self, selector: #selector(DiscoverViewController.workDetail(noti:)), name: NSNotification.Name(rawValue: "wordDetail"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(DiscoverViewController.workDetail(noti:)), name: NSNotification.Name(rawValue: "wordDetail"), object: nil)
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -45,9 +45,10 @@ class DiscoverViewController: BaseViewController {
     }
     //MARK: - 网络请求
     func loadData()  {
-        
+        MMUtils.showLoading()
         NetworkTools.shardTools.requestL(method: .get, URLString: "https://api.kkmh.com/v1/topic_new/discovery_list", parameters: nil) { (response, error) in
             self.RecommendView.mj_header.endRefreshing()
+            MMUtils.hideLoading()
             if error == nil {
                 guard let object = response as? [String: AnyObject] else {
                     print("格式错误")
@@ -59,6 +60,9 @@ class DiscoverViewController: BaseViewController {
                 self.RecommendView.dataArray.remove(at: 0)
                 self.RecommendView.reloadData()
                 self.RecommendView.bannerArray = (model.data?.infos?[0].banners)!
+            }else {
+                MMUtils.hideLoading()
+                MMUtils.showError()
             }
         }
     }
@@ -81,7 +85,7 @@ class DiscoverViewController: BaseViewController {
         let header = MJRefreshNormalHeader.init(refreshingTarget: self, refreshingAction: #selector(DiscoverViewController.loadData))
         header?.ignoredScrollViewContentInsetTop = SCREEN_WIDTH/(1280/600);
         tableView.mj_header = header
-        
+        tableView.del = self
         return tableView
         
         
@@ -89,7 +93,7 @@ class DiscoverViewController: BaseViewController {
     
 }
 // MARK: - 代理方法/自定义方法
-extension DiscoverViewController:UIScrollViewDelegate,NavTopDel{
+extension DiscoverViewController:UIScrollViewDelegate,NavTopDel,bannersViewDel{
     func NavTopClick(sender: UISegmentedControl) {
         
         backscrollView.setContentOffset(CGPoint.init(x: SCREEN_WIDTH * CGFloat(sender.selectedSegmentIndex), y: 0), animated: true)
@@ -111,18 +115,32 @@ extension DiscoverViewController:UIScrollViewDelegate,NavTopDel{
         
         
     }
+    func didSelectedbannersView(banners:Banners) {
+        if banners.type == 2 {
+            let controller = WordDetailViewController.init(ID:"\(banners.target_id)")
+            controller.hidesBottomBarWhenPushed = true
+            
+            navigationController?.pushViewController(controller, animated: true)
+        }else {
+            let controller = CartoonDetailViewController.init(ID:banners.target_id, name: "漫画内容")
+            
+            controller.topicID = "\(banners.id)"
+            controller.hidesBottomBarWhenPushed = true
+            navigationController?.pushViewController(controller, animated: true)
+        }
+    }
     // MARK: - 通知方法
     
-     func workDetail(noti:NSNotification) {
+    func workDetail(noti:NSNotification) {
         
-       let data = noti.userInfo!["data"] as! Topics
-       
+        let data = noti.userInfo!["data"] as! Topics
+        
         let controller = WordDetailViewController.init(ID:"\(data.target_id)")
         controller.hidesBottomBarWhenPushed = true
-       
+        
         navigationController?.pushViewController(controller, animated: true)
     }
-
+    
     
 }
 

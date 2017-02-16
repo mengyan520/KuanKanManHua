@@ -254,7 +254,6 @@ open class SessionManager {
 
         do {
             originalRequest = try urlRequest.asURLRequest()
-           
             let originalTask = DataRequest.Requestable(urlRequest: originalRequest!)
 
             let task = try originalTask.task(session: session, adapter: adapter, queue: queue)
@@ -875,12 +874,16 @@ open class SessionManager {
                     return
                 }
 
-                let retrySucceeded = strongSelf.retry(request)
+                DispatchQueue.utility.after(timeDelay) {
+                    guard let strongSelf = self else { return }
 
-                if retrySucceeded, let task = request.task {
-                    strongSelf.delegate[task] = request
-                } else {
-                    if strongSelf.startRequestsImmediately { request.resume() }
+                    let retrySucceeded = strongSelf.retry(request)
+
+                    if retrySucceeded, let task = request.task {
+                        strongSelf.delegate[task] = request
+                    } else {
+                        if strongSelf.startRequestsImmediately { request.resume() }
+                    }
                 }
             }
         }

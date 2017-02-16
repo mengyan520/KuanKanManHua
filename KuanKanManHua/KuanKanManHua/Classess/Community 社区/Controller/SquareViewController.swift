@@ -56,10 +56,11 @@ class SquareViewController: BaseViewController {
         if self.currentTableView?.tag != 100 {
             type = 1
         }
-        
+        MMUtils.showLoading()
         NetworkTools.shardTools.requestL(method: .get, URLString: "https://api.kkmh.com/v1/feeds/feed_lists?catalog_type=\(type)&page_num=1", parameters: nil) { (response, error) in
             self.currentTableView?.mj_header.endRefreshing()
             // print(response)
+            MMUtils.hideLoading()
             if error == nil {
                 guard let object = response as? [String: AnyObject] else {
                     print("格式错误")
@@ -71,6 +72,9 @@ class SquareViewController: BaseViewController {
                 self.since = (model.data?.since)!
                 self.currentTableView?.mj_footer.isHidden = false
                 self.currentTableView?.reloadData()
+            }else {
+                MMUtils.hideLoading()
+                MMUtils.showError()
             }
         }
     }
@@ -81,8 +85,10 @@ class SquareViewController: BaseViewController {
             type = 1
         }
         print("https://api.kkmh.com/v1/feeds/feed_lists?catalog_type=\(type)&page_num=\(page_num)&since=\(since)")
+       
         NetworkTools.shardTools.requestL(method: .get, URLString: "https://api.kkmh.com/v1/feeds/feed_lists?catalog_type=\(type)&page_num=\(page_num)&since=\(since)", parameters: nil) { (response, error) in
             self.currentTableView?.mj_footer.endRefreshing()
+            
             if error == nil {
                 guard let object = response as? [String: AnyObject] else {
                     print("格式错误")
@@ -95,6 +101,9 @@ class SquareViewController: BaseViewController {
                 self.since = (model.data?.since)!
                 self.currentTableView?.reloadData()
                 
+            }else {
+               
+                MMUtils.showError()
             }
         }
         

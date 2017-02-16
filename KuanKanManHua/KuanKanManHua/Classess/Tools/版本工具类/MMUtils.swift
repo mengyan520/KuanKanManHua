@@ -7,28 +7,29 @@
 //
 
 import UIKit
+import SVProgressHUD
 class MMUtils: NSObject {
     
     //判断是否登录
     class func userHasLogin() -> Bool {
-       
+        
         if (getObjectForKey(key: "Cookies") == nil) {
             return false
         }
-   
-         
-        let cookies = NSKeyedUnarchiver.unarchiveObject(with: getObjectForKey(key: "Cookies") as! Data) as! [HTTPCookie]
-        for cookie in cookies {
-           
-            if cookie.name == "JSESSIONID"  {
-                
-                if cookie.value == ( MMUtils.getObjectForKey(key: "JSESSIONID") as! String ){
-                   return true
-                }
-            }
-        }
-
-        return false
+        
+        
+        //        let cookies = NSKeyedUnarchiver.unarchiveObject(with: getObjectForKey(key: "Cookies") as! Data) as! [HTTPCookie]
+        //        for cookie in cookies {
+        //
+        //            if cookie.name == "JSESSIONID"  {
+        //
+        //                if cookie.value == ( MMUtils.getObjectForKey(key: "JSESSIONID") as! String ){
+        //                   return true
+        //                }
+        //            }
+        //        }
+        
+        return true
     }
     //保存 字典
     class func saveUserData(data:[String:AnyObject]) {
@@ -67,9 +68,9 @@ class MMUtils: NSObject {
     class   func deleteObject(key:String){
         return  UserDefaults.standard.removeObject(forKey: key)
     }
-     // MARK: - cookies
+    // MARK: - cookies
     class func saveCookies() {
-       
+        
         let cookiesData = NSKeyedArchiver.archivedData(withRootObject: HTTPCookieStorage.shared.cookies as Any)
         for cookie in HTTPCookieStorage.shared.cookies! {
             self.setObject(data: cookie.value, key: cookie.name)
@@ -83,7 +84,7 @@ class MMUtils: NSObject {
         for cookie in cookies {
             HTTPCookieStorage.shared.setCookie(cookie)
         }
-       
+        
     }
     class func deleteCookies() {
         
@@ -92,6 +93,14 @@ class MMUtils: NSObject {
         }
         
     }
-        
-    
+    // MARK: - SVProgressHUD
+    class func showLoading() {
+      SVProgressHUD.show()
+    }
+    class func hideLoading() {
+        SVProgressHUD.dismiss()
+    }
+    class func showError() {
+        SVProgressHUD.showError(withStatus: "无网络连接")
+    }
 }

@@ -7,7 +7,11 @@
 //https://api.kkmh.com/v1/daily/comic_lists/0?gender=1&since=0
 
 import UIKit
+import SDWebImage
 private let ID = "cell"
+private var downCount = 0
+private var Count = 0
+private var isDown = false
 class MeTableViewController: UITableViewController {
     
     private lazy var titleArray = [[String]]()
@@ -26,7 +30,7 @@ class MeTableViewController: UITableViewController {
         tableView.layer.insertSublayer(backlayer, at: 0)
         let tap = UITapGestureRecognizer.init(target: self, action: #selector(self.tapIconView))
         self.headerView.iconView.addGestureRecognizer(tap)
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: ID)
+        //  tableView.register(UITableViewCell.self, forCellReuseIdentifier: ID)
         titleArray = [["我的消息"],["我的关注","我的收藏"],["快看商城","我的订单"],["浏览历史","智能缓存"],["设置"]];
         imageArray = [["ic_me_item_message"],["ic_me_item_collection_topic","ic_me_item_collection_comic"],["ic_me_item_mall","ic_me_item_order"],["ic_me_item_history","ic_me_item_download_comic"],["ic_me_item_setting"]];
         NotificationCenter.default.addObserver(self, selector: #selector(self.reloadUser), name: NSNotification.Name.init(rawValue: "UserLogin"), object: nil)
@@ -52,11 +56,19 @@ class MeTableViewController: UITableViewController {
     
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: ID, for: indexPath)
-        cell.textLabel?.text = titleArray[indexPath.section][indexPath.row]
-        cell.accessoryType = .disclosureIndicator
-        cell.imageView?.image = UIImage.init(named: imageArray[indexPath.section][indexPath.row] )
-        return cell
+        var cell = tableView.dequeueReusableCell(withIdentifier: ID)
+        if (cell == nil) {
+            cell = UITableViewCell.init(style: .subtitle, reuseIdentifier: ID)
+        }
+        cell?.textLabel?.text = titleArray[indexPath.section][indexPath.row]
+        cell?.accessoryType = .disclosureIndicator
+        cell?.imageView?.image = UIImage.init(named: imageArray[indexPath.section][indexPath.row] )
+        cell?.detailTextLabel?.text = nil
+        if indexPath.section == 3 && indexPath.row == 1 {
+            cell?.detailTextLabel?.textColor = LIGHTGRAY_COLOR
+            cell?.detailTextLabel?.text = "下载今天已更新漫画"
+        }
+        return cell!
     }
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
@@ -75,6 +87,20 @@ class MeTableViewController: UITableViewController {
                 
                 controller.hidesBottomBarWhenPushed = true
                 navigationController?.pushViewController(controller, animated: true)
+                return
+            }
+            if indexPath.section == 3 && indexPath.row == 1 {
+                let cell = tableView.cellForRow(at: indexPath)
+                cell?.accessoryView = UIImageView.init(imageName: "ic_personal_progress bar_downloading")
+               
+                
+                if isDown {
+                  //   SDWebImageDownloader.shared().re                    isDown = false
+                    print("df")
+                }else {
+                     isDown = true
+                self.downLoad()
+                }
                 return
             }
             if indexPath.section > 3 {
@@ -112,6 +138,89 @@ class MeTableViewController: UITableViewController {
     func reloadUser() {
         self.headerView.reloadUser()
     }
+    //下载漫画
+    func downLoad()  {
+        //请求首页今天更新漫画
+       
+        NetworkTools.shardTools.requestL(method: .get, URLString:"https://api.kkmh.com/v1/daily/comic_lists/0?gender=0&since=0" , parameters: nil) { (response, error) in
+            
+            MMUtils.hideLoading()
+            
+            if error == nil {
+                guard let object = response as? [String: AnyObject] else {
+                    print("格式错误")
+                    return
+                }
+                let model = Model.init(dict: object)
+                Count = (model.data?.comics?.count)!
+                if model.code == 200 {
+                    for comics in (model.data?.comics)! {
+                        
+                        
+                        NetworkTools.shardTools.requestL(method: .get, URLString:"https://api.kkmh.com/v2/comic/\(comics.id)?", parameters: nil) {(result, error) in
+                            
+                            if error == nil {
+                                guard let object = result! as? [String: AnyObject] else {
+                                    print("格式错误")
+                                    return
+                                }
+                                let model = Model.init(dict: object)
+                                self.cacheSingleImage(imgs: (model.data?.images)!)
+                            }else {
+                                MMUtils.hideLoading()
+                                MMUtils.showError()
+                            }
+                            
+                        }
+                    }
+                }
+                
+            }else {
+                MMUtils.showError()
+            }
+        }
+    }
+    //缓存单张图片
+    private func cacheSingleImage(imgs:[String]) {
+        
+        let group = DispatchGroup()
+        
+        var dataLength = 0
+        
+        for url in imgs {
+            group.enter()
+            SDWebImageManager.shared().downloadImage(
+                with: URL.init(string: url),
+                options: [],
+                progress: nil,
+                completed: { (image, _, _, _, _) -> Void in
+                    
+                    // 单张图片下载完成 － 计算长度
+                    if let img = image,
+                        let data = UIImagePNGRepresentation(img) {
+                        
+                        // 累加二进制数据的长度
+                        dataLength += data.count
+                    }
+                    
+                    
+                    group.leave()
+            })
+        }
+        
+        group.notify(queue: DispatchQueue.main) {
+            print("缓存完成 \(dataLength / 1024 / 1024) M")
+            downCount = downCount + 1
+            if downCount == Count {
+                let index = IndexPath.init(row: 1, section: 3)
+                let cell = self.tableView.cellForRow(at: index)
+                cell?.accessoryView = nil
+                
+            }
+        }
+    }
+    
+    
     // MARK: - 懒加载
     private lazy var headerView:HeaderView = {
         let view = HeaderView.init(frame: CGRect.init(x: 0, y: 0, width: SCREEN_WIDTH, height: 200))
@@ -167,6 +276,7 @@ fileprivate class HeaderView: UIView {
             iconView.image = UIImage.init(named: "ic_personal_avatar")
             loginlbl.text = "登录"
         }
+        
     }
     // 懒加载
     private lazy var backView:UIView = {

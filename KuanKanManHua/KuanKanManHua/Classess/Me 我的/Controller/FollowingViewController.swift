@@ -184,6 +184,7 @@ extension FollowingViewController : UIScrollViewDelegate,UITableViewDelegate,UIT
         if tableView == rightTableView {
             return 60.5
         }
+        
         return 100.5
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -240,5 +241,5 @@ extension FollowingViewController : UIScrollViewDelegate,UITableViewDelegate,UIT
         
     }
     
-    
+   
 }

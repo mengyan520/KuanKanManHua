@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SDWebImage
 protocol CartoonTableViewDel:NSObjectProtocol {
     
     func didSelectedBtn(sender:UIButton,data:ModelData)
@@ -81,8 +82,8 @@ extension CartoonTableView:UITableViewDelegate,UITableViewDataSource {
         }
     }
     //func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-       // del?.didSelectedCell()
-   // }
+    // del?.didSelectedCell()
+    // }
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if section == 1 {
             let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: "header") as! CommentSectionHeaderView
@@ -97,9 +98,9 @@ extension CartoonTableView:UITableViewDelegate,UITableViewDataSource {
             let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: "foot") as! CartoonSectionFootView
             view.data = data
             view.btnClickBlcok(btnblock: {[weak self] (sender) in
-               self?.del?.didSelectedBtn(sender: sender, data: (self?.data)!)
+                self?.del?.didSelectedBtn(sender: sender, data: (self?.data)!)
             })
-        return view
+            return view
         }
         return nil
     }
@@ -117,6 +118,18 @@ extension CartoonTableView:UITableViewDelegate,UITableViewDataSource {
 fileprivate class cartoonCell:UITableViewCell {
     var url:String? {
         didSet {
+            
+            // 利用 SDWebImage 检查本地的缓存图像 - key 就是 url 的完整字符串
+            // 问：SDWebImage 是如何设置缓存图片的文件名 完整 URL 字符串 -> `MD5`
+            // if let key = viewModle?.thumbnailUrls?.first?.absoluteString {
+            
+            if let image = SDWebImageManager.shared().imageCache.imageFromDiskCache(forKey: url!) {
+                print("ff")
+                imgView.image = image
+                return
+            }
+            
+            
             imgView.sd_setImage(with: URL.init(string: url!), placeholderImage: UIImage.init(named: "ic_common_placeholder_comic_detail"), options: [.retryFailed,.refreshCached]) { (image, error, type, url) in
                 
                 

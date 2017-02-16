@@ -122,7 +122,7 @@ extension RecommendCollectionView:UICollectionViewDelegate,UICollectionViewDataS
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
        
-    POSTNOTIFICATION(name: "wordDetail", data: ["data":dataArray![indexPath.item]])
+        POSTNOTIFICATION(name: "wordDetail", data: ["data":dataArray![indexPath.item]])
     }
     
     //行 size

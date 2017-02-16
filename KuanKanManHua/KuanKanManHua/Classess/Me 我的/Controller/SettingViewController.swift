@@ -18,7 +18,7 @@ class SettingViewController: UITableViewController {
         
         title = "设置"
         arrayM = [["赏个好评","意见反馈","推荐给朋友"],["清理缓存","帮助中心","关于快看","用户协议"]]
-            cache = FileTool .folderSize(path: PATH!)
+        cache = FileTool .folderSize(path: PATH!)
         
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -63,7 +63,7 @@ class SettingViewController: UITableViewController {
         return 20
     }
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        loginOut()
+        
         if indexPath.section == 1 && indexPath.row == 0 {
             
             
@@ -73,6 +73,8 @@ class SettingViewController: UITableViewController {
                 tableView.reloadRows(at: [indexPath], with:.none)
                 SVProgressHUD .showSuccess(withStatus: "清除成功")
             }
+        }else {
+            loginOut()
         }
     }
     // MARK: - 退出登录
@@ -81,7 +83,7 @@ class SettingViewController: UITableViewController {
         ];
         
         NetworkTools.shardTools.requestL(method: .post, URLString: "https://api.kkmh.com/v1/device/push_info", parameters: parameters) { (response, error) in
-          //  print(response)
+            //  print(response)
             if error == nil {
                 guard let object = response as? [String: AnyObject] else {
                     print("格式错误")

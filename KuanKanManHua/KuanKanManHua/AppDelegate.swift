@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import JPFPSStatus
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -24,6 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.makeKeyAndVisible()
         NotificationCenter.default.addObserver(self, selector: #selector(self.login), name: NSNotification.Name.init(rawValue: "login"), object: nil)
         SQLiteManager.sharedManager.createTable(name: "history")
+        JPFPSStatus.sharedInstance().open()
         return true
     }
     //MARK:- 控制器

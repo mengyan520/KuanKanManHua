@@ -5,10 +5,12 @@
 //  Created by 马鸣 on 2016/12/4.
 //  Copyright © 2016年 马鸣. All rights reserved.
 //https://api.kkmh.com/v1/daily/comic_lists/0?gender=1&sa_event=eyJldmVudCI6IlJlYWRIb21lUGFnZSIsInByb3BlcnRpZXMiOnsiVHJpZ2dlclBhZ2UiOiJIb21lUGFnZSIsIiRvc192ZXJzaW9uIjoiMTAuMiIsIkZyb21Ib21lcGFnZVVwZGF0ZURhdGUiOjAsIiRjYXJyaWVyIjoi5Lit5Zu956e75YqoIiwiJG9zIjoiaU9TIiwiJHNjcmVlbl9oZWlnaHQiOjEzMzQsIiRsaWIiOiJpT1MtbmV0IiwiJG1vZGVsIjoiaVBob25lIiwiJHNjcmVlbl93aWR0aCI6NzUwLCIkd2lmaSI6dHJ1ZSwiR2VuZGVyVHlwZSI6IueUt-eJiCIsIiRhcHBfdmVyc2lvbiI6IjMuNi4zIiwiJG1hbnVmYWN0dXJlciI6IkFwcGxlIiwiJG5ldHdvcmtfdHlwZSI6IldJRkkiLCJhYnRlc3RfZ3JvdXAiOjcwLCJIb21lcGFnZVRhYk5hbWUiOiLng63pl6giLCJIb21lcGFnZVVwZGF0ZURhdGUiOjB9LCJwcm9qZWN0Ijoia3VhaWthbl9hcHAiLCJkaXN0aW5jdF9pZCI6Imk6M0Y0NDlEQjYtNTNGNS00OTNDLTlERTUtN0U3MUNGRDkzNkQ4IiwidGltZSI6MTQ4NDIwNDMyNjE5OCwidHlwZSI6InRyYWNrIn0%3D&since=0
+//https://api.kkmh.com/v1/daily/comic_lists/0?gender=0&sa_event=eyJldmVudCI6IlJlYWRIb21lUGFnZSIsInByb3BlcnRpZXMiOnsiVHJpZ2dlclBhZ2UiOiJIb21lUGFnZSIsIiRvc192ZXJzaW9uIjoiMTAuMi4xIiwiRnJvbUhvbWVwYWdlVXBkYXRlRGF0ZSI6MCwiJGNhcnJpZXIiOiLkuK3lm73np7vliqgiLCIkb3MiOiJpT1MiLCIkc2NyZWVuX2hlaWdodCI6MTMzNCwiJGxpYiI6ImlPUy1uZXQiLCIkbW9kZWwiOiJpUGhvbmUiLCIkc2NyZWVuX3dpZHRoIjo3NTAsIiR3aWZpIjp0cnVlLCJHZW5kZXJUeXBlIjoi5aWz54mIIiwiJGFwcF92ZXJzaW9uIjoiMy44LjMiLCIkbWFudWZhY3R1cmVyIjoiQXBwbGUiLCIkbmV0d29ya190eXBlIjoiV0lGSSIsImFidGVzdF9ncm91cCI6NzAsIkhvbWVwYWdlVGFiTmFtZSI6IueDremXqCIsIkhvbWVwYWdlVXBkYXRlRGF0ZSI6MH0sInByb2plY3QiOiJrdWFpa2FuX2FwcCIsImRpc3RpbmN0X2lkIjoiNDY5Mzg1MCIsInRpbWUiOjE0ODcxNDM2NzEzMTIsInR5cGUiOiJ0cmFjayJ9&since=1487113805
 //https://api.kkmh.com/v1/fav/timeline?sa_event=eyJldmVudCI6IlJlYWRIb21lUGFnZSIsInByb3BlcnRpZXMiOnsiVHJpZ2dlclBhZ2UiOiJIb21lUGFnZSIsIiRvc192ZXJzaW9uIjoiMTAuMiIsIkZyb21Ib21lcGFnZVVwZGF0ZURhdGUiOjAsIiRjYXJyaWVyIjoi5Lit5Zu956e75YqoIiwiJG9zIjoiaU9TIiwiJHNjcmVlbl9oZWlnaHQiOjEzMzQsIiRsaWIiOiJpT1MtbmV0IiwiJG1vZGVsIjoiaVBob25lIiwiJHNjcmVlbl93aWR0aCI6NzUwLCIkd2lmaSI6dHJ1ZSwiR2VuZGVyVHlwZSI6IueUt-eJiCIsIiRhcHBfdmVyc2lvbiI6IjMuNi4zIiwiJG1hbnVmYWN0dXJlciI6IkFwcGxlIiwiJG5ldHdvcmtfdHlwZSI6IldJRkkiLCJhYnRlc3RfZ3JvdXAiOjcwLCJIb21lcGFnZVRhYk5hbWUiOiLlhbPms6gifSwicHJvamVjdCI6Imt1YWlrYW5fYXBwIiwiZGlzdGluY3RfaWQiOiI0NjkzODUwIiwidGltZSI6MTQ4NDI4OTQzOTIzNywidHlwZSI6InRyYWNrIn0%3D&since=0 关注
 import UIKit
 import MJRefresh
-import Alamofire
+
+
 let cellID = "Homecell"
 class HomeTableViewController: UITableViewController,HomeTableViewCellDel {
     var time:String = "0"
@@ -25,14 +27,17 @@ class HomeTableViewController: UITableViewController,HomeTableViewCellDel {
         tableView.estimatedRowHeight = 200
         
         tableView.backgroundColor = WHITE_COLOR
+        
         if isLeft {
-            if MMUtils.userHasLogin() {
+            
+            if MMUtils.userHasLogin()  {
                 loadData() 
             }else {
              tableView.insertSubview(backLoginView, at: 0)
             }
             NotificationCenter.default.addObserver(self, selector: #selector(self.reloadUser), name: NSNotification.Name.init(rawValue: "UserLogin"), object: nil)
         }else {
+           
           loadData()
         }
     }
@@ -103,14 +108,18 @@ class HomeTableViewController: UITableViewController,HomeTableViewCellDel {
     }
     //MARK: - 网络请求
     func loadData()  {
-        var url = "https://api.kkmh.com/v1/daily/comic_lists/\(time)?gender=1&sa_event=eyJldmVudCI6IlJlYWRIb21lUGFnZSIsInByb3BlcnRpZXMiOnsiVHJpZ2dlclBhZ2UiOiJIb21lUGFnZSIsIiRvc192ZXJzaW9uIjoiMTAuMiIsIkZyb21Ib21lcGFnZVVwZGF0ZURhdGUiOjAsIiRjYXJyaWVyIjoi5Lit5Zu956e75YqoIiwiJG9zIjoiaU9TIiwiJHNjcmVlbl9oZWlnaHQiOjEzMzQsIiRsaWIiOiJpT1MtbmV0IiwiJG1vZGVsIjoiaVBob25lIiwiJHNjcmVlbl93aWR0aCI6NzUwLCIkd2lmaSI6dHJ1ZSwiR2VuZGVyVHlwZSI6IueUt-eJiCIsIiRhcHBfdmVyc2lvbiI6IjMuNi4zIiwiJG1hbnVmYWN0dXJlciI6IkFwcGxlIiwiJG5ldHdvcmtfdHlwZSI6IldJRkkiLCJhYnRlc3RfZ3JvdXAiOjcwLCJIb21lcGFnZVRhYk5hbWUiOiLng63pl6giLCJIb21lcGFnZVVwZGF0ZURhdGUiOjB9LCJwcm9qZWN0Ijoia3VhaWthbl9hcHAiLCJkaXN0aW5jdF9pZCI6Imk6M0Y0NDlEQjYtNTNGNS00OTNDLTlERTUtN0U3MUNGRDkzNkQ4IiwidGltZSI6MTQ4NDIwNDMyNjE5OCwidHlwZSI6InRyYWNrIn0%3D&since=0"
+        
+        MMUtils.showLoading()
+       
+        var url = "https://api.kkmh.com/v1/daily/comic_lists/\(time)?gender=0&sa_event=eyJldmVudCI6IlJlYWRIb21lUGFnZSIsInByb3BlcnRpZXMiOnsiVHJpZ2dlclBhZ2UiOiJIb21lUGFnZSIsIiRvc192ZXJzaW9uIjoiMTAuMiIsIkZyb21Ib21lcGFnZVVwZGF0ZURhdGUiOjAsIiRjYXJyaWVyIjoi5Lit5Zu956e75YqoIiwiJG9zIjoiaU9TIiwiJHNjcmVlbl9oZWlnaHQiOjEzMzQsIiRsaWIiOiJpT1MtbmV0IiwiJG1vZGVsIjoiaVBob25lIiwiJHNjcmVlbl93aWR0aCI6NzUwLCIkd2lmaSI6dHJ1ZSwiR2VuZGVyVHlwZSI6IueUt-eJiCIsIiRhcHBfdmVyc2lvbiI6IjMuNi4zIiwiJG1hbnVmYWN0dXJlciI6IkFwcGxlIiwiJG5ldHdvcmtfdHlwZSI6IldJRkkiLCJhYnRlc3RfZ3JvdXAiOjcwLCJIb21lcGFnZVRhYk5hbWUiOiLng63pl6giLCJIb21lcGFnZVVwZGF0ZURhdGUiOjB9LCJwcm9qZWN0Ijoia3VhaWthbl9hcHAiLCJkaXN0aW5jdF9pZCI6Imk6M0Y0NDlEQjYtNTNGNS00OTNDLTlERTUtN0U3MUNGRDkzNkQ4IiwidGltZSI6MTQ4NDIwNDMyNjE5OCwidHlwZSI6InRyYWNrIn0%3D&since=0"
         if isLeft {
             url = "https://api.kkmh.com/v1/fav/timeline?sa_event=eyJldmVudCI6IlJlYWRIb21lUGFnZSIsInByb3BlcnRpZXMiOnsiVHJpZ2dlclBhZ2UiOiJIb21lUGFnZSIsIiRvc192ZXJzaW9uIjoiMTAuMiIsIkZyb21Ib21lcGFnZVVwZGF0ZURhdGUiOjAsIiRjYXJyaWVyIjoi5Lit5Zu956e75YqoIiwiJG9zIjoiaU9TIiwiJHNjcmVlbl9oZWlnaHQiOjEzMzQsIiRsaWIiOiJpT1MtbmV0IiwiJG1vZGVsIjoiaVBob25lIiwiJHNjcmVlbl93aWR0aCI6NzUwLCIkd2lmaSI6dHJ1ZSwiR2VuZGVyVHlwZSI6IueUt-eJiCIsIiRhcHBfdmVyc2lvbiI6IjMuNi4zIiwiJG1hbnVmYWN0dXJlciI6IkFwcGxlIiwiJG5ldHdvcmtfdHlwZSI6IldJRkkiLCJhYnRlc3RfZ3JvdXAiOjcwLCJIb21lcGFnZVRhYk5hbWUiOiLlhbPms6gifSwicHJvamVjdCI6Imt1YWlrYW5fYXBwIiwiZGlzdGluY3RfaWQiOiI0NjkzODUwIiwidGltZSI6MTQ4NDI4OTQzOTIzNywidHlwZSI6InRyYWNrIn0%3D&since=0"
         }
       
         NetworkTools.shardTools.requestL(method: .get, URLString:url , parameters: nil) { (response, error) in
             self.tableView?.mj_header.endRefreshing()
-           
+            MMUtils.hideLoading()
+            
             if error == nil {
                 guard let object = response as? [String: AnyObject] else {
                     print("格式错误")
@@ -122,6 +131,10 @@ class HomeTableViewController: UITableViewController,HomeTableViewCellDel {
                     self.tableView.reloadData()
                 }
                 
+            }else {
+               
+                MMUtils.hideLoading()
+                MMUtils.showError()
             }
         }
     }

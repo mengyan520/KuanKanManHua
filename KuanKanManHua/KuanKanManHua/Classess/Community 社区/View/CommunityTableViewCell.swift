@@ -17,8 +17,8 @@ class CommunityTableViewCell: UITableViewCell {
         didSet {
             let url =   ((data?.user?.avatar_url)! as NSString).replacingOccurrences(of: "w180.w", with: "w180")
             
-            iconView.sd_setImage(with: URL.init(string: url), placeholderImage:UIImage.init(named: "ic_personal_headportrait"), options: [.retryFailed,.refreshCached]) { (image, error, type, url) in
-                
+            iconView.sd_setImage(with: URL.init(string: url), placeholderImage:UIImage.init(named: "ic_personal_headportrait"), options: [.retryFailed,.refreshCached]) {[weak self] (image, error, type, url) in
+                 //self?.iconView.addCorner(radius: 20)
                 
             }
             namelbl.text = data?.user!.nickname
@@ -51,6 +51,9 @@ class CommunityTableViewCell: UITableViewCell {
     // MARK: - 构造方法
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        layer.shouldRasterize = true
+        layer.rasterizationScale =  UIScreen.main.scale
+        layer.drawsAsynchronously = true
         setUI()
         
     }
@@ -172,7 +175,7 @@ class CommunityTableViewCell: UITableViewCell {
     private lazy var iconView:UIImageView = {
         let view = UIImageView()
         view.layer.cornerRadius = 20
-        view.clipsToBounds = true
+        view.layer.masksToBounds = true
         return view
     }()
     //标识

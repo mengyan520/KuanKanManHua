@@ -77,6 +77,7 @@ class CategoryViewController: BaseViewController {
     }
     //MARK: - 网络请求
     func loadData()  {
+        MMUtils.showLoading()
          var url = "https://api.kkmh.com/v1/topic_new/lists/get_by_tag?count=20&since=0&tag=0"
         if  titles != nil {
             url = "https://api.kkmh.com/v1/topic_new/lists/get_by_tag?count=20&since=0&tag=\(titles![(currentTableView?.tag)! - 100].tag_id)"
@@ -84,6 +85,7 @@ class CategoryViewController: BaseViewController {
        
         NetworkTools.shardTools.requestL(method: .get, URLString: url, parameters: nil) { (response, error) in
             self.currentTableView?.mj_header.endRefreshing()
+             MMUtils.hideLoading()
             if error == nil {
                 guard let object = response as? [String: AnyObject] else {
                     print("格式错误")
@@ -97,6 +99,9 @@ class CategoryViewController: BaseViewController {
                self.currentTableView?.mj_footer.isHidden = false
                self.currentTableView?.dataArray = (model.data?.topics)!
                 self.currentTableView?.reloadData()
+            }else {
+               MMUtils.hideLoading()
+                MMUtils.showError()
             }
         }
     }
@@ -106,9 +111,10 @@ class CategoryViewController: BaseViewController {
         if  titles != nil {
             url = "https://api.kkmh.com/v1/topic_new/lists/get_by_tag?count=20&since=\(since)&tag=\(titles![(currentTableView?.tag)! - 100].tag_id)"
         }
-        
+         MMUtils.showLoading()
         NetworkTools.shardTools.requestL(method: .get, URLString: url, parameters: nil) { (response, error) in
             self.currentTableView?.mj_footer.endRefreshing()
+             MMUtils.hideLoading()
             if error == nil {
                 guard let object = response as? [String: AnyObject] else {
                     print("格式错误")
@@ -124,6 +130,9 @@ class CategoryViewController: BaseViewController {
                      self.currentTableView?.mj_footer.isHidden = true
                 
                 }
+            }else {
+                MMUtils.hideLoading()
+                MMUtils.showError()
             }
         }
     }

@@ -25,9 +25,10 @@ class HomeViewController: BaseViewController {
         // for i in 0..<2 {
         
         //  if i == 1 {
-         let vc = HomeTableViewController()
+        let vc = HomeTableViewController()
         addChildViewController(vc)
-         vc.isLeft = true
+        vc.isLeft = true
+        
         vc.view.frame = CGRect.init(x: 0, y: 0, width: SCREEN_WIDTH, height:SCREEN_HEIGHT-64-49)
         backscrollView.addSubview(vc.view)
         let rightView = UIView.init(frame: CGRect.init(x: SCREEN_WIDTH * 1, y: 0, width: SCREEN_WIDTH, height:SCREEN_HEIGHT-64-49))
@@ -43,7 +44,7 @@ class HomeViewController: BaseViewController {
         for i in 0..<7 {
             let vc = HomeTableViewController()
             addChildViewController(vc)
-                        vc.time = times[i]
+            vc.time = times[i]
             if i == 6 {
                 let btn = (Titlescrollview.subviews[NSInteger(i)] as! UIButton)
                 
@@ -65,7 +66,7 @@ class HomeViewController: BaseViewController {
         }
         backscrollView.setContentOffset(CGPoint.init(x: SCREEN_WIDTH, y: 0), animated: false)
         
-               
+        
     }
     
     override func didReceiveMemoryWarning() {
@@ -132,6 +133,11 @@ extension HomeViewController:UIScrollViewDelegate,NavTopDel{
     func NavTopClick(sender: UISegmentedControl) {
         
         backscrollView.setContentOffset(CGPoint.init(x: SCREEN_WIDTH * CGFloat(sender.selectedSegmentIndex), y: 0), animated: true)
+//        let vc = self.childViewControllers[0]
+//        
+//        if (vc.view.superview != nil) {
+//            return
+//        }
         
     }
     
