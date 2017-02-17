@@ -76,7 +76,7 @@ class WordDetailViewController: BaseViewController,WordDetailTableViewDel {
     func loadData(sort:NSInteger) {
         
         NetworkTools.shardTools.requestL(method: .get, URLString:"http://api.kuaikanmanhua.com/v1/topics/\(workID!)?sort=\(sort)", parameters:nil) {(result, error) in
-            print(result)
+           // print(result)
             if (error == nil) {
                 guard let object = result! as? [String: AnyObject] else {
                     print("格式错误")

@@ -91,7 +91,7 @@ class SettingViewController: UITableViewController {
                 }
                 let model = Model.init(dict: object)
                 if model.code == 200 {
-                    
+                    SVProgressHUD.showSuccess(withStatus: "退出成功")
                     MMUtils.deleteObject(key: "Cookies")
                     MMUtils.deleteObject(key: "avatar_url")
                     MMUtils.deleteObject(key: "nickname")
@@ -99,7 +99,7 @@ class SettingViewController: UITableViewController {
                     MMUtils.deleteObject(key: "session")
                     POSTNOTIFICATION(name: "UserLogin", data: nil)
                     MMUtils.deleteCookies()
-                    SVProgressHUD.showSuccess(withStatus: "退出成功")
+                   
                 }
                 
             }

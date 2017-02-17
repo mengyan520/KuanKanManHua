@@ -196,7 +196,7 @@ private class  PictureViewCell: UICollectionViewCell {
         // 设置填充模式
         iv.contentMode = UIViewContentMode.scaleAspectFill
         // 需要裁切图片
-       // iv.clipsToBounds = true
+       iv.clipsToBounds = true
         
         return iv
     }()

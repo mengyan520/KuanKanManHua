@@ -72,6 +72,13 @@ class MeTableViewController: UITableViewController {
     }
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        if indexPath.section > 3 {
+            let controller = SettingViewController()
+            
+            controller.hidesBottomBarWhenPushed = true
+            navigationController?.pushViewController(controller, animated: true)
+            return
+        }
         if indexPath.section >= 3 || (indexPath.section == 2 && indexPath.row == 0)  {
             if indexPath.section == 2 && indexPath.row == 0 {
                 
@@ -103,13 +110,7 @@ class MeTableViewController: UITableViewController {
                 }
                 return
             }
-            if indexPath.section > 3 {
-                let controller = SettingViewController()
-                
-                controller.hidesBottomBarWhenPushed = true
-                navigationController?.pushViewController(controller, animated: true)
-                return
-            }
+            
         }
         if MMUtils.userHasLogin() {
             if indexPath.section == 1 && indexPath.row == 0 {
