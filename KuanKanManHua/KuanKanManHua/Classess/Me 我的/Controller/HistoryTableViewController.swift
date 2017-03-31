@@ -12,7 +12,7 @@ class HistoryTableViewController: UITableViewController {
     var dataArray = [Info]()
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+      
         title = "浏览历史"
         tableView.register(HistoryTableViewCell.self, forCellReuseIdentifier: ID)
         tableView.estimatedRowHeight = 200
@@ -54,7 +54,7 @@ class HistoryTableViewController: UITableViewController {
     }
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let controller = CartoonDetailViewController.init(ID: dataArray[indexPath.row].id, name: dataArray[indexPath.row].title!)
-        
+     
         controller.topicID = "\(dataArray[indexPath.row].topic_id)"
         controller.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(controller, animated: true)

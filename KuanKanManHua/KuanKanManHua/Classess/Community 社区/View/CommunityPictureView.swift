@@ -67,7 +67,7 @@ extension CommunityPictureView: UICollectionViewDataSource, UICollectionViewDele
         let cell = collectionView.dequeueReusableCell( withReuseIdentifier: PictureCellId, for: indexPath) as!  PictureViewCell
         
         cell.imageURL = URL.init(string:(data?.image_base)! +  (data?.images![indexPath.item])! )
-        
+        cell.backgroundColor = WHITE_COLOR
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -78,7 +78,7 @@ extension CommunityPictureView: UICollectionViewDataSource, UICollectionViewDele
         for i in 0..<data!.images!.count {
             
             let photo = MJPhoto.init()
-          
+            
             photo.url = URL.init(string:(data?.image_base)! +  (data?.images![i])!)
             photo.srcImageView = cell.iconView
             photos.add(photo)
@@ -88,7 +88,7 @@ extension CommunityPictureView: UICollectionViewDataSource, UICollectionViewDele
         brower.currentPhotoIndex = UInt(indexPath.item)
         
         brower.show()
-    
+        
         
     }
 }
@@ -123,9 +123,9 @@ extension CommunityPictureView {
         
         // 2> 一张图片
         if count == 1 {
-           let size = CGSize(width: (SCREEN_WIDTH - 5 * 2)*0.66, height:  (SCREEN_WIDTH - 5 * 2)*0.66 + 0.01) 
+            let size = CGSize(width: (SCREEN_WIDTH - 5 * 2)*0.66, height:  (SCREEN_WIDTH - 5 * 2)*0.66 + 0.01)
             
-                       
+            
             // 内部图片的大小
             layout.itemSize = size
             
@@ -160,16 +160,11 @@ private class  PictureViewCell: UICollectionViewCell {
     
     var imageURL: URL? {
         didSet {
-          //  print(imageURL)
-            iconView.sd_setImage(with: imageURL ,
-                                        placeholderImage: UIImage.init(named: "ic_common_cell_bg"),                      // 在调用 OC 的框架时，可/必选项不严格
-                options: [SDWebImageOptions.retryFailed,    // SD 超时时长 15s，一旦超时会记入黑名单
-                    SDWebImageOptions.refreshCached])       // 如果 URL 不变，图像变
+            // print(imageURL)
+           iconView.sd_setImage(with: imageURL)
             
-                    }
-        
+        }
     }
-    
     // MARK: - 构造函数
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -184,7 +179,8 @@ private class  PictureViewCell: UICollectionViewCell {
     private func setupUI() {
         // 1. 添加控件
         contentView.addSubview(iconView)
-       
+        
+        
         iconView.snp.makeConstraints { (make) -> Void in
             make.edges.equalTo(contentView.snp.edges)
         }
@@ -196,10 +192,12 @@ private class  PictureViewCell: UICollectionViewCell {
         // 设置填充模式
         iv.contentMode = UIViewContentMode.scaleAspectFill
         // 需要裁切图片
-       iv.clipsToBounds = true
-        
+        iv.clipsToBounds = true
+        iv.backgroundColor = UIColor.init(white: 0.8, alpha: 1.0)
+        iv.layer.borderColor = iv.backgroundColor?.cgColor;
+        iv.layer.borderWidth = 1;
         return iv
     }()
-   
+    
 }
 

@@ -109,7 +109,7 @@ class CommentCell: UITableViewCell {
         contentlbl.snp.makeConstraints { (make) in
             make.top.equalTo(timelbl.snp.bottom).offset(10)
             make.left.equalTo(namelbl.snp.left)
-            make.width.equalTo(SCREEN_WIDTH-75)
+            make.right.equalTo(contentView.snp.right).offset(-10)
             
         }
         replyBtn.snp.makeConstraints { (make) in
@@ -181,7 +181,8 @@ class CommentCell: UITableViewCell {
     //正文
     private lazy var contentlbl:UILabel = {
         
-        let lbl = UILabel.init(title: "昵称", fontSize: 14, color: BLACK_COLOR, screenInset: 10)
+        let lbl = UILabel.init(title: "昵称", fontSize: 14, color: BLACK_COLOR, screenInset: 0)
+          lbl.textAlignment = .left
         return lbl
     }()
     //点赞

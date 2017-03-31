@@ -7,7 +7,8 @@
 //
 
 import UIKit
-import SVProgressHUD
+
+import SDWebImage
 class SettingViewController: UITableViewController {
     let ID:String = "cell"
     var arrayM = [[String]]()
@@ -18,7 +19,7 @@ class SettingViewController: UITableViewController {
         
         title = "设置"
         arrayM = [["赏个好评","意见反馈","推荐给朋友"],["清理缓存","帮助中心","关于快看","用户协议"]]
-        cache = FileTool .folderSize(path: PATH!)
+        
         
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -50,7 +51,11 @@ class SettingViewController: UITableViewController {
         let arr = arrayM[indexPath.section]
         cell!.textLabel?.text = arr[indexPath.row]
         if indexPath.section == 1 && indexPath.row == 0 {
-            cell?.detailTextLabel?.text = String(format: "%.2lfM",cache!)
+            SDImageCache.shared().calculateSize { (fileCount, totalSize) in
+                self.cache = Double(totalSize) / 1024 / 1024
+                 cell?.detailTextLabel?.text = String(format: "%.1lf M",self.cache!)
+            }
+           
             cell?.accessoryType = .none
         }else {
             cell?.accessoryType = .disclosureIndicator
@@ -65,14 +70,14 @@ class SettingViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         if indexPath.section == 1 && indexPath.row == 0 {
-            
-            
-            FileTool .cleanFolder(path: PATH!) {
-                
-                self.cache = FileTool .folderSize(path: PATH!)
+           
+            SDImageCache.shared().clearDisk(onCompletion: {
+                self.cache  = 0.0
                 tableView.reloadRows(at: [indexPath], with:.none)
-                SVProgressHUD .showSuccess(withStatus: "清除成功")
-            }
+                JGPHUD.showSuccessWithStatus(status: "清除成功", view: self.view)
+            })
+            
+           
         }else {
             loginOut()
         }
@@ -83,7 +88,7 @@ class SettingViewController: UITableViewController {
         ];
         
         NetworkTools.shardTools.requestL(method: .post, URLString: "https://api.kkmh.com/v1/device/push_info", parameters: parameters) { (response, error) in
-            //  print(response)
+            // print(response)
             if error == nil {
                 guard let object = response as? [String: AnyObject] else {
                     print("格式错误")
@@ -91,14 +96,15 @@ class SettingViewController: UITableViewController {
                 }
                 let model = Model.init(dict: object)
                 if model.code == 200 {
-                    SVProgressHUD.showSuccess(withStatus: "退出成功")
+                   JGPHUD.showSuccessWithStatus(status: "退出成功", view: self.view)
+                   
                     MMUtils.deleteObject(key: "Cookies")
                     MMUtils.deleteObject(key: "avatar_url")
                     MMUtils.deleteObject(key: "nickname")
                     MMUtils.deleteObject(key: "JSESSIONID")
                     MMUtils.deleteObject(key: "session")
                     POSTNOTIFICATION(name: "UserLogin", data: nil)
-                    MMUtils.deleteCookies()
+                    //MMUtils.deleteCookies()
                    
                 }
                 

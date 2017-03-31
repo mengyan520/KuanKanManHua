@@ -7,7 +7,7 @@
 //https://api.kkmh.com/v2/review/topic/911
 
 //https://api.kkmh.com/v1/topics/918/fav 关注  post
-//https://api.kkmh.com/v1/topics/918/fav?sa_event=eyJldmVudCI6IlJlbW92ZUZhdlRvcGljIiwicHJvcGVydGllcyI6eyJMaWtlTnVtYmVyIjoxMDA3NDA0NSwiVG9waWNOYW1lIjoi5b2T56We5LiN6K6pIiwiVG9waWNJRCI6OTE4LCIkc2NyZWVuX3dpZHRoIjo3NTAsIiRhcHBfdmVyc2lvbiI6IjMuNi4zIiwiVHJpZ2dlclBhZ2UiOiJUb3BpY1BhZ2UiLCIkbW9kZWwiOiJpUGhvbmUiLCIkbmV0d29ya190eXBlIjoiV0lGSSIsIkNvbW1lbnROdW1iZXIiOjE0NzczOSwiJGNhcnJpZXIiOiLkuK3lm73np7vliqgiLCIkd2lmaSI6dHJ1ZSwiRmF2TnVtYmVyIjo5MDIxMTAsIk5pY2tOYW1lIjoi6Zi_6aOe77yI5Li756yU77yJK-WImOWMl--8iOe8luWJp--8iSIsIkNvbWljT3JkZXJOdW1iZXIiOjAsIiRzY3JlZW5faGVpZ2h0IjoxMzM0LCJBdXRob3JJRCI6MjE5MDU5ODIsImFidGVzdF9ncm91cCI6NzAsIiRvc192ZXJzaW9uIjoiMTAuMiIsIiRsaWIiOiJpT1MtbmV0IiwiJG1hbnVmYWN0dXJlciI6IkFwcGxlIiwiJG9zIjoiaU9TIn0sInByb2plY3QiOiJrdWFpa2FuX2FwcCIsImRpc3RpbmN0X2lkIjoiNDY5Mzg1MCIsInRpbWUiOjE0ODQyMDUzNzYwODQsInR5cGUiOiJ0cmFjayJ9 取消关注
+//https://api.kkmh.com/v1/topics/363/fav?sa_event=eyJldmVudCI6IlJlbW92ZUZhdlRvcGljIiwicHJvcGVydGllcyI6eyJMaWtlTnVtYmVyIjo0MTExNzQ3MywiVG9waWNOYW1lIjoi6Zu25YiG5YG25YOPIiwiVG9waWNJRCI6MzYzLCIkc2NyZWVuX3dpZHRoIjo3NTAsIiRhcHBfdmVyc2lvbiI6IjMuOS4wIiwiVHJpZ2dlclBhZ2UiOiJUb3BpY1BhZ2UiLCIkbW9kZWwiOiJpUGhvbmUiLCIkbmV0d29ya190eXBlIjoiV0lGSSIsIkNvbW1lbnROdW1iZXIiOjE5MTg0OTMsIiRjYXJyaWVyIjoi5Lit5Zu956e75YqoIiwiJHdpZmkiOnRydWUsIkZhdk51bWJlciI6NzM3OTgyMSwiTmlja05hbWUiOiLpnZLluq0iLCJDb21pY09yZGVyTnVtYmVyIjowLCIkc2NyZWVuX2hlaWdodCI6MTMzNCwiQXV0aG9ySUQiOjQ1OTMyNywiYWJ0ZXN0X2dyb3VwIjo3MCwiJG9zX3ZlcnNpb24iOiIxMC4yLjEiLCIkbGliIjoiaU9TLW5ldCIsIiRtYW51ZmFjdHVyZXIiOiJBcHBsZSIsIiRvcyI6ImlPUyJ9LCJwcm9qZWN0Ijoia3VhaWthbl9hcHAiLCJkaXN0aW5jdF9pZCI6IjQ2OTM4NTAiLCJ0aW1lIjoxNDg4MjcyMTM2OTE1LCJ0eXBlIjoidHJhY2sifQ%3D%3D 取消关注 delete
 import UIKit
 import SVProgressHUD
 class WordDetailViewController: BaseViewController,WordDetailTableViewDel {
@@ -44,11 +44,11 @@ class WordDetailViewController: BaseViewController,WordDetailTableViewDel {
         }
         headerView.btnClickBlcok {[weak self] (sender) in
             if sender.tag == 1 {
-            self?.clickLeftButton()
+                self?.clickLeftButton()
             }else {
-               
-               
-                self?.addfollow(id: (self?.workID!)!)
+                
+                
+                self?.addfollow(id: (self?.workID!)!,isfollow: sender.isSelected ? true : false)
                 
             }
         }
@@ -76,7 +76,7 @@ class WordDetailViewController: BaseViewController,WordDetailTableViewDel {
     func loadData(sort:NSInteger) {
         
         NetworkTools.shardTools.requestL(method: .get, URLString:"http://api.kuaikanmanhua.com/v1/topics/\(workID!)?sort=\(sort)", parameters:nil) {(result, error) in
-           // print(result)
+            // print(result)
             if (error == nil) {
                 guard let object = result! as? [String: AnyObject] else {
                     print("格式错误")
@@ -94,14 +94,22 @@ class WordDetailViewController: BaseViewController,WordDetailTableViewDel {
                     self.tableView.reloadData()
                 }
                 
+            }else {
+                
+                MMUtils.showNetFailureView(view: self.view)
+                JGPHUD.showErrorWithStatus(status: "无网络连接", view: self.view)
+                MMUtils.btnClickBlcok(btnblock: {[weak self] (sender) in
+                    MMUtils.hideNetFailureView(view: (self?.view)!)
+                    self?.loadData(sort: 0)
+                })
             }
         }
     }
-    func addfollow(id:String)  {
+    func addfollow(id:String,isfollow:Bool)  {
         
-        let parameters = ["sa_event":"eyJldmVudCI6IkZhdkF1dGhvciIsInByb3BlcnRpZXMiOnsiRmVlZExpa2VOdW1iZXIiOjExODM2LCIkc2NyZWVuX3dpZHRoIjo3NTAsIiRhcHBfdmVyc2lvbiI6IjMuNy4wIiwiVHJpZ2dlck9yZGVyTnVtYmVyIjoxLCJUcmlnZ2VyUGFnZSI6IlZDb21tdW5pdHlQYWdlIiwiQXV0aG9yRmFuc051bWJlciI6MCwiJG1vZGVsIjoiaVBob25lIiwiJG5ldHdvcmtfdHlwZSI6IldJRkkiLCIkY2FycmllciI6IuS4reWbveenu-WKqCIsIkZlZWRDb21tZW50TnVtYmVyIjoxMzU5LCJWQ29tbXVuaXR5VGFiTmFtZSI6IueDremXqCIsIiR3aWZpIjp0cnVlLCJOaWNrTmFtZSI6IumHkeS4mCIsIiRzY3JlZW5faGVpZ2h0IjoxMzM0LCJBdXRob3JJRCI6Mjk2Nzk0MywiYWJ0ZXN0X2dyb3VwIjo3MCwiJG9zX3ZlcnNpb24iOiIxMC4yIiwiJGxpYiI6ImlPUy1uZXQiLCIkbWFudWZhY3R1cmVyIjoiQXBwbGUiLCIkb3MiOiJpT1MifSwicHJvamVjdCI6Imt1YWlrYW5fYXBwIiwiZGlzdGluY3RfaWQiOiI0NjkzODUwIiwidGltZSI6MTQ4NDU1MDI4NjAxMywidHlwZSI6InRyYWNrIn0%3D"]        
-        NetworkTools.shardTools.requestL(method: .post, URLString: "https://api.kkmh.com/v1/topics/\(id)/fav", parameters: parameters) { (response, error) in
-             print(response)
+        
+        NetworkTools.shardTools.requestL(method: isfollow ? .delete : .post, URLString: "https://api.kkmh.com/v1/topics/\(id)/fav", parameters: nil) { (response, error) in
+            //  print(response)
             if error == nil {
                 guard let object = response as? [String: AnyObject] else {
                     print("格式错误")
@@ -109,19 +117,26 @@ class WordDetailViewController: BaseViewController,WordDetailTableViewDel {
                 }
                 let model = Model.init(dict: object)
                 if model.code == 200 {
-                    SVProgressHUD.showSuccess(withStatus: "关注成功")
-                     self.headerView.isfollow = true
-                }
+                    
+                    if !isfollow  {
+                        JGPHUD.showSuccessWithStatus(status: "关注成功", view: self.view)
+                        
+                        self.headerView.isfollow = true
+                    }else {
+                        JGPHUD.showSuccessWithStatus(status: "取消关注", view: self.view)
+                        self.headerView.isfollow = false
+                    }                }
                 
                 
             }
         }
         
     }
-
+    
     // MARK: - 事件
     func didSelectRowAtIndex(ID: Int,name:String) {
         let controller = CartoonDetailViewController.init(ID: ID, name: name)
+        controller.isWorkDetail = true
         controller.topicID = workID
         navigationController?.pushViewController(controller, animated: true)
     }
@@ -130,7 +145,7 @@ class WordDetailViewController: BaseViewController,WordDetailTableViewDel {
         _ = navigationController?.popViewController(animated: true)
     }
     deinit {
-        
+        print("deinit")
         NotificationCenter.default.removeObserver(self)
     }
     //通知方法

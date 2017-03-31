@@ -123,7 +123,8 @@ fileprivate class cartoonCell:UITableViewCell {
             // 问：SDWebImage 是如何设置缓存图片的文件名 完整 URL 字符串 -> `MD5`
             // if let key = viewModle?.thumbnailUrls?.first?.absoluteString {
             
-            if let image = SDWebImageManager.shared().imageCache.imageFromDiskCache(forKey: url!) {
+            if let image =
+                SDWebImageManager.shared().imageCache?.imageFromDiskCache(forKey: url!) {
                 print("ff")
                 imgView.image = image
                 return

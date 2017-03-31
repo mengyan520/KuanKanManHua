@@ -2,11 +2,11 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "ic_album_nav_followed_ipad.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
+      "filename" : "ic_album_nav_followed_ipad.png",
       "scale" : "2x"
     },
     {

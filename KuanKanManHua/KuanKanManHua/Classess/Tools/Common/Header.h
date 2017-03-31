@@ -11,5 +11,6 @@
 #import "UIImage+ImageEffects.h"
 #import "NSString+MMNStringExt.h"
 #import "FMDB.h"
+#import "NSString+Extension.h"
 
 #endif /* Header_h */

@@ -14,6 +14,7 @@ class FollowingViewController: BaseViewController {
     var since = 0
     var leftArray = [Topics]()
     var rightArray = [Author_list]()
+    var isleft = true
     override func viewDidLoad() {
         
         super.viewDidLoad()
@@ -22,9 +23,9 @@ class FollowingViewController: BaseViewController {
         view.addSubview(Titleview)
         
         scrollView.addSubview(leftTableView)
-        scrollView.addSubview(rightTableView)
-        loadData(isleft:true)
-        loadData(isleft:false)
+       
+        loadData()
+        
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -37,14 +38,20 @@ class FollowingViewController: BaseViewController {
     }
     
     //MARK: - 网络请求
-    func loadData(isleft:Bool)  {
-        var  url = "https://api.kkmh.com/v1/fav/topics?limit=20&offset=0&sa_event=eyJldmVudCI6IlJlYWRNeUZhdlRvcGljIiwicHJvcGVydGllcyI6eyJUcmlnZ2VyUGFnZSI6Ik15SG9tZVBhZ2UiLCIkb3NfdmVyc2lvbiI6IjEwLjIiLCIkY2FycmllciI6IuS4reWbveenu-WKqCIsIiRvcyI6ImlPUyIsIiRzY3JlZW5faGVpZ2h0IjoxMzM0LCIkc2NyZWVuX3dpZHRoIjo3NTAsIiRtb2RlbCI6ImlQaG9uZSIsIkZhdlRhYk5hbWUiOiLkvZzlk4EiLCIkd2lmaSI6dHJ1ZSwiJGFwcF92ZXJzaW9uIjoiMy43LjAiLCIkbWFudWZhY3R1cmVyIjoiQXBwbGUiLCIkbGliIjoiaU9TLW5ldCIsIiRuZXR3b3JrX3R5cGUiOiJXSUZJIiwiYWJ0ZXN0X2dyb3VwIjo3MH0sInByb2plY3QiOiJrdWFpa2FuX2FwcCIsImRpc3RpbmN0X2lkIjoiNDY5Mzg1MCIsInRpbWUiOjE0ODQ1NTE3ODY2MzAsInR5cGUiOiJ0cmFjayJ9"
+    func loadData()  {
+        var  url = "https://api.kkmh.com/v1/fav/topics?limit=20&offset=0"
+        
         if !isleft {
             url = "https://api.kkmh.com/v1/feeds/following_author_list?sa_event=eyJldmVudCI6IlJlYWRNeUZhdlRvcGljIiwicHJvcGVydGllcyI6eyJUcmlnZ2VyUGFnZSI6Ik15SG9tZVBhZ2UiLCIkb3NfdmVyc2lvbiI6IjEwLjIiLCIkY2FycmllciI6IuS4reWbveenu-WKqCIsIiRvcyI6ImlPUyIsIiRzY3JlZW5faGVpZ2h0IjoxMzM0LCIkc2NyZWVuX3dpZHRoIjo3NTAsIiRtb2RlbCI6ImlQaG9uZSIsIkZhdlRhYk5hbWUiOiLkvZzlk4EiLCIkd2lmaSI6dHJ1ZSwiJGFwcF92ZXJzaW9uIjoiMy43LjAiLCIkbWFudWZhY3R1cmVyIjoiQXBwbGUiLCIkbGliIjoiaU9TLW5ldCIsIiRuZXR3b3JrX3R5cGUiOiJXSUZJIiwiYWJ0ZXN0X2dyb3VwIjo3MH0sInByb2plY3QiOiJrdWFpa2FuX2FwcCIsImRpc3RpbmN0X2lkIjoiNDY5Mzg1MCIsInRpbWUiOjE0ODQ1NTE3ODY2NTcsInR5cGUiOiJ0cmFjayJ9&since=0&uid=\(MMUtils.getObjectForKey(key: "uid")!)"
         }
         
         NetworkTools.shardTools.requestL(method: .get, URLString: url, parameters: nil) { (response, error) in
-            self.leftTableView.mj_header.endRefreshing()
+            if self.isleft {
+                self.leftTableView.mj_header.endRefreshing()
+                
+            }else {
+                self.rightTableView.mj_header.endRefreshing()
+            }
             // print(response)
             if error == nil {
                 guard let object = response as? [String: AnyObject] else {
@@ -53,7 +60,7 @@ class FollowingViewController: BaseViewController {
                 }
                 let model = Model.init(dict: object)
                 if model.code == 200 {
-                    if isleft {
+                    if self.isleft {
                         self.leftArray = (model.data?.topics)!
                         
                         self.leftTableView.reloadData()
@@ -105,9 +112,9 @@ class FollowingViewController: BaseViewController {
             
         }
         self.yellowView.frame = CGRect.init(x: SCREEN_WIDTH/8.0, y: 38, width: SCREEN_WIDTH/4.0, height: 2)
-         self.bottomView.frame = CGRect.init(x: 0, y: 39.5, width: SCREEN_WIDTH, height: 0.5)
+        self.bottomView.frame = CGRect.init(x: 0, y: 39.5, width: SCREEN_WIDTH, height: 0.5)
         view.addSubview(self.yellowView)
-          view.addSubview(self.bottomView)
+        view.addSubview(self.bottomView)
         return view
     }()
     fileprivate lazy var yellowView:UIView = {
@@ -141,10 +148,11 @@ class FollowingViewController: BaseViewController {
         tableView.estimatedRowHeight = 200
         
         tableView.separatorStyle = .none
+        tableView.tag = 0
         return tableView
     }()
     fileprivate lazy var rightTableView:UITableView = {
-        let tableView = UITableView.init(frame: CGRect.init(x: SCREEN_WIDTH, y: 0, width: SCREEN_WIDTH, height: SCREEN_HEIGHT-64-49-40), style: .plain)
+        let tableView = UITableView.init(frame: CGRect.init(x: SCREEN_WIDTH, y: 0, width: SCREEN_WIDTH, height: SCREEN_HEIGHT-64-40), style: .plain)
         tableView.register(RightTableViewCell.self, forCellReuseIdentifier: "right")
         let header = MJRefreshNormalHeader.init(refreshingTarget: self, refreshingAction: #selector(self.loadData))
         
@@ -158,6 +166,7 @@ class FollowingViewController: BaseViewController {
         tableView.estimatedRowHeight = 200
         
         tableView.separatorStyle = .none
+         tableView.tag = 1
         return tableView
     }()
 }
@@ -170,7 +179,7 @@ extension FollowingViewController : UIScrollViewDelegate,UITableViewDelegate,UIT
         return leftArray.count
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-       
+        
         if tableView == leftTableView {
             let cell = tableView.dequeueReusableCell(withIdentifier: "left", for: indexPath) as! LeftTableViewCell
             cell.data = leftArray[indexPath.row];
@@ -190,9 +199,15 @@ extension FollowingViewController : UIScrollViewDelegate,UITableViewDelegate,UIT
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if tableView == leftTableView {
             let controller = WordDetailViewController.init(ID:"\(leftArray[indexPath.row].id)")
-           
+            
             
             navigationController?.pushViewController(controller, animated: true)
+        }else {
+            let controller = AuthorViewController.init(uid: rightArray[indexPath.row].id)
+            
+            
+            navigationController?.pushViewController(controller, animated: true)
+            
         }
     }
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -219,11 +234,23 @@ extension FollowingViewController : UIScrollViewDelegate,UITableViewDelegate,UIT
     func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
         let index = scrollView.contentOffset.x / scrollView.bounds.size.width
         let btn = (Titleview.subviews[NSInteger(index)] as! UIButton)
-        
+        addChildView(index: index)
         topViewOffset(sender: btn)
         
         
     }
+    func addChildView(index:CGFloat)  {
+        
+        let  view = scrollView.viewWithTag(Int(index))
+     
+        if (view != nil) {
+            return
+        }
+        scrollView.addSubview(rightTableView)
+        isleft = false
+        loadData()
+    }
+
     func topBtnClick(sender: UIButton) {
         
         let offsetX = CGFloat(sender.tag) * SCREEN_WIDTH
@@ -236,10 +263,12 @@ extension FollowingViewController : UIScrollViewDelegate,UITableViewDelegate,UIT
         currentBtn.isSelected = false
         currentBtn = sender
         sender.isSelected = true
-        
-        
-        
+        if sender.tag == 0 {
+            isleft = true
+        }else {
+            isleft = false
+        }
     }
     
-   
+    
 }

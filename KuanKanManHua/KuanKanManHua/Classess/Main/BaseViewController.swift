@@ -17,7 +17,7 @@ class BaseViewController: UIViewController {
         
         
         
-         navigationItem.rightBarButtonItem = UIBarButtonItem.init(image: UIImage.init(named: "ic_discover_nav_search_normal"), style: .plain, target: self, action: nil)
+        navigationItem.rightBarButtonItem = UIBarButtonItem.init(image: UIImage.init(named: "ic_discover_nav_search_normal"), style: .plain, target: self, action: #selector(self.clickRightButton))
        
 
         }
@@ -25,7 +25,12 @@ class BaseViewController: UIViewController {
         navigationItem.titleView = topView
        // navigationController?.navigationBar.addSubview(topView)
     }
-    
+    func clickRightButton() {
+        let controller = SearchTableViewController()
+        controller.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(controller, animated: false)
+        
+    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

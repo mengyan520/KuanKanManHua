@@ -4,11 +4,8 @@
 //
 //  Created by Youcai on 16/12/7.
 //  Copyright © 2016年 mm. All rights reserved.
-//https://api.kkmh.com/v2/topic/search/hot_word?since=0  搜索热词
-//https://api.kkmh.com/v1/topics/search?keyword=%E6%83%85%E4%BA%BA&limit=20&offset=0 搜索漫画
-// https://api.kkmh.com/v1/authors/search?keyword=%E5%A5%B3&limit=20&offset=0 搜索作者
-//https://api.kkmh.com/v1/users/1?sa_event=eyJldmVudCI6IlJlYWRBdXRob3JIb21lUGFnZSIsInByb3BlcnRpZXMiOnsiVHJpZ2dlclBhZ2UiOiJTZWFyY2hQYWdlIiwiJG9zX3ZlcnNpb24iOiIxMC4yLjEiLCIkb3MiOiJpT1MiLCJBdXRob3JJRCI6MSwiJHNjcmVlbl9oZWlnaHQiOjEzMzQsIiRjYXJyaWVyIjoi5Lit5Zu956e75YqoIiwiJGxpYiI6ImlPUy1uZXQiLCIkbW9kZWwiOiJpUGhvbmUiLCJOaWNrTmFtZSI6IuWItuWGt-WwkeWlsyIsIiRzY3JlZW5fd2lkdGgiOjc1MCwiJHdpZmkiOnRydWUsIiRhcHBfdmVyc2lvbiI6IjMuOC4zIiwiJG1hbnVmYWN0dXJlciI6IkFwcGxlIiwiJG5ldHdvcmtfdHlwZSI6IldJRkkiLCJhYnRlc3RfZ3JvdXAiOjcwfSwicHJvamVjdCI6Imt1YWlrYW5fYXBwIiwiZGlzdGluY3RfaWQiOiI0NjkzODUwIiwidGltZSI6MTQ4NzI1NDYwNzYyOSwidHlwZSI6InRyYWNrIn0%3D 个人界面 资料
-//https://api.kkmh.com/v1/feeds/feed_lists?catalog_type=3&page_num=1&since=0&uid=1 个人界面 动态
+
+
 
 import UIKit
 import JPFPSStatus
@@ -30,6 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(self.login), name: NSNotification.Name.init(rawValue: "login"), object: nil)
         SQLiteManager.sharedManager.createTable(name: "history")
         JPFPSStatus.sharedInstance().open()
+        
         return true
     }
     //MARK:- 控制器

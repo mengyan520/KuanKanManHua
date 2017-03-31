@@ -41,6 +41,7 @@ extension CommunityTableView : UITableViewDataSource,UITableViewDelegate {
         return dataArray.count
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+     
         let cell = tableView.dequeueReusableCell(withIdentifier: ID, for: indexPath) as! CommunityTableViewCell
         cell.data = dataArray[indexPath.row]
         cell.selectionStyle = .none
@@ -50,6 +51,7 @@ extension CommunityTableView : UITableViewDataSource,UITableViewDelegate {
         return dataArray[indexPath.row].rowHeight
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
         del?.didSelectRowAtIndex(data: dataArray[indexPath.row])
     }
 }

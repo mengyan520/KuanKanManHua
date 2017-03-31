@@ -17,6 +17,7 @@ class BaseTableViewController: UITableViewController {
         
         tableView.separatorStyle = .none
         
+        navigationItem.rightBarButtonItem = UIBarButtonItem.init(image: UIImage.init(named: "ic_discover_nav_search_normal"), style: .plain, target: self, action: nil)
         
     }
     func setNavTitle(titleString:String) {

@@ -24,7 +24,7 @@ class RecommendCollectionView: UICollectionView {
         didSet {
             
             sizeToFit()
-             reloadData()
+            reloadData()
         }
         
     }
@@ -39,14 +39,16 @@ class RecommendCollectionView: UICollectionView {
             
             layout!.scrollDirection = .horizontal
             return CGSize.init(width: SCREEN_WIDTH, height: 427*((SCREEN_WIDTH-40)/3.0)/320)
-        case 2,3,5,6,7,9,10,11:
-             layout!.collectionView?.contentInset = UIEdgeInsetsMake(0, 10, 0, 10)
+        case 2,3,5,6,8,9,10,11:
+            layout!.collectionView?.contentInset = UIEdgeInsetsMake(0, 10, 0, 10)
             layout!.scrollDirection = .vertical
             return CGSize.init(width: SCREEN_WIDTH, height: (427*(((SCREEN_WIDTH-40)/3.0)/320)+50) * 2)
-        default:break
+        default:
+            break
             
         }
-       
+        
+        layout!.scrollDirection = .vertical
         layout!.collectionView?.contentInset = UIEdgeInsetsMake(0, 10, 0, 10)
         return CGSize.init(width: SCREEN_WIDTH, height: 60 +  25)
     }
@@ -81,7 +83,7 @@ extension RecommendCollectionView:UICollectionViewDelegate,UICollectionViewDataS
     
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if index?.section == 8 {
+        if index?.section == 7 {
             return 2
         }
         if index?.section == 0 {
@@ -91,37 +93,37 @@ extension RecommendCollectionView:UICollectionViewDelegate,UICollectionViewDataS
         return dataArray!.count
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if index?.section == 8 {
+        if index?.section == 7 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: bannerID, for: indexPath) as! verticalCell
             
-              cell.bannerdata = bannersArray?[indexPath.row]
-           
+            cell.bannerdata = bannersArray?[indexPath.row]
+            
             return cell
         }else {
-        if index?.section == 0 {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ID, for: indexPath) as! recommendCell
-            
-            
-            cell.topicsData(data: (dataArray?[indexPath.row])!, index: indexPath)
-            return cell
-        } else if (index?.section == 1 || index?.section == 4  || index?.section == 12)  {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: horizontalID, for: indexPath) as! horizontalCell
-            
-            
-            cell.data = dataArray?[indexPath.row]
-            return cell
-            
-        }else {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: verticalID, for: indexPath) as! verticalCell
-            
-            
-            cell.data = dataArray?[indexPath.row]
-            return cell
-        }
+            if index?.section == 0 {
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ID, for: indexPath) as! recommendCell
+                
+                
+                cell.topicsData(data: (dataArray?[indexPath.row])!, index: indexPath)
+                return cell
+            } else if (index?.section == 1 || index?.section == 4  || index?.section == 12)  {
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: horizontalID, for: indexPath) as! horizontalCell
+                
+                
+                cell.data = dataArray?[indexPath.row]
+                return cell
+                
+            }else {
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: verticalID, for: indexPath) as! verticalCell
+                
+                
+                cell.data = dataArray?[indexPath.row]
+                return cell
+            }
         }
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-       
+        
         POSTNOTIFICATION(name: "wordDetail", data: ["data":dataArray![indexPath.item]])
     }
     
@@ -134,7 +136,7 @@ extension RecommendCollectionView:UICollectionViewDelegate,UICollectionViewDataS
         case 1,4,12:
             
             return CGSize.init(width: SCREEN_WIDTH-120, height: self.height)
-        case 2,3,5,6,7,9,10,11:
+        case 2,3,5,6,8,9,10,11:
             
             return CGSize.init(width: (SCREEN_WIDTH-40)/3.0, height: self.height/2)
         default:
@@ -346,26 +348,26 @@ fileprivate class horizontalCell:UICollectionViewCell {
     }
     
     private lazy var iconView:UIImageView = {
-        let view = UIImageView.init()
+        let view = UIImageView()
         
         return view
     }()
     private lazy var titlelbl:UILabel = {
-        let lbl = UILabel.init()
+        let lbl = UILabel()
         lbl.textColor = BLACK_COLOR
         lbl.font = BFont(fontSize: 14)
         
         return lbl
     }()
     private lazy var namelbl:UILabel = {
-        let lbl = UILabel.init()
+        let lbl = UILabel()
         lbl.textColor = BLACK_COLOR
         lbl.font = Font(fontSize: 14)
         
         return lbl
     }()
     private lazy var deslbl:UILabel = {
-        let lbl = UILabel.init()
+        let lbl = UILabel()
         lbl.textColor = BLACK_COLOR
         lbl.font = BFont(fontSize: 14)
         lbl.numberOfLines = 3
@@ -388,11 +390,11 @@ fileprivate class verticalCell:UICollectionViewCell {
             }
             
             titlelbl.text = data?.title
-           
+            
             if data?.recommended_text == "" {
                 namelbl.text =  data?.user?.nickname
             }else {
-            namelbl.text =  data?.recommended_text
+                namelbl.text =  data?.recommended_text
             }
         }
     }
@@ -429,8 +431,8 @@ fileprivate class verticalCell:UICollectionViewCell {
         iconView.snp.makeConstraints { (make) in
             
             make.top.left.right.equalTo(contentView)
-             make.height.equalTo(contentView.height
-             - 50)
+            make.height.equalTo(contentView.height
+                - 50)
             
         }
         titlelbl.snp.makeConstraints { (make) in
@@ -449,19 +451,19 @@ fileprivate class verticalCell:UICollectionViewCell {
     }
     
     private lazy var iconView:UIImageView = {
-        let view = UIImageView.init()
+        let view = UIImageView()
         
         return view
     }()
     private lazy var titlelbl:UILabel = {
-        let lbl = UILabel.init()
+        let lbl = UILabel()
         lbl.textColor = BLACK_COLOR
         lbl.font = BFont(fontSize: 14)
         
         return lbl
     }()
     private lazy var namelbl:UILabel = {
-        let lbl = UILabel.init()
+        let lbl = UILabel()
         lbl.textColor = BLACK_COLOR
         lbl.font = Font(fontSize: 12)
         

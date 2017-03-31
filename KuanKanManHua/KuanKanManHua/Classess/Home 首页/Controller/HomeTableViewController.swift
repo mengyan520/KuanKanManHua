@@ -31,14 +31,14 @@ class HomeTableViewController: UITableViewController,HomeTableViewCellDel {
         if isLeft {
             
             if MMUtils.userHasLogin()  {
-                loadData() 
+                loadData()
             }else {
-             tableView.insertSubview(backLoginView, at: 0)
+                tableView.insertSubview(backLoginView, at: 0)
             }
             NotificationCenter.default.addObserver(self, selector: #selector(self.reloadUser), name: NSNotification.Name.init(rawValue: "UserLogin"), object: nil)
         }else {
-           
-          loadData()
+            
+            loadData()
         }
     }
     
@@ -73,14 +73,14 @@ class HomeTableViewController: UITableViewController,HomeTableViewCellDel {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        let data = Info.init(dict: nil)
-//        data.title = dataArray[indexPath.row].topic!.title
-//        data.topic_id = dataArray[indexPath.row].topic!.id
-//        data.latest_comic_title = dataArray[indexPath.row].title
-//        data.id = dataArray[indexPath.row].id
-//        data.cover_image_url = dataArray[indexPath.row].topic!.cover_image_url
-//        data.old_comic_title = dataArray[indexPath.row].title
-//        SQLiteManager.sharedManager.saveData(data: data, name: "history")
+        //        let data = Info.init(dict: nil)
+        //        data.title = dataArray[indexPath.row].topic!.title
+        //        data.topic_id = dataArray[indexPath.row].topic!.id
+        //        data.latest_comic_title = dataArray[indexPath.row].title
+        //        data.id = dataArray[indexPath.row].id
+        //        data.cover_image_url = dataArray[indexPath.row].topic!.cover_image_url
+        //        data.old_comic_title = dataArray[indexPath.row].title
+        //        SQLiteManager.sharedManager.saveData(data: data, name: "history")
         let controller = CartoonDetailViewController.init(ID: dataArray[indexPath.row].id, name: dataArray[indexPath.row].title!)
         
         controller.topicID = "\(dataArray[indexPath.row].topic!.id)"
@@ -109,16 +109,16 @@ class HomeTableViewController: UITableViewController,HomeTableViewCellDel {
     //MARK: - 网络请求
     func loadData()  {
         
-        MMUtils.showLoading()
-       
+        
+        
         var url = "https://api.kkmh.com/v1/daily/comic_lists/\(time)?gender=0&sa_event=eyJldmVudCI6IlJlYWRIb21lUGFnZSIsInByb3BlcnRpZXMiOnsiVHJpZ2dlclBhZ2UiOiJIb21lUGFnZSIsIiRvc192ZXJzaW9uIjoiMTAuMiIsIkZyb21Ib21lcGFnZVVwZGF0ZURhdGUiOjAsIiRjYXJyaWVyIjoi5Lit5Zu956e75YqoIiwiJG9zIjoiaU9TIiwiJHNjcmVlbl9oZWlnaHQiOjEzMzQsIiRsaWIiOiJpT1MtbmV0IiwiJG1vZGVsIjoiaVBob25lIiwiJHNjcmVlbl93aWR0aCI6NzUwLCIkd2lmaSI6dHJ1ZSwiR2VuZGVyVHlwZSI6IueUt-eJiCIsIiRhcHBfdmVyc2lvbiI6IjMuNi4zIiwiJG1hbnVmYWN0dXJlciI6IkFwcGxlIiwiJG5ldHdvcmtfdHlwZSI6IldJRkkiLCJhYnRlc3RfZ3JvdXAiOjcwLCJIb21lcGFnZVRhYk5hbWUiOiLng63pl6giLCJIb21lcGFnZVVwZGF0ZURhdGUiOjB9LCJwcm9qZWN0Ijoia3VhaWthbl9hcHAiLCJkaXN0aW5jdF9pZCI6Imk6M0Y0NDlEQjYtNTNGNS00OTNDLTlERTUtN0U3MUNGRDkzNkQ4IiwidGltZSI6MTQ4NDIwNDMyNjE5OCwidHlwZSI6InRyYWNrIn0%3D&since=0"
         if isLeft {
             url = "https://api.kkmh.com/v1/fav/timeline?sa_event=eyJldmVudCI6IlJlYWRIb21lUGFnZSIsInByb3BlcnRpZXMiOnsiVHJpZ2dlclBhZ2UiOiJIb21lUGFnZSIsIiRvc192ZXJzaW9uIjoiMTAuMiIsIkZyb21Ib21lcGFnZVVwZGF0ZURhdGUiOjAsIiRjYXJyaWVyIjoi5Lit5Zu956e75YqoIiwiJG9zIjoiaU9TIiwiJHNjcmVlbl9oZWlnaHQiOjEzMzQsIiRsaWIiOiJpT1MtbmV0IiwiJG1vZGVsIjoiaVBob25lIiwiJHNjcmVlbl93aWR0aCI6NzUwLCIkd2lmaSI6dHJ1ZSwiR2VuZGVyVHlwZSI6IueUt-eJiCIsIiRhcHBfdmVyc2lvbiI6IjMuNi4zIiwiJG1hbnVmYWN0dXJlciI6IkFwcGxlIiwiJG5ldHdvcmtfdHlwZSI6IldJRkkiLCJhYnRlc3RfZ3JvdXAiOjcwLCJIb21lcGFnZVRhYk5hbWUiOiLlhbPms6gifSwicHJvamVjdCI6Imt1YWlrYW5fYXBwIiwiZGlzdGluY3RfaWQiOiI0NjkzODUwIiwidGltZSI6MTQ4NDI4OTQzOTIzNywidHlwZSI6InRyYWNrIn0%3D&since=0"
         }
-      
+        
         NetworkTools.shardTools.requestL(method: .get, URLString:url , parameters: nil) { (response, error) in
             self.tableView?.mj_header.endRefreshing()
-            MMUtils.hideLoading()
+            
             
             if error == nil {
                 guard let object = response as? [String: AnyObject] else {
@@ -132,9 +132,8 @@ class HomeTableViewController: UITableViewController,HomeTableViewCellDel {
                 }
                 
             }else {
-               
-                MMUtils.hideLoading()
-                MMUtils.showError()
+                JGPHUD.showErrorWithStatus(status: "无网络连接", view: self.view)
+                
             }
         }
     }
@@ -145,7 +144,7 @@ class HomeTableViewController: UITableViewController,HomeTableViewCellDel {
         }else {
             dataArray.removeAll()
             tableView.reloadData()
-         tableView.insertSubview(backLoginView, at: 0)
+            tableView.insertSubview(backLoginView, at: 0)
         }
     }
 }

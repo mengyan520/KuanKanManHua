@@ -18,7 +18,7 @@ protocol WordDetailTableViewDel:NSObjectProtocol {
 class WordDetailTableView: UITableView {
     lazy var rightArray = [Comics]()
     var data:ModelData?
-    var isleft = true
+    var isleft = false
     // MARK: - init
     init() {
         super.init(frame: CGRect.zero, style: .grouped)

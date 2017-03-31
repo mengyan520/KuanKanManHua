@@ -35,6 +35,7 @@ class SquareViewController: BaseViewController {
         loadData()
         NotificationCenter.default.addObserver(self, selector: #selector(self.Community(noti:)), name: NSNotification.Name(rawValue: "Community"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.reloadUser), name: NSNotification.Name.init(rawValue: "UserLogin"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.tapAuthorDetail(noti:)), name: NSNotification.Name.init(rawValue: "authorDetail"), object: nil)
     }
     
     override func didReceiveMemoryWarning() {
@@ -56,11 +57,11 @@ class SquareViewController: BaseViewController {
         if self.currentTableView?.tag != 100 {
             type = 1
         }
-        MMUtils.showLoading()
+       
         NetworkTools.shardTools.requestL(method: .get, URLString: "https://api.kkmh.com/v1/feeds/feed_lists?catalog_type=\(type)&page_num=1", parameters: nil) { (response, error) in
             self.currentTableView?.mj_header.endRefreshing()
             // print(response)
-            MMUtils.hideLoading()
+           
             if error == nil {
                 guard let object = response as? [String: AnyObject] else {
                     print("格式错误")
@@ -73,8 +74,7 @@ class SquareViewController: BaseViewController {
                 self.currentTableView?.mj_footer.isHidden = false
                 self.currentTableView?.reloadData()
             }else {
-                MMUtils.hideLoading()
-                MMUtils.showError()
+                
             }
         }
     }
@@ -102,17 +102,15 @@ class SquareViewController: BaseViewController {
                 self.currentTableView?.reloadData()
                 
             }else {
+                JGPHUD.showErrorWithStatus(status: "无网络连接", view: self.view)
                
-                MMUtils.showError()
             }
         }
         
     }
     func addfollow(author_id:String,sender:UIButton,data:Feeds)  {
-        /*
-         author_id=2967943&relation=1&sa_event=eyJldmVudCI6IkZhdkF1dGhvciIsInByb3BlcnRpZXMiOnsiRmVlZExpa2VOdW1iZXIiOjExODM2LCIkc2NyZWVuX3dpZHRoIjo3NTAsIiRhcHBfdmVyc2lvbiI6IjMuNy4wIiwiVHJpZ2dlck9yZGVyTnVtYmVyIjoxLCJUcmlnZ2VyUGFnZSI6IlZDb21tdW5pdHlQYWdlIiwiQXV0aG9yRmFuc051bWJlciI6MCwiJG1vZGVsIjoiaVBob25lIiwiJG5ldHdvcmtfdHlwZSI6IldJRkkiLCIkY2FycmllciI6IuS4reWbveenu-WKqCIsIkZlZWRDb21tZW50TnVtYmVyIjoxMzU5LCJWQ29tbXVuaXR5VGFiTmFtZSI6IueDremXqCIsIiR3aWZpIjp0cnVlLCJOaWNrTmFtZSI6IumHkeS4mCIsIiRzY3JlZW5faGVpZ2h0IjoxMzM0LCJBdXRob3JJRCI6Mjk2Nzk0MywiYWJ0ZXN0X2dyb3VwIjo3MCwiJG9zX3ZlcnNpb24iOiIxMC4yIiwiJGxpYiI6ImlPUy1uZXQiLCIkbWFudWZhY3R1cmVyIjoiQXBwbGUiLCIkb3MiOiJpT1MifSwicHJvamVjdCI6Imt1YWlrYW5fYXBwIiwiZGlzdGluY3RfaWQiOiI0NjkzODUwIiwidGltZSI6MTQ4NDU1MDI4NjAxMywidHlwZSI6InRyYWNrIn0%3D&uid=4693850
-         */
-        let parameters = ["author_id":author_id,"relation":"1","sa_event":"eyJldmVudCI6IkZhdkF1dGhvciIsInByb3BlcnRpZXMiOnsiRmVlZExpa2VOdW1iZXIiOjExODM2LCIkc2NyZWVuX3dpZHRoIjo3NTAsIiRhcHBfdmVyc2lvbiI6IjMuNy4wIiwiVHJpZ2dlck9yZGVyTnVtYmVyIjoxLCJUcmlnZ2VyUGFnZSI6IlZDb21tdW5pdHlQYWdlIiwiQXV0aG9yRmFuc051bWJlciI6MCwiJG1vZGVsIjoiaVBob25lIiwiJG5ldHdvcmtfdHlwZSI6IldJRkkiLCIkY2FycmllciI6IuS4reWbveenu-WKqCIsIkZlZWRDb21tZW50TnVtYmVyIjoxMzU5LCJWQ29tbXVuaXR5VGFiTmFtZSI6IueDremXqCIsIiR3aWZpIjp0cnVlLCJOaWNrTmFtZSI6IumHkeS4mCIsIiRzY3JlZW5faGVpZ2h0IjoxMzM0LCJBdXRob3JJRCI6Mjk2Nzk0MywiYWJ0ZXN0X2dyb3VwIjo3MCwiJG9zX3ZlcnNpb24iOiIxMC4yIiwiJGxpYiI6ImlPUy1uZXQiLCIkbWFudWZhY3R1cmVyIjoiQXBwbGUiLCIkb3MiOiJpT1MifSwicHJvamVjdCI6Imt1YWlrYW5fYXBwIiwiZGlzdGluY3RfaWQiOiI0NjkzODUwIiwidGltZSI6MTQ4NDU1MDI4NjAxMywidHlwZSI6InRyYWNrIn0%3D","uid":MMUtils.getObjectForKey(key: "uid") ?? ""] as [String : Any]
+       
+        let parameters = ["author_id":author_id,"relation":"1","uid":MMUtils.getObjectForKey(key: "uid") ?? ""] as [String : Any]
         
         NetworkTools.shardTools.requestL(method: .post, URLString: "https://api.kkmh.com/v1/feeds/update_following_author", parameters: parameters) { (response, error) in
             // print(response)
@@ -271,6 +269,15 @@ extension SquareViewController : UIScrollViewDelegate,CommunityTableViewDel {
         
         loadData()
         
+    }
+    func tapAuthorDetail(noti:NSNotification) {
+        
+        
+        let data = noti.userInfo!["data"] as! Feeds
+        let controller = AuthorViewController.init(uid: (data.user?.id)!)
+        
+        controller.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(controller, animated: true)
     }
     func Community(noti:NSNotification) {
         

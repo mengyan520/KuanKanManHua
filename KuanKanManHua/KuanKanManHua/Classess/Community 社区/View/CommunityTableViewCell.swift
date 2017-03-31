@@ -11,13 +11,20 @@ import SDWebImage
 class CommunityTableViewCell: UITableViewCell {
     //定义回调
     typealias btnBlcok = (_ sender: UIButton) -> Void
-    
+    var isAuthor:Bool? {
+    didSet {
+        if isAuthor! {
+            iconView.isUserInteractionEnabled = false
+            namelbl.isUserInteractionEnabled = false
+        }
+    }
+    }
     // MARK: - 模型赋值
     var data:Feeds? {
         didSet {
             let url =   ((data?.user?.avatar_url)! as NSString).replacingOccurrences(of: "w180.w", with: "w180")
-            
-            iconView.sd_setImage(with: URL.init(string: url), placeholderImage:UIImage.init(named: "ic_personal_headportrait"), options: [.retryFailed,.refreshCached]) {[weak self] (image, error, type, url) in
+        
+            iconView.sd_setImage(with: URL.init(string: url), placeholderImage:UIImage.init(named: "ic_personal_headportrait"), options: [.retryFailed,.refreshCached]) {(image, error, type, url) in
                  //self?.iconView.addCorner(radius: 20)
                 
             }
@@ -74,6 +81,7 @@ class CommunityTableViewCell: UITableViewCell {
     
     // MARK: -  设置界面
     private func setUI() {
+        
         contentView.addSubview(iconView)
         contentView.addSubview(idView)
         contentView.addSubview(namelbl)
@@ -160,6 +168,10 @@ class CommunityTableViewCell: UITableViewCell {
 //            POSTNOTIFICATION(name: "comment", data: ["data":data!])
 //        }
     }
+    func tap(tap:UITapGestureRecognizer)  {
+      
+        POSTNOTIFICATION(name: "authorDetail", data: ["data":data!])
+    }
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -172,10 +184,14 @@ class CommunityTableViewCell: UITableViewCell {
     }
     // MARK: - 懒加载
     //头像
+    
     private lazy var iconView:UIImageView = {
         let view = UIImageView()
         view.layer.cornerRadius = 20
         view.layer.masksToBounds = true
+        view.isUserInteractionEnabled = true
+        let tap = UITapGestureRecognizer.init(target: self, action: #selector(self.tap(tap:)))
+       view.addGestureRecognizer(tap)
         return view
     }()
     //标识
@@ -198,6 +214,9 @@ class CommunityTableViewCell: UITableViewCell {
     private lazy var namelbl:UILabel = {
         
         let lbl = UILabel.init(title: "昵称", fontSize: 12, color: RGB(r: 245, g: 101, b: 7, a: 1.0), screenInset: 10)
+        lbl.isUserInteractionEnabled = true
+        let tap = UITapGestureRecognizer.init(target: self, action: #selector(self.tap(tap:)))
+        lbl.addGestureRecognizer(tap)
         return lbl
     }()
     //正文

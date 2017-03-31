@@ -45,24 +45,30 @@ class DiscoverViewController: BaseViewController {
     }
     //MARK: - 网络请求
     func loadData()  {
-        MMUtils.showLoading()
+        
         NetworkTools.shardTools.requestL(method: .get, URLString: "https://api.kkmh.com/v1/topic_new/discovery_list", parameters: nil) { (response, error) in
             self.RecommendView.mj_header.endRefreshing()
-            MMUtils.hideLoading()
+            
             if error == nil {
                 guard let object = response as? [String: AnyObject] else {
                     print("格式错误")
                     return
                 }
-                
                 let model = Model.init(dict: object)
-                self.RecommendView.dataArray = (model.data?.infos)!
-                self.RecommendView.dataArray.remove(at: 0)
-                self.RecommendView.reloadData()
-                self.RecommendView.bannerArray = (model.data?.infos?[0].banners)!
+                if model.code == 200 {
+                    
+                    self.RecommendView.dataArray = (model.data?.infos)!
+                    self.RecommendView.dataArray.remove(at: 0)
+                    self.RecommendView.reloadData()
+                    self.RecommendView.bannerArray = (model.data?.infos?[0].banners)!
+                    
+                }else {
+                    
+                    
+                }
+                
             }else {
-                MMUtils.hideLoading()
-                MMUtils.showError()
+                 JGPHUD.showErrorWithStatus(status: "无网络连接", view: self.view)
             }
         }
     }
@@ -121,12 +127,14 @@ extension DiscoverViewController:UIScrollViewDelegate,NavTopDel,bannersViewDel{
             controller.hidesBottomBarWhenPushed = true
             
             navigationController?.pushViewController(controller, animated: true)
-        }else {
+        }else if banners.type == 3 {
             let controller = CartoonDetailViewController.init(ID:banners.target_id, name: "漫画内容")
             
             controller.topicID = "\(banners.id)"
             controller.hidesBottomBarWhenPushed = true
             navigationController?.pushViewController(controller, animated: true)
+        }else if banners.type == 1 {
+            
         }
     }
     // MARK: - 通知方法

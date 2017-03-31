@@ -117,7 +117,7 @@ class CommunityDetailController: UITableViewController {
         // print("http://api.kuaikanmanhua.com/v1/comments/feed/\(feeds.feed_id)/order/time?offset=2147483647")
         NetworkTools.shardTools.requestL(method: .get, URLString: "https://api.kkmh.com/v1/comments/feed/\(feeds.feed_id)/order/time?offset=2147483647", parameters: nil) { (result, error) in
             
-            
+            if error == nil {
             guard let object = result! as? [String: AnyObject] else {
                 print("格式错误")
                 return
@@ -126,6 +126,9 @@ class CommunityDetailController: UITableViewController {
             self.dataArray.append((model.data?.comments)!)
             
             self.tableView.reloadData()
+            }else {
+             JGPHUD.showErrorWithStatus(status: "无网络连接", view: self.view)
+            }
         }
     }
     

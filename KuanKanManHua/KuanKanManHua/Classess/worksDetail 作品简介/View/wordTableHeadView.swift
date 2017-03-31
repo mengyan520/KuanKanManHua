@@ -39,7 +39,7 @@ class wordTableHeadView: UIView {
         }
         
         yellowLine.snp.makeConstraints { (make) in
-            make.centerX.equalTo(self.leftBtn.snp.centerX)
+            make.centerX.equalTo(self.rightBtn.snp.centerX)
             make.width.equalTo(SCREEN_WIDTH/4)
             make.height.equalTo(1)
             make.bottom.equalTo(self.snp.bottom)
@@ -65,15 +65,15 @@ class wordTableHeadView: UIView {
         block?(sender)
     }
  // MARK: - 懒加载
-    private lazy var leftBtn:UIButton = {
+     lazy var leftBtn:UIButton = {
      let btn = UIButton.init(title: "详情", color: LIGHTGRAY_COLOR, SelectedColor: BLACK_COLOR, imageName: nil, fontSize: 16, target: self, actionName: #selector(self.btnClick(sender:)))
-        btn.isSelected = true
+        
         btn.tag = 1
         return btn
     }()
-    private lazy var rightBtn:UIButton = {
+     lazy var rightBtn:UIButton = {
         let btn = UIButton.init(title: "选集", color: LIGHTGRAY_COLOR, SelectedColor: BLACK_COLOR, imageName: nil, fontSize: 16, target: self, actionName: #selector(self.btnClick(sender:)))
-        
+        btn.isSelected = true
         btn.tag = 2
         return btn
     }()

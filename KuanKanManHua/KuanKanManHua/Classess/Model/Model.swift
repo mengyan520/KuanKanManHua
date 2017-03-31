@@ -46,6 +46,25 @@ class Model: NSObject {
     }
 }
 class ModelData: NSObject {
+    //搜索热词
+    var hot_topic: [Hot_topic]?
+    //作者资料
+    
+    var intro: String?
+    var bind_weibo: Int = 0
+   
+   
+   
+    var weibo_name: String?
+    var weibo: String?
+    
+  
+    
+    var works: String?
+    var following: Bool = false
+   
+   
+   
     //关注作者
     var author_list: [Author_list]?
     
@@ -135,6 +154,15 @@ class ModelData: NSObject {
         
     }
     override func setValue(_ value: Any?, forKey key: String) {
+        if key == "hot_topic" {
+            var arr = [Hot_topic]()
+            for data in value as! [AnyObject] {
+                arr.append(Hot_topic.init(dict: (data as? [String : AnyObject])!))
+                
+            }
+            hot_topic = arr
+            return
+        }
         if key == "author_list" {
             var arr = [Author_list]()
             for data in value as! [AnyObject] {
@@ -599,7 +627,8 @@ class Banners: NSObject {
     }
 }
 class Topics: NSObject {
-    //关注作品
+
+        //关注作品
     
     var latest_comic_title: String?
     
@@ -1066,4 +1095,34 @@ class Author_list: NSObject {
     }
     
     
+}
+// MARK: - Hot_topic
+class Hot_topic: NSObject {
+    var topic_id: Int = 0
+    var topic_title: String?
+    var hot_topic_source: String?
+    init(dict:[String: AnyObject]?) {
+        super.init()
+        if dict != nil {
+            setValuesForKeys(dict!)
+        }
+        
+        
+    }
+    
+    override func setValue(_ value: Any?, forKey key: String) {
+        
+        
+        super.setValue(value, forKey: key)
+    }
+    
+    
+    override func setValue(_ value: Any?, forUndefinedKey key: String) {
+        
+    }
+    override var description: String {
+        let keys = ["topic_title"]
+        
+        return dictionaryWithValues(forKeys: keys).description
+    }
 }

@@ -64,11 +64,12 @@ extension RecommendTableView:UITableViewDataSource,UITableViewDelegate,CarouselD
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: ID, for: indexPath) as! TableCell
-        if dataArray[indexPath.section].topics == nil {
+       
+    if dataArray[indexPath.section].topics == nil {
             cell.topicsData(data: nil,bannerdata:dataArray[indexPath.section].banners!, index: indexPath)
         }else {
             cell.topicsData(data: dataArray[indexPath.section].topics!,bannerdata:nil, index: indexPath)
-        }
+    }
         return cell
     }
     
@@ -85,10 +86,11 @@ extension RecommendTableView:UITableViewDataSource,UITableViewDelegate,CarouselD
             return  180+15
         case 1,4,12:
             return  427*((SCREEN_WIDTH-40)/3.0)/320 + 15
-        case 2,3,5,6,7,9,10,11:
-            return  ((427*((SCREEN_WIDTH-40)/3.0)/320)+50) * 2 + 15
-            
+        case 2,3,5,6,8,9,10,11:
+            return (427*(((SCREEN_WIDTH-40)/3.0)/320)+50) * 2 + 15
+        
         default:
+           
             break
         }
         return 60 +  25 + 15

@@ -40,7 +40,7 @@ class RightTableViewCell: UITableViewCell {
     }
     func setUI() {
         contentView.addSubview(iconView)
-        
+        contentView.addSubview(idView)
         contentView.addSubview(namelbl)
         contentView.addSubview(bomlbl)
         
@@ -51,7 +51,11 @@ class RightTableViewCell: UITableViewCell {
             make.height.equalTo(40)
             
         }
-        
+        idView.snp.makeConstraints { (make) in
+            make.top.left.equalTo(contentView).offset(10)
+            make.width.equalTo(40)
+            make.height.equalTo(40)
+        }
         
         namelbl.snp.makeConstraints { (make) in
             make.top.equalTo(iconView.snp.top).offset(10)
@@ -91,7 +95,7 @@ class RightTableViewCell: UITableViewCell {
 
     private lazy var namelbl:UILabel = {
         let lbl = UILabel()
-        lbl.textColor = RGB(r: 59, g: 59, b: 59, a: 1.0)
+        lbl.textColor = RGB(r: 245, g: 101, b: 7, a: 1.0)
         lbl.font = Font(fontSize: 12)
         lbl.text = "作者"
         return lbl

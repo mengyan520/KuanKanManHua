@@ -14,6 +14,7 @@ class CartoonDetailViewController: BaseViewController,CartoonTableViewDel {
     var name = "漫画内容"
     var topicID:String?
     var statusBarHidden = false
+    var isWorkDetail = false
     // MARK: - 构造方法
     init(ID:Int,name:String) {
         super.init(nibName: nil, bundle: nil)
@@ -57,39 +58,38 @@ class CartoonDetailViewController: BaseViewController,CartoonTableViewDel {
     // MARK: - 网络请求
     func loadData() {
         print("https://api.kkmh.com/v2/comic/\(ID)?")
-        MMUtils.showLoading()
+       
         NetworkTools.shardTools.requestL(method: .get, URLString:"https://api.kkmh.com/v2/comic/\(ID)?", parameters: nil) {(result, error) in
-             MMUtils.hideLoading()
-            if error == nil {
-            guard let object = result! as? [String: AnyObject] else {
-                print("格式错误")
-                return
-            }
-            let model = Model.init(dict: object)
-            self.tableView.data = model.data
-            self.title = model.data?.title
-            self.tableView.imageInfo = (model.data?.image_infos)!
-            self.tableView.imageArray = (model.data?.images)!
-            self.loadCommentData()
             
-            let data = Info.init(dict: nil)
-            data.title = model.data?.topic!.title
-            data.topic_id = (model.data?.topic!.id)!
-            data.latest_comic_title = model.data?.title
-            data.id = (model.data?.id)!
-            data.cover_image_url = model.data?.topic!.cover_image_url
-            data.old_comic_title = model.data?.title
-            SQLiteManager.sharedManager.saveData(data: data, name: "history")
+            if error == nil {
+                guard let object = result! as? [String: AnyObject] else {
+                    print("格式错误")
+                    return
+                }
+                let model = Model.init(dict: object)
+                self.tableView.data = model.data
+                self.title = model.data?.title
+                self.tableView.imageInfo = (model.data?.image_infos)!
+                self.tableView.imageArray = (model.data?.images)!
+                self.loadCommentData()
+                
+                let data = Info.init(dict: nil)
+                data.title = model.data?.topic!.title
+                data.topic_id = (model.data?.topic!.id)!
+                data.latest_comic_title = model.data?.title
+                data.id = (model.data?.id)!
+                data.cover_image_url = model.data?.topic!.cover_image_url
+                data.old_comic_title = model.data?.title
+                SQLiteManager.sharedManager.saveData(data: data, name: "history")
             }else {
-              MMUtils.hideLoading()
-                MMUtils.showError()
+              
             }
         }
         
     }
     func loadCommentData()  {
         
-        
+         print("https://api.kkmh.com/v1/comics/\(ID)/hot_comments")
         NetworkTools.shardTools.requestL(method: .get, URLString:"https://api.kkmh.com/v1/comics/\(ID)/hot_comments", parameters: nil) {(result, error) in
             
             guard let object = result! as? [String: AnyObject] else {
@@ -107,47 +107,46 @@ class CartoonDetailViewController: BaseViewController,CartoonTableViewDel {
     // MARK: - 事件
     
     func clickLeftButton(sender:UIBarButtonItem) {
-        //let controller =  navigationController?.childViewControllers.first
-        //      print(controller)
         
-        //        if (controller?.isEqual( HomeTableViewController.self))! {
-        //            _ =  navigationController?.popToViewController(controller!, animated: true)
-        //        } else {
-        _ =  navigationController?.popViewController(animated: true)
-        //        }
-        
+
+            _ = navigationController?.popViewController(animated: true)
+     
         
     }
     func clickRightButton(sender:UIBarButtonItem) {
         
-        let controller = WordDetailViewController.init(ID:topicID)
-        navigationController?.pushViewController(controller, animated: true)
-        
+       
+        if !isWorkDetail {
+            let controller = WordDetailViewController.init(ID:topicID)
+            navigationController?.pushViewController(controller, animated: true)
+        }else {
+            _ = navigationController?.popViewController(animated: true)
+        }
     }
     func didSelectedBtn(sender: UIButton, data: ModelData) {
         
         
         if sender.tag == 5 {//上一篇
             if data.previous_comic_id  != 0 {
-                 //SQLiteManager.sharedManager.saveData(data:data.topic!, name: "history")
-                let controller = CartoonDetailViewController.init(ID: data.previous_comic_id, name: "")
                 
-                controller.topicID = topicID
-                navigationController?.pushViewController(controller, animated: true)
+                self.ID = data.previous_comic_id;
+                tableView.scrollToRow(at: IndexPath.init(row: 0, section: 0), at: .none, animated: false)
+                loadData()
+                
             }
         } else if sender.tag == 6 {//下一篇
-            // SQLiteManager.sharedManager.saveData(data:data.topic!, name: "history")
+            
             if data.next_comic_id  != 0 {
+                self.ID = data.next_comic_id;
+                tableView.scrollToRow(at: IndexPath.init(row: 0, section: 0), at: .none, animated: false)
+                loadData()
                 
-                let controller = CartoonDetailViewController.init(ID: data.next_comic_id, name: "")
                 
-                controller.topicID = topicID
-                navigationController?.pushViewController(controller, animated: true)
             }
         }
         
     }
-   
+    
     
     deinit {
         print("deinit")

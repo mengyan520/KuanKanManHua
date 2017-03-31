@@ -2,11 +2,11 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "ic_album_details_followed.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
+      "filename" : "ic_album_details_followed.png",
       "scale" : "2x"
     },
     {

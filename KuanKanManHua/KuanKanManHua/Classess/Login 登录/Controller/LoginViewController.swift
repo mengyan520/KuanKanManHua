@@ -8,8 +8,8 @@
 //https://api.kkmh.com/v1/users/me?user_id=4693850
 //https://api.kkmh.com/v1/device/push_info
 import UIKit
-import SVProgressHUD
 
+import JGProgressHUD
 class LoginViewController: BaseViewController,BackViewDel {
     
     override func viewDidLoad() {
@@ -46,19 +46,21 @@ class LoginViewController: BaseViewController,BackViewDel {
     }()
     // MARK: - 登录请求
     func login()  {
-        
+       
         if NSString.init(string: backView.codeTextField.text!).length < 8 {
-            
-            SVProgressHUD.showError(withStatus: "密码长度至少8位")
+           
+           JGPHUD.showErrorWithStatus(status: "密码长度至少8位", view: view)
             return
         }
-       
+       JGPHUD.showProgressWithStatus(status: "登录中...", view: self.view)
         let parameters = [
             "password":  backView.codeTextField.text!,
             "phone": backView.phoneTextField.text!
         ]
         NetworkTools.shardTools.requestL(method: .post, URLString: "https://api.kkmh.com/v1/phone/signin", parameters: parameters) { (response, error) in
-           // print(response)
+            //print(response)
+            
+            JGPHUD.dismiss(view: self.view)
             if error == nil {
                 guard let object = response as? [String: AnyObject] else {
                     print("格式错误")
@@ -67,21 +69,25 @@ class LoginViewController: BaseViewController,BackViewDel {
                 
                 let model = Model.init(dict: object)
                 if model.code != 200 {
-                
-                SVProgressHUD.showError(withStatus: model.message)
+                JGPHUD.showErrorWithStatus(status: model.message!, view: self.view)
+               
                 return
                 }
+                
+                
                 MMUtils.setObject(data: model.data?.avatar_url, key: "avatar_url")
                 MMUtils.setObject(data: model.data?.nickname, key: "nickname")
                 MMUtils.setObject(data: model.data?.id, key: "uid")
                 POSTNOTIFICATION(name: "UserLogin", data: nil)
-                SVProgressHUD.showSuccess(withStatus: "登录成功")
+              
                 
                 let delay = DispatchTime.now() + DispatchTimeInterval.seconds(1)
                 DispatchQueue.main.asyncAfter(deadline: delay) {
                     
                     self.clickLeftButton(sender: nil)
                 }
+            }else {
+             JGPHUD.showErrorWithStatus(status: "网络中断", view: self.view)
             }
             
             

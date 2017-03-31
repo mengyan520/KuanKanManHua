@@ -11,7 +11,7 @@ import UIKit
 extension Date {
     func timeStringWithInterval(time:TimeInterval) -> String {
         
-        let distance = Int(Date.init().timeIntervalSince1970 - time/1000)
+        let distance = Int(Date().timeIntervalSince1970 - time/1000)
        
         if distance < 1 {
             return "刚刚"
@@ -26,9 +26,10 @@ extension Date {
         } else if distance < 2419200 {
             return "\(distance / 604800)周前"
         }else {
-            let dateFormatter = DateFormatter.init()
-            
-            return dateFormatter.string(from:  Date.init(timeIntervalSince1970: time) )
+            let dateFormatter = DateFormatter()
+          
+           dateFormatter.dateFormat = "yyyy-MM-dd"
+            return dateFormatter.string(from:  Date.init(timeIntervalSince1970: time/1000) )
         }
         
     }

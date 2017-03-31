@@ -72,7 +72,7 @@ class MeTableViewController: UITableViewController {
     }
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        if indexPath.section > 3 {
+        if indexPath.section == 4 {
             let controller = SettingViewController()
             
             controller.hidesBottomBarWhenPushed = true
@@ -99,14 +99,14 @@ class MeTableViewController: UITableViewController {
             if indexPath.section == 3 && indexPath.row == 1 {
                 let cell = tableView.cellForRow(at: indexPath)
                 cell?.accessoryView = UIImageView.init(imageName: "ic_personal_progress bar_downloading")
-               
+                
                 
                 if isDown {
-                  //   SDWebImageDownloader.shared().re                    isDown = false
+                    //   SDWebImageDownloader.shared().re                    isDown = false
                     print("df")
                 }else {
-                     isDown = true
-                self.downLoad()
+                    isDown = true
+                    self.downLoad()
                 }
                 return
             }
@@ -142,10 +142,10 @@ class MeTableViewController: UITableViewController {
     //下载漫画
     func downLoad()  {
         //请求首页今天更新漫画
-       
+        
         NetworkTools.shardTools.requestL(method: .get, URLString:"https://api.kkmh.com/v1/daily/comic_lists/0?gender=0&since=0" , parameters: nil) { (response, error) in
             
-            MMUtils.hideLoading()
+         
             
             if error == nil {
                 guard let object = response as? [String: AnyObject] else {
@@ -168,8 +168,7 @@ class MeTableViewController: UITableViewController {
                                 let model = Model.init(dict: object)
                                 self.cacheSingleImage(imgs: (model.data?.images)!)
                             }else {
-                                MMUtils.hideLoading()
-                                MMUtils.showError()
+                              
                             }
                             
                         }
@@ -177,7 +176,7 @@ class MeTableViewController: UITableViewController {
                 }
                 
             }else {
-                MMUtils.showError()
+               
             }
         }
     }
@@ -190,23 +189,24 @@ class MeTableViewController: UITableViewController {
         
         for url in imgs {
             group.enter()
-            SDWebImageManager.shared().downloadImage(
-                with: URL.init(string: url),
-                options: [],
-                progress: nil,
-                completed: { (image, _, _, _, _) -> Void in
-                    
-                    // 单张图片下载完成 － 计算长度
-                    if let img = image,
-                        let data = UIImagePNGRepresentation(img) {
-                        
-                        // 累加二进制数据的长度
-                        dataLength += data.count
-                    }
-                    
-                    
-                    group.leave()
-            })
+            
+            //            SDWebImageManager.shared().downloadImage(
+            //                with: URL.init(string: url),
+            //                options: [],
+            //                progress: nil,
+            //                completed: { (image, _, _, _, _) -> Void in
+            //
+            //                    // 单张图片下载完成 － 计算长度
+            //                    if let img = image,
+            //                        let data = UIImagePNGRepresentation(img) {
+            //
+            //                        // 累加二进制数据的长度
+            //                        dataLength += data.count
+            //                    }
+            //
+            //
+            //                    group.leave()
+            //            })
         }
         
         group.notify(queue: DispatchQueue.main) {

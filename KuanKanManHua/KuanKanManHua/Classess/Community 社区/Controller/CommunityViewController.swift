@@ -37,20 +37,23 @@ class CommunityViewController: BaseViewController {
             backscrollView.addSubview(backLoginView)
         }
     }
-    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: true)
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     //MARK: - 网络请求
-    //MARK: - 网络请求
+   
     func loadData()  {
         
-        MMUtils.showLoading()
+       
         NetworkTools.shardTools.requestL(method: .get, URLString: "https://api.kkmh.com/v1/feeds/following/feed_lists?since=0", parameters: nil) { (response, error) in
             self.tableView.mj_header.endRefreshing()
            // print(response)
-            MMUtils.hideLoading()
+            
             if error == nil {
                 guard let object = response as? [String: AnyObject] else {
                     print("格式错误")
@@ -67,8 +70,7 @@ class CommunityViewController: BaseViewController {
                
                 
             }else {
-                MMUtils.hideLoading()
-                MMUtils.showError()
+               
             }
         }
     }
@@ -90,8 +92,8 @@ class CommunityViewController: BaseViewController {
                 self.tableView.reloadData()
                 
             }else {
+                JGPHUD.showErrorWithStatus(status: "无网络连接", view: self.view)
                
-                MMUtils.showError()
             }
         }
         
@@ -164,7 +166,7 @@ extension CommunityViewController:UIScrollViewDelegate,NavTopDel,CommunityTableV
         }else {
             tableView.removeFromSuperview()
             tableView.dataArray.removeAll()
-            tableView.reloadData()
+           
             backscrollView.insertSubview(backLoginView, at: 0)
         }
     }

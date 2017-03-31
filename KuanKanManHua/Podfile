@@ -4,14 +4,14 @@
 target 'KuanKanManHua' do
     # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
     use_frameworks!
-    pod 'SDWebImage','~> 3.7.3'
-    pod 'SVProgressHUD'
+    pod 'SDWebImage'
+    
     pod 'MJPhotoBrowser'
     pod 'Alamofire'
     pod 'SnapKit'
     pod 'JPFPSStatus'
     pod 'MJRefresh'
-    
+    pod 'JGProgressHUD'
     # Pods for KuanKanManHua
     
     target 'KuanKanManHuaTests' do
