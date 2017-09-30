@@ -79,7 +79,7 @@ class LoginViewController: BaseViewController,BackViewDel {
                 MMUtils.setObject(data: model.data?.nickname, key: "nickname")
                 MMUtils.setObject(data: model.data?.id, key: "uid")
                 POSTNOTIFICATION(name: "UserLogin", data: nil)
-              
+                MMUtils.saveCookies()
                 
                 let delay = DispatchTime.now() + DispatchTimeInterval.seconds(1)
                 DispatchQueue.main.asyncAfter(deadline: delay) {

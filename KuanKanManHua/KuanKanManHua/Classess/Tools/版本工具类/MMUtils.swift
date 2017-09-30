@@ -18,16 +18,16 @@ class MMUtils: NSObject {
         }
         
         
-        //        let cookies = NSKeyedUnarchiver.unarchiveObject(with: getObjectForKey(key: "Cookies") as! Data) as! [HTTPCookie]
-        //        for cookie in cookies {
-        //
-        //            if cookie.name == "JSESSIONID"  {
-        //
-        //                if cookie.value == ( MMUtils.getObjectForKey(key: "JSESSIONID") as! String ){
-        //                   return true
-        //                }
-        //            }
-        //        }
+                let cookies = NSKeyedUnarchiver.unarchiveObject(with: getObjectForKey(key: "Cookies") as! Data) as! [HTTPCookie]
+                for cookie in cookies {
+        
+                    if cookie.name == "JSESSIONID"  {
+        
+                        if cookie.value == ( MMUtils.getObjectForKey(key: "JSESSIONID") as! String ){
+                           return true
+                        }
+                    }
+                }
         
         return true
     }

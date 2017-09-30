@@ -35,13 +35,13 @@ extension NetworkTools {
         
         
         
-        // if (URLString.range(of: "?sort=") != nil || URLString.range(of: "users") != nil) && MMUtils.userHasLogin() {
-        
+       
         
         if MMUtils.userHasLogin() {
-            let JSESSIONID = MMUtils.getObjectForKey(key: "JSESSIONID")
-            let session = MMUtils.getObjectForKey(key: "session")
-            headers = ["Cookie":"JSESSIONID=\(JSESSIONID!),session=\(session!)"]
+           let JSESSIONID = MMUtils.getObjectForKey(key: "JSESSIONID")
+           let session = MMUtils.getObjectForKey(key: "session")
+           headers = ["Cookie":"JSESSIONID=\(JSESSIONID!),session=\(session!)"]
+            
         }else {
             headers = nil
         }
@@ -60,9 +60,7 @@ extension NetworkTools {
                 // 在开发网络应用的时候，错误不要提示给用户，但是错误一定要输出！
                 finished(nil, response.result.error as NSError?)
             }else if response.result.isSuccess {
-                if method == .post {
-                    MMUtils.saveCookies()
-                }
+                
                 
                 // 完成回调
                 finished(response.result.value, response.result.error as NSError?)
